@@ -1,0 +1,53 @@
+//@import url('https://fonts.googleapis.com/css?family=Economica:400,400i|Open+Sans:400,400i,700');
+
+body {
+  background: url("http://www.dataselect.com/wp-content/uploads/2016/07/vTime-The-Boardroom.jpg") no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Economica', sans-serif;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr 7fr 2fr;
+  height: 100vh;
+
+  .section {
+    padding: 1em;
+    color: white;
+  }
+
+  .nested {
+    display: flex;
+    flex-direction: column;
+
+    .channels, .chat {
+      flex: 1;
+      color: #ddd;
+    }
+  }
+
+  .servers {
+    background-color: #111;
+    text-align: center;
+  }
+
+  .current-server, .channels {
+    background-color: #333;
+  }
+
+  .current-channel, .chat {
+    background-color: #444;
+  }
+
+  .user, .friends {
+    background-color: #222;
+  }
+
+  .current-server, .current-channel {
+    border-bottom: 1px solid #111;
+  }
+}

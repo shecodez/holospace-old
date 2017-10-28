@@ -1,18 +1,24 @@
 //@import url('https://fonts.googleapis.com/css?family=Economica:400,400i|Open+Sans:400,400i,700');
 
+@import "./forms";
+@import "./modal";
+@import "./tooltip";
+
+$primary: #7a5ac3;
+
 body {
   background: url("http://www.dataselect.com/wp-content/uploads/2016/07/vTime-The-Boardroom.jpg") no-repeat center center fixed;
   background-size: cover;
   font-family: 'Open Sans', sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5{
   font-family: 'Economica', sans-serif;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 2fr 7fr 2fr;
+  grid-template-columns: 1fr 3fr 9fr 3fr;
   height: 100vh;
 
   .section {
@@ -33,21 +39,56 @@ h1, h2, h3, h4, h5, h6 {
   .servers {
     background-color: #111;
     text-align: center;
+    list-style-type: none;
+
+    li {
+      margin-top: 10px;
+      //height: 50px;
+      img {
+        width: 50px;
+        height: 50px;
+      }
+      &:nth-of-type(odd) {
+        img { border-radius: 100%; }
+      }
+      &.current {
+        border-left: 5px solid $primary;
+      }
+    }
+
+    .add-server-btn {
+      cursor: pointer;
+      margin-top: 10px;
+      width: 50px;
+      height: 50px;
+      border: 2px dashed white;
+      border-radius: 100%;
+      background-color: transparent;
+      color: white;
+      transition: all 0.5s ease-out;
+      opacity: 0.4;
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 
   .current-server, .channels {
-    background-color: #333;
+    background-color: #303030;
   }
 
   .current-channel, .chat {
-    background-color: #444;
+    background-color: #424242;
   }
 
   .user, .friends {
-    background-color: #222;
+    background-color: #212121;
   }
 
-  .current-server, .current-channel {
-    border-bottom: 1px solid #111;
+  .user, .current-server, .current-channel {
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.12))
+						drop-shadow(0 3px 1px rgba(0, 0, 0, 0.14))
+						drop-shadow(0 1px 5px rgba(0, 0, 0, 0.12))
+						drop-shadow(0 -1px 2px rgba(0, 0, 0, 0.1));
   }
 }

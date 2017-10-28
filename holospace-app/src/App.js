@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import uuid from 'uuid';
+
 // components
 import Servers from './components/server/servers';
 
@@ -15,18 +17,45 @@ import Friends from './components/friend/friends';
 import './assets/css/style.min.css';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      servers: []
+    }
+  }
+
+  componentWillMount() {
+    this.setState( {servers: [
+      {
+        id: uuid.v4(),
+        icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112212/tenfwd.jpg',
+        name: 'Ten Forward'
+      },
+      {
+        id: uuid.v4(),
+        icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112217/holodeck.jpg',
+        name: 'Holodeck 42'
+      },
+      {
+        id: uuid.v4(),
+        icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112211/borderlands.jpg',
+        name: 'Borderlands'
+      }
+    ]} );
+  }
+
   render() {
     return (
       <div className="App grid">
-        <Servers />
+        <Servers servers={ this.state.servers } />
 
-        <div class="nested">
+        <div className="nested">
           <CurrentServer />
           <Channels />
           <User />
         </div>
 
-        <div class="nested">
+        <div className="nested">
           <CurrentChannel />
           <Chat />
         </div>

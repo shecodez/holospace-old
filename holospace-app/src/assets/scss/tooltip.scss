@@ -1,0 +1,47 @@
+/**
+ * Tooltip Styles
+ */
+
+/* Add this attribute to the element that needs a tooltip */
+[data-tooltip] {
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+}
+
+/* Hide the tooltip content by default */
+[data-tooltip]:before,
+[data-tooltip]:after {
+  visibility: hidden;
+  //-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  //filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Position tooltip to the right of the element */
+[data-tooltip]:before {
+  position: absolute;
+  left: 110%;
+  bottom: 90%;
+  padding: 3px;
+  width: 130px;
+  border-radius: 3px;
+  background-color: #7a5ac3;
+  background-color: rgba(122,90,195,0.9);
+  color: #fff;
+  content: attr(data-tooltip);
+  text-align: center;
+  font-size: 14px;
+  line-height: 1;
+  border: 1px solid white;
+}
+
+/* Show tooltip content on hover */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+  visibility: visible;
+  //-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  //filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}

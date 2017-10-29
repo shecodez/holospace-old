@@ -29,8 +29,7 @@ class Chatbox extends Component {
       <div className='chatbox'>
         <form className='form' onSubmit={this.onSubmit}>
           <div className='group'>
-            <textarea type='text'
-              rows='1'
+            <input type='text'
               onChange={this.onTextChange}
               value={this.state.chatInput}
               placeholder=' '

@@ -5,6 +5,12 @@ import Message from './message';
 
 class History extends Component {
 
+  componentDidUpdate() {
+    // There is a new message in the state, scroll to bottom of list
+    const objDiv = document.getElementById('message-list');
+    objDiv.scrollTop = objDiv.scrollHeight;
+  }
+
   render() {
     const messages = this.props.history.map((message, i) => {
       return (
@@ -18,7 +24,7 @@ class History extends Component {
 
     return (
       <div className='chat-history'>
-        <ul className='scroll-y'>
+        <ul id='message-list' className='scroll-y'>
           {messages}
         </ul>
       </div>

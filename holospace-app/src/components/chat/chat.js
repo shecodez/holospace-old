@@ -10,9 +10,10 @@ class Chat extends Component {
     super();
     this.state = {
       history: [],
-      user: {},
+      //user: {},
       channel: {}
-    }
+    };
+    this.sendHandler = this.sendHandler.bind(this);
     /*
     // Connect to the server
     api_url = '~/servers/:id/channels/:id';
@@ -36,7 +37,6 @@ class Chat extends Component {
 
   componentWillMount() {
     this.setState({
-      user: this.props.user.username +'#'+ this.props.user.id.slice(-4),
       channel: 'General',
       history: [{
         user_id: '1',
@@ -82,7 +82,7 @@ class Chat extends Component {
 
   sendHandler(message) {
     const msgObj = {
-      username: this.state.user,
+      user_id: this.props.user.id,
       message
     };
 
@@ -93,10 +93,10 @@ class Chat extends Component {
   }
 
   addMessage(message) {
-    console.log(message);
-    /*let messages = this.state.history;
+    //console.log(message);
+    let messages = this.state.history;
     messages.push(message);
-    this.setState({history:messages});*/
+    this.setState({history:messages});
   }
 
   render() {

@@ -150,6 +150,14 @@ h1, h2, h3, h4, h5{
 
      .form {
        padding-top: 30px;
+
+       input {
+         padding-right: 55px;
+         -webkit-box-sizing: border-box
+       }
+       textarea {
+         resize: vertical; max-height: 121px; min-height: 21px;
+       }
      }
 
      button {

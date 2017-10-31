@@ -21,7 +21,8 @@ class App extends Component {
     super();
     this.state = {
       user: {},
-      servers: []
+      servers: [],
+      channels: []
     }
   }
 
@@ -30,42 +31,73 @@ class App extends Component {
       user: {
         id: uuid.v4(),
         username: 'Guest',
+        pin: Math.round(Math.random() * 10000).toString(),
         avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png',
         online: true
       },
 
-      servers: [{
-        id: uuid.v4(),
-        icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112212/tenfwd.jpg',
-        name: 'Ten Forward'
-      },
-      {
-        id: uuid.v4(),
-        icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112217/holodeck.jpg',
-        name: 'Holodeck 42'
-      },
-      {
-        id: uuid.v4(),
-        icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112211/borderlands.jpg',
-        name: 'Borderlands'
-      }]
+      servers: [
+        {
+          id: uuid.v4(),
+          icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112212/tenfwd.jpg',
+          name: 'Ten Forward'
+        },
+        {
+          id: uuid.v4(),
+          icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112217/holodeck.jpg',
+          name: 'Holodeck 42'
+        },
+        {
+          id: uuid.v4(),
+          icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112211/borderlands.jpg',
+          name: 'Borderlands'
+        }
+      ],
+
+      channels: [
+        {
+          id: uuid.v4(),
+          type: 'Text',
+          name: 'General'
+        },
+        {
+          id: uuid.v4(),
+          type: 'Text',
+          name: 'Niico\'s Corner'
+        },
+        {
+          id: uuid.v4(),
+          type: 'Voice',
+          name: 'Raiders'
+        },
+        {
+          id: uuid.v4(),
+          type: 'Voice',
+          name: 'CMD CrEw'
+        },
+        {
+          id: uuid.v4(),
+          type: 'VR',
+          name: 'Danger Zone'
+        }
+      ]
     });
   }
 
   render() {
     return (
       <div className='App grid'>
-        <Servers servers={ this.state.servers } />
+        <Servers servers={this.state.servers} />
 
         <div className='nested'>
           <CurrentServer />
-          <Channels />
+          <Channels channels={this.state.channels} />
           <User />
         </div>
 
         <div className='nested'>
           <CurrentChannel />
-          <Chat user={ this.state.user } />
+          <Chat user={this.state.user} />
         </div>
 
         <Friends />

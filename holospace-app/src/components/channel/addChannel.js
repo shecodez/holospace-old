@@ -1,37 +1,67 @@
 import React, { Component } from 'react';
 
+import uuid from 'uuid';
+
+//components
+import Modal from '../modal';
+
 class AddChannel extends Component {
+  constructor() {
+    super();
+    this.state = {
+      newChannel: {},
+      isOpen: false
+    }
+  }
   static defaultProps = {
     channelTypes: ['Text', 'Voice', 'VR']
   }
 
-  handleSubmit() {
-    console.log('Submitted');
+  toggleModal = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  }
+
+  handleSubmit(e) {
+    this.setState({ newChannel: {
+      id: uuid.v4(),
+      name: this.refs.name.value,
+      //type: this.state.type,
+      topic: this.refs.topic.value
+    }}, function() {
+      console.log(this.state);
+      this.props.addChannel(this.state.newChannel);
+      this.toggleModal();
+    });
+    e.preventDefault();
   }
 
   render() {
-    let channelTypeOptions = this.prop.channelTypeOptions.map(type => {
-      return <option key={type} value={type}>{type}</option>
-    });
+    // let the button determin if the channel is 'Text', 'Voice', or 'VR'
+    const channelType = this.props.type + ' channel';
     return (
       <div>
-        <h3>Create Channel</h3>
-        <form onSubmit={this.handleSubmit.bind(this)}>
-          <div>
-            <label>Name</label>
-            <input type="text" ref="name" />
-          </div>
-          <div>
-            <label>Topic</label>
-            <input type="text" ref="topic" />
-          </div>
-          <div>
-            <label>Type</label>
-            <select ref="type">{channelTypeOptions}</select>
-          </div>
+        <a className="add-channel-link" onClick={this.toggleModal}>
+          <h4>{ 'Add new '+ channelType }<span>(plus)</span></h4>
+        </a>
 
-          <input type="submit" value="Submit" />
-        </form>
+        <Modal show={this.state.isOpen}
+          title={'Create new ' + channelType }
+          onCancel={this.toggleModal}
+          onSubmit={this.handleSubmit.bind(this)}
+          >
+          <form className="form add-channel-form">
+            <div className='group'>
+              <input type="text" ref="name" placeholder=" " required />
+              <label>Name</label>
+            </div>
+            <div className='group'>
+              <input type="text" ref="topic" placeholder=" " />
+              <label>Topic</label>
+            </div>
+          </form>
+        </Modal>
       </div>
     );
   }

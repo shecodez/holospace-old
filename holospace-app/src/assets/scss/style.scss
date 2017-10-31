@@ -3,8 +3,17 @@
 @import "./forms";
 @import "./modal";
 @import "./tooltip";
+@import "./chat";
 
 $primary: #7a5ac3;
+
+/*html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}*/
 
 html, body,
 #root, .App {
@@ -17,7 +26,10 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-h1, h2, h3, h4, h5{
+
+
+
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Economica', sans-serif;
 }
 
@@ -99,82 +111,32 @@ h1, h2, h3, h4, h5{
   }
 }
 
-
-
 /**
- * Chat Styles
- */
+  * Channel Styles
+  */
 
- .chat {
-   display: flex;
-   flex-direction: column;
-
-   .chat-history {
-     display: flex;
-     flex-direction: column;
-     height: 100%;
-
-     ul {
-       padding: 0;
-       margin: 0;
-       flex: 1 1 auto;
-       overflow-y: auto;
-       min-height: 0px;
-     }
-
-     .message-block {
-        margin: 0 30px;
-        padding: 20px 0px;
-        border-bottom: 1px solid rgba(155,155,155,0.2);
-        display: flex;
-
-        img.avatar {
-          width: 50px;
-          height: 50px;
-        }
-
-        .sender {
-          margin-left: 10px;
-          .name h4 {
-            margin: 0;
-            padding-bottom: 8px;
-          }
-          .msg {
-            flex-grow: 1;
-          }
-        }
-     }
-   }
-   .chatbox {
-     background-color: inherit;
-
-     .form {
-       padding-top: 30px;
-
-       input {
-         padding-right: 55px;
-         -webkit-box-sizing: border-box
-       }
-       textarea {
-         resize: vertical; max-height: 121px; min-height: 21px;
-       }
-     }
-
-     button {
-       position: absolute;
-       right: 0;
-       bottom: 10px;
-       border: none;
-       outline: none;
-       background-color: transparent;
-       color: $primary;
-       opacity: .75;
-       cursor: pointer;
-       transition: all 0.5s ease-out;
-
-       &:hover {
-         opacity: 1;
-       }
-     }
-   }
- }
+.channels {
+  transition: all 0.5s ease-out;
+  .add-channel-link {
+    h4 {
+      display: flex;
+      justify-content: space-between;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      cursor: pointer;
+    }
+  }
+  .channel {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    a {
+      color: #999;
+      text-decoration: none;
+    }
+    &:hover {
+        background-color: rgba(0,0,0,0.9);
+    }
+  }
+}

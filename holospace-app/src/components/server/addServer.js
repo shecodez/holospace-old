@@ -14,6 +14,10 @@ class AddServer extends Component {
     }
   }
 
+  static defaultProps = {
+    serverRealms: ['Cliffside', 'Sunny Oasis', 'Rustic Forest']
+  }
+
   toggleModal = () => {
     this.setState({
       isOpen: !this.state.isOpen
@@ -35,6 +39,15 @@ class AddServer extends Component {
   }
 
   render() {
+    /* USE THIS IN PLACE OF SEED
+    let serverRealmOptions = this.prop.serverRealmOptions.map(realm => {
+      return <option key={realm} value={realm}>{realm}</option>
+    });
+    <div>
+      <label>Server Realm</label>
+      <select ref="realm">{serverRealmOptions}</select>
+    </div>*/
+
     return (
       <div>
         <button className="add-server-btn" onClick={this.toggleModal}>

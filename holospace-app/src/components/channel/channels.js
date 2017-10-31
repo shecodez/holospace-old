@@ -7,10 +7,10 @@ import AddChannel from './addChannel';
 class Channels extends Component {
 
   onAddChannel(channel) {
-    console.log(channel);
-    /*let channels = this.props.channels;
+    //console.log(channel);
+    let channels = this.props.channels;
     channels.push(channel);
-    this.setState({channels:channels});*/
+    this.setState({channels:channels});
   }
 
   render() {
@@ -20,39 +20,44 @@ class Channels extends Component {
       //return( <ChannelLI key={channel.id} channel={channel} />);
     });*/
 
-    /*this.props.channel.forEach(function(channel) {
-      switch(channel.type) {
-        case "Text":
-          textChannelList.push(<ChannelLI key={channel.id} channel={channel} />);
-          break;
-        case "Voice":
-          voiceChannelList.push(<ChannelLI key={channel.id} channel={channel} />);
-          break;
-        case "VR":
-          vrChannelList.push(<ChannelLI key={channel.id} channel={channel} />);
-      }
-    });*/
+    /*textChannelList = this.props.channels
+      .filter(c => c.type === 'Text')
+      .map(c => {
+        return( <ChannelLI key={c.id} channel={c} /> );
+      });
 
-    let textChannelList, voiceChannelList, vrChannelList;
+    voiceChannelList = this.props.channels
+      .filter(c => c.type === 'Voice')
+      .map(c => {
+        return( <ChannelLI key={c.id} channel={c} /> );
+      });
+
+    vrChannelList = this.props.channels
+      .filter(c => c.type === 'VR')
+      .map(c => {
+        return( <ChannelLI key={c.id} channel={c} /> );
+      });
+    //Note: I don't think the above is efficient or DRY */
+
+    const textChannelList = [];
+    const voiceChannelList = [];
+    const vrChannelList = [];
     if (this.props.channels) {
-      textChannelList = this.props.channels
-        .filter(c => c.type === 'Text')
-        .map(c => {
-          return( <ChannelLI key={c.id} channel={c} /> );
-        });
-
-      voiceChannelList = this.props.channels
-        .filter(c => c.type === 'Voice')
-        .map(c => {
-          return( <ChannelLI key={c.id} channel={c} /> );
-        });
-
-      vrChannelList = this.props.channels
-        .filter(c => c.type === 'VR')
-        .map(c => {
-          return( <ChannelLI key={c.id} channel={c} /> );
-        });
-      //Note: I don't think the above is efficient or DRY
+      this.props.channels.forEach((channel) => {
+        switch(channel.type) {
+          case "Text":
+            textChannelList.push(<ChannelLI key={channel.id} channel={channel} />);
+            break;
+          case "Voice":
+            voiceChannelList.push(<ChannelLI key={channel.id} channel={channel} />);
+            break;
+          case "VR":
+            vrChannelList.push(<ChannelLI key={channel.id} channel={channel} />);
+            break;
+          default:
+            textChannelList.push(<ChannelLI key={channel.id} channel={channel} />);
+        }
+      });
     }
 
     return (
@@ -63,7 +68,7 @@ class Channels extends Component {
         <AddChannel addChannel={this.onAddChannel.bind(this)} type ='Voice' />
         {voiceChannelList}
 
-        <AddChannel addChannel={this.onAddChannel.bind(this)} type ='AR' />
+        <AddChannel addChannel={this.onAddChannel.bind(this)} type ='VR' />
         {vrChannelList}
       </div>
     );

@@ -22,11 +22,12 @@ class App extends Component {
     this.state = {
       user: {},
       servers: [],
-      channels: []
+      channels: [],
+      friends: []
     }
   }
 
-  componentWillMount() {
+  getUser() {
     this.setState({
       user: {
         id: uuid.v4(),
@@ -34,8 +35,17 @@ class App extends Component {
         pin: Math.round(Math.random() * 10000).toString(),
         avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png',
         online: true
-      },
+      }
+    });
+  }
+  //getServers(){}
+  //getChannels(){}
+  //getFriends(){}
 
+  componentWillMount() {
+    this.getUser();
+
+    this.setState({
       servers: [
         {
           id: uuid.v4(),
@@ -68,17 +78,17 @@ class App extends Component {
         {
           id: uuid.v4(),
           type: 'Voice',
-          name: 'Raiders'
+          name: 'W3 Raiders'
         },
         {
           id: uuid.v4(),
           type: 'Voice',
-          name: 'CMD CrEw'
+          name: 'Danger Zone'
         },
         {
           id: uuid.v4(),
           type: 'VR',
-          name: 'Danger Zone'
+          name: 'Kobayashi Maru'
         }
       ]
     });
@@ -92,7 +102,7 @@ class App extends Component {
         <div className='nested'>
           <CurrentServer />
           <Channels channels={this.state.channels} />
-          <User />
+          <User user={this.state.user} />
         </div>
 
         <div className='nested'>

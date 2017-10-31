@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import uuid from 'uuid';
 
 //components
@@ -27,10 +26,10 @@ class AddChannel extends Component {
     this.setState({ newChannel: {
       id: uuid.v4(),
       name: this.refs.name.value,
-      //type: this.state.type,
+      type: this.props.type,
       topic: this.refs.topic.value
     }}, function() {
-      console.log(this.state);
+      //console.log(this.state);
       this.props.addChannel(this.state.newChannel);
       this.toggleModal();
     });
@@ -38,13 +37,17 @@ class AddChannel extends Component {
   }
 
   render() {
-    // let the button determin if the channel is 'Text', 'Voice', or 'VR'
     const channelType = this.props.type + ' channel';
     return (
       <div>
-        <a className="add-channel-link" onClick={this.toggleModal}>
-          <h4>{ 'Add new '+ channelType }<span>(plus)</span></h4>
-        </a>
+        <div className="add-channel">
+          <button className="toggle-server-channels-btn">
+            { channelType +'s' }
+          </button>
+          <a className="link" onClick={this.toggleModal}>
+            <span>+</span>
+          </a>
+        </div>
 
         <Modal show={this.state.isOpen}
           title={'Create new ' + channelType }

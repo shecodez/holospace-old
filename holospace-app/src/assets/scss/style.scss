@@ -99,11 +99,11 @@ h1, h2, h3, h4, h5, h6 {
     background-color: #424242;
   }
 
-  .user, .friends {
+  .current-user, .friends {
     background-color: #212121;
   }
 
-  .user, .current-server, .current-channel {
+  .current-user, .current-server, .current-channel {
     filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.12))
 						drop-shadow(0 3px 1px rgba(0, 0, 0, 0.14))
 						drop-shadow(0 1px 5px rgba(0, 0, 0, 0.12))
@@ -112,8 +112,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /**
-  * Channel Styles
-  */
+ * Channel Styles
+ */
 
 .channels {
   transition: all 0.5s ease-out;
@@ -150,21 +150,58 @@ h1, h2, h3, h4, h5, h6 {
       span {
         font-family: 'Open Sans',sans-serif;
         font-size: 24px;
-        width: 18px;
-        height: 18px;
         text-align: center;
         line-height: 18px;
+        padding: 0 2px;
       }
     }
   }
+
+  /**
+   * Tab Styles
+   */
+  .tabs {
+    .tab-labels {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+
+      li {
+        border-bottom: 1px solid #999;
+        flex-grow: 1;
+        text-align: center;
+        display: inline-block;
+        &:hover {
+          border-bottom: 1px solid $primary;
+        }
+        &.active {
+          border-bottom-color: $primary;
+          button { color: $primary; }
+        }
+
+        button {
+          color: #fff;
+          padding: 5px;
+          width: 100%;
+          &:hover {
+            color: $primary;
+          }
+        }
+      }
+    }
+    .tab-content {}
+  }
+
   .channel {
     list-style-type: none;
     display: flex;
     justify-content: space-between;
     padding: 8px 1em;
-    border-left: 4px solid #303030;
+    //border-left: 4px solid #303030;
+    margin-left: 4px;
 
     &:hover {
+      margin-left: 0;
       background-color: #424242;
       border-left: 4px solid $primary;
     }
@@ -186,11 +223,7 @@ h1, h2, h3, h4, h5, h6 {
 /**
   * User Styles
   */
-
 .user {
-  display: flex;
-  justify-content: space-between;
-
   .info{
     display: flex;
     h4 {
@@ -210,11 +243,33 @@ h1, h2, h3, h4, h5, h6 {
       font-size: 12px;
     }
   }
+}
+.current-user {
+  display: flex;
+  justify-content: space-between;
+
   button {
     cursor: pointer;
     color: #999;
     background-color: transparent;
     border: 1px solid rgba(155,155,155,.2);
     padding: 6px;
+  }
+}
+
+/* Friends Styles */
+.friends {
+  ul {
+    padding-left: 20px;
+    list-style-type: none;
+  }
+  li {
+    padding: 4px 0;
+  }
+  .online-users img {
+    border-color: green;
+  }
+  .offline-users img {
+    border-color: #444;
   }
 }

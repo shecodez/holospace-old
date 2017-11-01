@@ -7,7 +7,7 @@ import Servers from './components/server/servers';
 
 import CurrentServer from './components/server/currentServer';
 import Channels from './components/channel/channels';
-import User from './components/user/user';
+import CurrentUser from './components/user/currentUser';
 
 import CurrentChannel from './components/channel/currentChannel';
 import Chat from './components/chat/chat';
@@ -90,6 +90,44 @@ class App extends Component {
           type: 'VR',
           name: 'Kobayashi Maru'
         }
+      ],
+
+      friends: [
+        {
+          id: uuid.v4(),
+          username: 'Kirk',
+          pin: Math.round(Math.random() * 10000).toString(),
+          avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png',
+          online: true
+        },
+        {
+          id: uuid.v4(),
+          username: 'Spock',
+          pin: Math.round(Math.random() * 10000).toString(),
+          avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png',
+          online: false
+        },
+        {
+          id: uuid.v4(),
+          username: 'Star',
+          pin: Math.round(Math.random() * 10000).toString(),
+          avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png',
+          online: false
+        },
+        {
+          id: uuid.v4(),
+          username: 'Bones',
+          pin: Math.round(Math.random() * 10000).toString(),
+          avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png',
+          online: true
+        },
+        {
+          id: uuid.v4(),
+          username: 'Sulu',
+          pin: Math.round(Math.random() * 10000).toString(),
+          avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png',
+          online: true
+        }
       ]
     });
   }
@@ -102,7 +140,7 @@ class App extends Component {
         <div className='nested'>
           <CurrentServer />
           <Channels channels={this.state.channels} />
-          <User user={this.state.user} />
+          <CurrentUser user={this.state.user} />
         </div>
 
         <div className='nested'>
@@ -110,7 +148,7 @@ class App extends Component {
           <Chat user={this.state.user} />
         </div>
 
-        <Friends />
+        <Friends friends={this.state.friends} />
       </div>
     );
   }

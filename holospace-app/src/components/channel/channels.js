@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import SimpleLineIcon from 'react-simple-line-icons';
 
 // Components
 import ChannelLI from './channelLI';
 import AddChannel from './addChannel';
+import Tabs from '../tab/tabs';
+import Pane from '../tab/pane';
 
 class Channels extends Component {
 
@@ -62,14 +65,33 @@ class Channels extends Component {
 
     return (
       <div className="channels section">
-        <AddChannel addChannel={this.onAddChannel.bind(this)} type ='Text' />
-        {textChannelList}
+        <Tabs selected={0}>
+          <Pane label="ALL">
+            <AddChannel addChannel={this.onAddChannel.bind(this)} type ='Text' />
+            {textChannelList}
 
-        <AddChannel addChannel={this.onAddChannel.bind(this)} type ='Voice' />
-        {voiceChannelList}
+            <AddChannel addChannel={this.onAddChannel.bind(this)} type ='Voice' />
+            {voiceChannelList}
 
-        <AddChannel addChannel={this.onAddChannel.bind(this)} type ='VR' />
-        {vrChannelList}
+            <AddChannel addChannel={this.onAddChannel.bind(this)} type ='VR' />
+            {vrChannelList}
+          </Pane>
+
+          <Pane label={<SimpleLineIcon name="speech" />}>
+            <AddChannel addChannel={this.onAddChannel.bind(this)} type ='Text' />
+            {textChannelList}
+          </Pane>
+
+          <Pane label={<SimpleLineIcon name="microphone" />}>
+            <AddChannel addChannel={this.onAddChannel.bind(this)} type ='Voice' />
+            {voiceChannelList}
+          </Pane>
+
+          <Pane label={<SimpleLineIcon name="eyeglass" />}>            
+            <AddChannel addChannel={this.onAddChannel.bind(this)} type ='VR' />
+            {vrChannelList}
+          </Pane>
+        </Tabs>
       </div>
     );
   }

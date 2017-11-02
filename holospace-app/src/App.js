@@ -12,7 +12,7 @@ import CurrentUser from './components/user/currentUser';
 import CurrentChannel from './components/channel/currentChannel';
 import Chat from './components/chat/chat';
 
-import Friends from './components/friend/friends';
+import Members from './components/member/members';
 
 import './assets/css/style.min.css';
 
@@ -22,9 +22,19 @@ class App extends Component {
     this.state = {
       user: {},
       servers: [],
+      currentServer: {},
       channels: [],
-      friends: []
+      currentChannel: {},
+      members: []
     }
+  }
+
+  generatePin() {
+    var pin = Math.round(Math.random() * 10000);
+    if (pin < 1000) {
+      pin += 1000;
+    }
+    return pin;
   }
 
   getUser() {
@@ -32,19 +42,24 @@ class App extends Component {
       user: {
         id: uuid.v4(),
         username: 'Guest',
-        pin: Math.round(Math.random() * 10000).toString(),
+        pin: this.generatePin().toString(),
         avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png',
         online: true
       }
     });
   }
-  //getServers(){}
-  //getChannels(){}
-  //getFriends(){}
 
-  componentWillMount() {
-    this.getUser();
+  getCurrentServer() {
+    this.setState({
+      currentServer: {
+        id: uuid.v4(),
+        icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112212/tenfwd.jpg',
+        name: 'Ten Forward'
+      }
+    });
+  }
 
+  getServers() {
     this.setState({
       servers: [
         {
@@ -62,8 +77,23 @@ class App extends Component {
           icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112211/borderlands.jpg',
           name: 'Borderlands'
         }
-      ],
+      ]
+    });
+  }
 
+  getCurrentChannel() {
+    this.setState({
+      currentChannel: {
+        id: uuid.v4(),
+        type: 'Text',
+        name: 'General',
+        topic: 'Nothing is off limits here'
+      }
+    });
+  }
+
+  getChannels() {
+    this.setState({
       channels: [
         {
           id: uuid.v4(),
@@ -90,46 +120,59 @@ class App extends Component {
           type: 'VR',
           name: 'Kobayashi Maru'
         }
-      ],
+      ]
+    });
+  }
 
-      friends: [
+  getMembers() {
+    this.setState({
+      members: [
         {
           id: uuid.v4(),
           username: 'Kirk',
-          pin: Math.round(Math.random() * 10000).toString(),
+          pin: this.generatePin().toString(),
           avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png',
           online: true
         },
         {
           id: uuid.v4(),
           username: 'Spock',
-          pin: Math.round(Math.random() * 10000).toString(),
+          pin: this.generatePin().toString(),
           avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png',
           online: false
         },
         {
           id: uuid.v4(),
           username: 'Star',
-          pin: Math.round(Math.random() * 10000).toString(),
+          pin: this.generatePin().toString(),
           avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png',
           online: false
         },
         {
           id: uuid.v4(),
           username: 'Bones',
-          pin: Math.round(Math.random() * 10000).toString(),
+          pin: this.generatePin().toString(),
           avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png',
           online: true
         },
         {
           id: uuid.v4(),
           username: 'Sulu',
-          pin: Math.round(Math.random() * 10000).toString(),
+          pin: this.generatePin().toString(),
           avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png',
           online: true
         }
       ]
     });
+  }
+
+  componentWillMount() {
+    this.getUser();
+    this.getServers();
+    this.getCurrentServer();
+    this.getChannels();
+    this.getCurrentChannel();
+    this.getMembers();
   }
 
   render() {
@@ -138,17 +181,17 @@ class App extends Component {
         <Servers servers={this.state.servers} />
 
         <div className='nested'>
-          <CurrentServer />
+          <CurrentServer currentServer={this.state.currentServer} />
           <Channels channels={this.state.channels} />
           <CurrentUser user={this.state.user} />
         </div>
 
         <div className='nested'>
-          <CurrentChannel />
+          <CurrentChannel currentChannel={this.state.currentChannel}/>
           <Chat user={this.state.user} />
         </div>
 
-        <Friends friends={this.state.friends} />
+        <Members members={this.state.members} />
       </div>
     );
   }

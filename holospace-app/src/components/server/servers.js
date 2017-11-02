@@ -23,6 +23,14 @@ class Servers extends Component {
 
     return (
       <div className="servers section">
+        <button className="toggle-dm-btn">
+          <img src='http://res.cloudinary.com/shecodez/image/upload/v1509660797/envelope-filled_tvyutt.png'alt="DM icon" />
+          {/*<img src='http://res.cloudinary.com/shecodez/image/upload/v1509634910/envelope_rw7jal.png' alt="DM icon" />*/}
+        </button>
+        <p className="toggle-dm-label">DM</p>
+
+        <hr/>
+
         Servers
         {serverList}
         <AddServer addServer={this.onAddServer.bind(this)} />

@@ -4,7 +4,9 @@ class CurrentServer extends Component {
   render() {
     return (
       <div className="current-server section">
-        Current Server
+        <h3 className="server-name">
+          {this.props.currentServer.name}
+        </h3>
       </div>
     );
   }

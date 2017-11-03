@@ -1,2 +1,0 @@
-# holospace
-Social VR experience

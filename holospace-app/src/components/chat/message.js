@@ -9,7 +9,7 @@ class Message extends Component {
 
         <div className='sender'>
           <div className="name">
-            <h4>{this.props.user_id}</h4>
+            <h4>{this.props.user.username}</h4>
           </div>
           <div className="msg">
             {this.props.message}

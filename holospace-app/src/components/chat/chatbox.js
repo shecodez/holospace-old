@@ -25,6 +25,8 @@ class Chatbox extends Component {
   }
 
   render() {
+    //var msgType = (this.props.channel.direct) ? 'Direct Message' : 'Message';
+    //var prepend = (this.props.channel.type === 'Text') ? '#' : '';
     return (
       <div className='chatbox'>
         <form className='form' onSubmit={this.onSubmit}>

@@ -16,7 +16,7 @@ class History extends Component {
       return (
         <Message
           key={i}
-          user_id={message.user_id}
+          user={message.user}
           message={message.message} />
           //date={message.created_at} />
       );

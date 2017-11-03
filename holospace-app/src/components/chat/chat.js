@@ -26,54 +26,61 @@ class Chat extends Component {
     */
   }
 
-  /*setUser() {
-    if (this.props.user.username === "Guest") {
-      user = this.props.user;
-      user.username = user.username +'#'+ user.id.slice(-4);
-
-      return user;
-    }
-  }*/
-
   componentWillMount() {
     this.setState({
       channel: 'General',
       history: [{
-        user_id: '1',
+        user: {
+          username: 'Spock'
+        },
         message: 'I have no comment on the matter.',
         created_at: ''
       },
       {
-        user_id: '2',
+        user: {
+          username: 'Kirk'
+        },
         message: 'Oh, come on Spock...',
         created_at: ''
       },
       {
-        user_id: '3',
+        user: {
+          username: 'Uhura'
+        },
         message: 'Captain, please leave Spock alone...',
         created_at: ''
       },
       {
-        user_id: '2',
+        user: {
+          username: 'Kirk'
+        },
         message: 'Bones! You know don\'t you! TEEEELLLLLLLL MEEEEEEEEEEEEEEEE!!!!!!!!!!!!111',
         created_at: ''
       },
       {
-        user_id: '4',
+        user: {
+          username: 'Bones'
+        },
         message: 'Dagnabbit Jim, I\'m a doctor not a Hobgoblin mind reader! And stop changin my darn username!',
         created_at: ''
       },
       {
-        user_id: '5',
+        user: {
+          username: 'Chekov'
+        },
         message: 'Ze commander really hate it ven you call him ze Hobgoblin. Zid you know name-calling vas invented in Russia? :)',
         created_at: ''
       },
       {
-        user_id: '6',
+        user: {
+          username: 'Sulu'
+        },
         message: '*Bows to the Commander* #NeverForget.',
         created_at: ''
       },{
-        user_id: '2',
+        user: {
+          username: 'Kirk'
+        },
         message: 'So nobody is gonna talk about it?! Fine, I will never drink again... I can\'t remember anything! T.T',
         created_at: ''
       }]
@@ -82,7 +89,7 @@ class Chat extends Component {
 
   sendHandler(message) {
     const msgObj = {
-      user_id: this.props.user.id,
+      user: this.props.user,
       message
     };
 

@@ -6,10 +6,7 @@ import AddServer from './addServer';
 class Servers extends Component {
 
   onAddServer(server) {
-    //console.log(server);
-    let servers = this.props.servers;
-    servers.push(server);
-    this.setState({servers:servers});
+    this.props.addNewServer(server);
   }
 
   setServer(server) {

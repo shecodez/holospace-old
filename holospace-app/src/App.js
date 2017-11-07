@@ -22,8 +22,10 @@ class App extends Component {
     this.state = {
       user: {},
       servers: [],
+      selectedServerId: null,
       currentServer: {},
       channels: [],
+      selectedChannelId: null,
       currentChannel: {},
       members: []
     }
@@ -189,14 +191,41 @@ class App extends Component {
     this.getChannels();
     this.getCurrentChannel();
     this.getMembers();
+
+    //getServers().then(servers => this.setState({ servers, currentServer: servers[0] }));
+  }
+
+  addNewChannel(channel) {
+    let channels = this.state.channels;
+    channels.push(channel);
+    this.setState({channels:channels});
+  }
+
+  addNewServer(server) {
+    let servers = this.state.servers;
+    servers.push(server);
+    this.setState({servers:servers});
+
+    // TODO: add i18n so t('General') is
+    // written in the users server.language
+    var generalChannel = {
+      id: uuid.v4(),
+      name: 'General',
+      type: 'Text',
+      topic: '',
+      server_id: server.id
+    }
+    this.addNewChannel(generalChannel);
   }
 
   setCurrentServer(server) {
     this.setState({ currentServer: server });
+    //resetCurrentChannel TODO: this is NOT efficient...
+    var chs = this.state.channels.filter(({server_id}) => server_id === server.id);
+    this.setCurrentChannel(chs[0]);
   }
 
   setCurrentChannel(channel) {
-    //console.log(channel);
     this.setState({ currentChannel: channel });
   }
 
@@ -211,6 +240,7 @@ class App extends Component {
           servers={this.state.servers}
           currentServerId={this.state.currentServer.id}
           setCurrentServer={this.setCurrentServer.bind(this)}
+          addNewServer={this.addNewServer.bind(this)}
         />
 
         <div className='nested'>
@@ -220,6 +250,8 @@ class App extends Component {
             channels={this.filteredChannels()}
             currentChannelId={this.state.currentChannel.id}
             setCurrentChannel={this.setCurrentChannel.bind(this)}
+            currentServerId={this.state.currentServer.id}
+            addNewChannel={this.addNewChannel.bind(this)}
           />
           <CurrentUser user={this.state.user} />
         </div>
@@ -229,7 +261,7 @@ class App extends Component {
 
           <Chat
             user={this.state.user}
-            currentChannel={this.state.currentChannel} 
+            currentChannel={this.state.currentChannel}
           />
         </div>
 

@@ -10,14 +10,11 @@ import Pane from '../tab/pane';
 class Channels extends Component {
 
   onAddChannel(channel) {
-    //console.log(channel);
-    let channels = this.props.channels;
-    channels.push(channel);
-    this.setState({channels: channels});
+    channel.server_id = this.props.currentServerId;
+    this.props.addNewChannel(channel);
   }
 
   setChannel(channel) {
-    //console.log(channel);
     this.props.setCurrentChannel(channel);
   }
 

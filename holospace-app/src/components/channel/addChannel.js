@@ -41,7 +41,7 @@ class AddChannel extends Component {
     return (
       <div>
         <div className="add-channel">
-          <button className="toggle-server-channels-btn">
+          <button className="select-channel-btn">
             { channelType +'s' }
           </button>
           <a className="link" onClick={this.toggleModal}>

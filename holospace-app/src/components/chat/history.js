@@ -13,12 +13,15 @@ class History extends Component {
 
   render() {
     const messages = this.props.history.map((message, i) => {
+      const msgDate = new Date(message.created_at);
+      const dateStr = msgDate.toLocaleDateString() + ' at ' + msgDate.toLocaleTimeString();
       return (
         <Message
-          key={i}
-          user={message.user}
-          message={message.message} />
-          //date={message.created_at} />
+          key={message.id}
+          username={message.user.username}
+          userAvatar={message.user.avatar}
+          body={message.body}
+          date={dateStr} />
       );
     });
 

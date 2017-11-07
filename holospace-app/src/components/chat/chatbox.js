@@ -4,39 +4,42 @@ class Chatbox extends Component {
   constructor() {
     super();
     this.state = {
-      chatInput: '',
-      width: 0
-    };
-
-    // React ES6 does not bind 'this' to event handlers by default
+      data: {
+        message_body: ''
+      }
+    }
     this.onSubmit = this.onSubmit.bind(this);
-    this.onTextChange = this.onTextChange.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
-  onTextChange(e)  {
-    this.setState({ chatInput: e.target.value });
-  }
+  onChange = e =>
+    this.setState({
+      data: { ...this.state.data, [e.target.name]: e.target.value }
+    });
 
   onSubmit(e) {
-    e.preventDefault(); // prevent page refresh
-    // onSend callback with the chatInput message
-    this.props.onSend(this.state.chatInput);
-    this.setState({ chatInput: '' }); // clear
+    e.preventDefault();
+    this.props.onSend(this.state.data.message_body);
+    this.setState({ data: { message_body: '' }});
   }
 
   render() {
-    //var msgType = (this.props.channel.direct) ? 'Direct Message' : 'Message';
-    //var prepend = (this.props.channel.type === 'Text') ? '#' : '';
+    const { data } = this.state;
+
     return (
       <div className='chatbox'>
+        {/*<ChatInputForm onSend=onSubmit(this) message_label={'Message to #' + this.props.channel} />*/}
         <form className='form' onSubmit={this.onSubmit}>
           <div className='group'>
-            <input type='text'
-              onChange={this.onTextChange}
-              value={this.state.chatInput}
+            <input
+              type='text'
+              id='message_body'
+              name='message_body'
               placeholder=' '
+              value={data.message_body}
+              onChange={this.onChange}
               required />
-            <label>{'Message to #' + this.props.channel} </label>
+            <label>{'Message #' + this.props.channel.name} </label>
             <button type='submit'>SEND</button>
           </div>
         </form>

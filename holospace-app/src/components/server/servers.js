@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import ServerLI from './serverLI';
+import Server from './server';
 import AddServer from './addServer';
 
 class Servers extends Component {
@@ -12,12 +12,16 @@ class Servers extends Component {
     this.setState({servers:servers});
   }
 
+  setServer(server) {
+    this.props.setCurrentServer(server);
+  }
+
   render() {
     let serverList;
     if (this.props.servers) {
       serverList = this.props.servers.map(server => {
-        //console.log(server);
-        return ( <ServerLI key={server.id} server={server} /> );
+        const isSelected = this.props.currentServerId === server.id;
+        return ( <Server key={server.id} server={server} onSelect={this.setServer.bind(this)} isCurrentServer={isSelected} />);
       });
     }
 

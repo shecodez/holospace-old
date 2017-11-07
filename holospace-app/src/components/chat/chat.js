@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import uuid from 'uuid';
 //components
 import History from './history';
 import Chatbox from './chatbox';
@@ -9,9 +9,7 @@ class Chat extends Component {
   constructor() {
     super();
     this.state = {
-      history: [],
-      //user: {},
-      channel: {}
+      history: []
     };
     this.sendHandler = this.sendHandler.bind(this);
     /*
@@ -28,74 +26,61 @@ class Chat extends Component {
 
   componentWillMount() {
     this.setState({
-      channel: 'General',
-      history: [{
-        user: {
-          username: 'Spock'
+      history: [
+        {
+          id: 1,
+          body: 'Hi there! My name is Nicole J. Nobles and I\'m a designer and developer from Georgia (contact details img goes here)',
+          direct: false,
+          user:
+            {
+              id: 2,
+              username: 'shecodez',
+              avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509234788/sasha.png'
+            },
+          channel_id: 1,
+          created_at: new Date().valueOf()
         },
-        message: 'I have no comment on the matter.',
-        created_at: ''
-      },
-      {
-        user: {
-          username: 'Kirk'
+        {
+          id: 2,
+          body: 'Education...',
+          direct: false,
+          user:
+            {
+              id: 2,
+              username: 'shecodez',
+              avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509234788/sasha.png'
+            },
+          channel_id: 2,
+          created_at: new Date().valueOf()
         },
-        message: 'Oh, come on Spock...',
-        created_at: ''
-      },
-      {
-        user: {
-          username: 'Uhura'
-        },
-        message: 'Captain, please leave Spock alone...',
-        created_at: ''
-      },
-      {
-        user: {
-          username: 'Kirk'
-        },
-        message: 'Bones! You know don\'t you! TEEEELLLLLLLL MEEEEEEEEEEEEEEEE!!!!!!!!!!!!111',
-        created_at: ''
-      },
-      {
-        user: {
-          username: 'Bones'
-        },
-        message: 'Dagnabbit Jim, I\'m a doctor not a Hobgoblin mind reader! And stop changin my darn username!',
-        created_at: ''
-      },
-      {
-        user: {
-          username: 'Chekov'
-        },
-        message: 'Ze commander really hate it ven you call him ze Hobgoblin. Zid you know name-calling vas invented in Russia? :)',
-        created_at: ''
-      },
-      {
-        user: {
-          username: 'Sulu'
-        },
-        message: '*Bows to the Commander* #NeverForget.',
-        created_at: ''
-      },{
-        user: {
-          username: 'Kirk'
-        },
-        message: 'So nobody is gonna talk about it?! Fine, I will never drink again... I can\'t remember anything! T.T',
-        created_at: ''
-      }]
+        {
+          id: 3,
+          body: 'Experience...',
+          direct: false,
+          user:
+            {
+              id: 2,
+              username: 'shecodez',
+              avatar: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509234788/sasha.png'
+            },
+          channel_id: 3,
+          created_at: new Date().valueOf()
+        }
+      ]
     });
   }
 
   sendHandler(message) {
     const msgObj = {
+      id: uuid.v4(),
+      body: message,
       user: this.props.user,
-      message
+      channel_id: this.props.currentChannel.id,
+      created_at: new Date().valueOf()
     };
 
     // Emit message to the servers
     //this.socket.emit('client:message', msgObj);
-
     this.addMessage(msgObj);
   }
 
@@ -106,14 +91,26 @@ class Chat extends Component {
     this.setState({history:messages});
   }
 
+  filteredMessages() {
+    return this.state.history.filter(({channel_id}) => channel_id === this.props.currentChannel.id);
+  }
+
   render() {
     return (
       <div className="chat section">
-        <History history={this.state.history} />
-        <Chatbox onSend={this.sendHandler} channel={this.state.channel} />
+        <History history={this.filteredMessages()} />
+        <Chatbox onSend={this.sendHandler} channel={this.props.currentChannel} />
       </div>
     );
   }
 }
+
+/*Chat.defaultProps = {
+  history: []
+};
+
+Chat.propTypes = {
+  history: React.PropTypes.array.isRequired
+};*/
 
 export default Chat;

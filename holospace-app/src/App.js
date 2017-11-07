@@ -52,9 +52,10 @@ class App extends Component {
   getCurrentServer() {
     this.setState({
       currentServer: {
-        id: uuid.v4(),
-        icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112212/tenfwd.jpg',
-        name: 'Ten Forward'
+        id: 1,
+        name: 'Ten Forward',
+        lang: 'EN',
+        icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112212/tenfwd.jpg'
       }
     });
   }
@@ -63,19 +64,16 @@ class App extends Component {
     this.setState({
       servers: [
         {
-          id: uuid.v4(),
-          icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112212/tenfwd.jpg',
-          name: 'Ten Forward'
+          id: 1,
+          name: 'Ten Forward',
+          lang: 'EN',
+          icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112212/tenfwd.jpg'
         },
         {
-          id: uuid.v4(),
-          icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112217/holodeck.jpg',
-          name: 'Holodeck 42'
-        },
-        {
-          id: uuid.v4(),
-          icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509112211/borderlands.jpg',
-          name: 'Borderlands'
+          id: 2,
+          name: '天龍資聖禅寺',
+          lang: 'JP',
+          icon_url: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509902745/koifish_prvqlk.png'
         }
       ]
     });
@@ -84,10 +82,11 @@ class App extends Component {
   getCurrentChannel() {
     this.setState({
       currentChannel: {
-        id: uuid.v4(),
-        type: 'Text',
+        id: 1,
         name: 'General',
-        topic: 'Nothing is off limits here'
+        type: 'Text',
+        topic: 'Designer and Developer',
+        server_id: 1
       }
     });
   }
@@ -96,29 +95,46 @@ class App extends Component {
     this.setState({
       channels: [
         {
-          id: uuid.v4(),
+          id: 1,
+          name: 'General',
           type: 'Text',
-          name: 'General'
+          topic: 'Designer and Developer',
+          server_id: 1
         },
         {
-          id: uuid.v4(),
+          id: 2,
+          name: 'Education',
           type: 'Text',
-          name: 'Niico\'s Corner'
+          topic:'Go to school, get y\'alls education ~Nicki Minaj',
+          server_id: 1
         },
         {
-          id: uuid.v4(),
+          id: 3,
+          name: 'Experience',
+          type: 'Text',
+          topic: 'Designer and Developer',
+          server_id: 1
+        },
+        {
+          id: 4,
+          name:'Why Me?',
           type: 'Voice',
-          name: 'W3 Raiders'
+          topic: '',
+          server_id: 1
         },
         {
-          id: uuid.v4(),
-          type: 'Voice',
-          name: 'Danger Zone'
-        },
-        {
-          id: uuid.v4(),
+          id: 5,
+          name: 'Comming Soon',
           type: 'VR',
-          name: 'Kobayashi Maru'
+          topic: 'This is the future of social communication',
+          server_id: 1
+        },
+        {
+          id: 6,
+          name: '一般の',
+          type: 'Text',
+          topic: '',
+          server_id: 2
         }
       ]
     });
@@ -175,20 +191,46 @@ class App extends Component {
     this.getMembers();
   }
 
+  setCurrentServer(server) {
+    this.setState({ currentServer: server });
+  }
+
+  setCurrentChannel(channel) {
+    //console.log(channel);
+    this.setState({ currentChannel: channel });
+  }
+
+  filteredChannels() {
+    return this.state.channels.filter(({server_id}) => server_id === this.state.currentServer.id);
+  }
+
   render() {
     return (
       <div className='App grid'>
-        <Servers servers={this.state.servers} />
+        <Servers
+          servers={this.state.servers}
+          currentServerId={this.state.currentServer.id}
+          setCurrentServer={this.setCurrentServer.bind(this)}
+        />
 
         <div className='nested'>
           <CurrentServer currentServer={this.state.currentServer} />
-          <Channels channels={this.state.channels} />
+
+          <Channels
+            channels={this.filteredChannels()}
+            currentChannelId={this.state.currentChannel.id}
+            setCurrentChannel={this.setCurrentChannel.bind(this)}
+          />
           <CurrentUser user={this.state.user} />
         </div>
 
         <div className='nested'>
           <CurrentChannel currentChannel={this.state.currentChannel}/>
-          <Chat user={this.state.user} />
+
+          <Chat
+            user={this.state.user}
+            currentChannel={this.state.currentChannel} 
+          />
         </div>
 
         <Members members={this.state.members} />

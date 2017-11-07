@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SimpleLineIcon from 'react-simple-line-icons';
 
 // Components
-import ChannelLI from './channelLI';
+import Channel from './channel';
 import AddChannel from './addChannel';
 import Tabs from '../tab/tabs';
 import Pane from '../tab/pane';
@@ -13,52 +13,35 @@ class Channels extends Component {
     //console.log(channel);
     let channels = this.props.channels;
     channels.push(channel);
-    this.setState({channels:channels});
+    this.setState({channels: channels});
+  }
+
+  setChannel(channel) {
+    //console.log(channel);
+    this.props.setCurrentChannel(channel);
   }
 
   render() {
-    /*let channelList;
-    channelList = this.props.channel.map(channel => {
-      console.log(channel);
-      //return( <ChannelLI key={channel.id} channel={channel} />);
-    });*/
-
-    /*textChannelList = this.props.channels
-      .filter(c => c.type === 'Text')
-      .map(c => {
-        return( <ChannelLI key={c.id} channel={c} /> );
-      });
-
-    voiceChannelList = this.props.channels
-      .filter(c => c.type === 'Voice')
-      .map(c => {
-        return( <ChannelLI key={c.id} channel={c} /> );
-      });
-
-    vrChannelList = this.props.channels
-      .filter(c => c.type === 'VR')
-      .map(c => {
-        return( <ChannelLI key={c.id} channel={c} /> );
-      });
-    //Note: I don't think the above is efficient or DRY */
-
     const textChannelList = [];
     const voiceChannelList = [];
     const vrChannelList = [];
+
     if (this.props.channels) {
       this.props.channels.forEach((channel) => {
+        const isSelected = this.props.currentChannelId === channel.id;
+
         switch(channel.type) {
           case "Text":
-            textChannelList.push(<ChannelLI key={channel.id} channel={channel} />);
+            textChannelList.push(<Channel key={channel.id} channel={channel} onSelect={this.setChannel.bind(this)} isCurrentChannel={isSelected} />);
             break;
           case "Voice":
-            voiceChannelList.push(<ChannelLI key={channel.id} channel={channel} />);
+            voiceChannelList.push(<Channel key={channel.id} channel={channel} onSelect={this.setChannel.bind(this)} isCurrentChannel={isSelected} />);
             break;
           case "VR":
-            vrChannelList.push(<ChannelLI key={channel.id} channel={channel} />);
+            vrChannelList.push(<Channel key={channel.id} channel={channel} onSelect={this.setChannel.bind(this)} isCurrentChannel={isSelected} />);
             break;
           default:
-            textChannelList.push(<ChannelLI key={channel.id} channel={channel} />);
+            textChannelList.push(<Channel key={channel.id} channel={channel} onSelect={this.setChannel.bind(this)} isCurrentChannel={isSelected} />);
         }
       });
     }
@@ -87,7 +70,7 @@ class Channels extends Component {
             {voiceChannelList}
           </Pane>
 
-          <Pane label={<SimpleLineIcon name="eyeglass" />}>            
+          <Pane label={<SimpleLineIcon name="eyeglass" />}>
             <AddChannel addChannel={this.onAddChannel.bind(this)} type ='VR' />
             {vrChannelList}
           </Pane>

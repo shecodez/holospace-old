@@ -22,10 +22,8 @@ class App extends Component {
     this.state = {
       user: {},
       servers: [],
-      selectedServerId: null,
       currentServer: {},
       channels: [],
-      selectedChannelId: null,
       currentChannel: {},
       members: []
     }

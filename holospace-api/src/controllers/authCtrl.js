@@ -3,30 +3,19 @@ import db from './../models';
 const authController = {};
 
 authController.login = (req, res) => {
-  return res.status(400).json({
-    errors: { global: "Invalid credentials"}
-  });
-  /*const {
-    avatar,
-    username,
-    email,
-    password
-  } = req.body;
+  const { credentials } = req.body;
 
-  // validations
-
-  const user = new db.User({
-    avatar,
-    username,
-    email,
-    password
-  });
-
-  user.save().then((newUser) => {
-    return res.status(200).json(newUser);
+  db.User.findOne({ email: credentials.email}).then(user => {
+    if (user && user.isValidPassword(credentials.password)) {
+      return res.status(200).json({
+        user: user.authToJSON()
+      });
+    }
   }).catch((err) => {
-    return res.status(500).json(err);
-  });*/
+    return res.status(400).json({
+      errors: { global: "Invalid credentials"}
+    });
+  });
 };
 
 export default authController;

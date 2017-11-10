@@ -1,10 +1,13 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const schema = new mongoose.Schema({
   avatar: {
     type: String,
     default: 'imgs/default/user_avatar.png'
   },
+  name: String,
   username: {
     type: String,
     minlength: [3, 'Username too short.'],
@@ -13,6 +16,7 @@ const schema = new mongoose.Schema({
     required: true
   },
   /*nickname: String,*/
+  pin: Number,
   email: {
     type: String,
     lowercase: true,
@@ -33,6 +37,28 @@ const schema = new mongoose.Schema({
 }, { timestamps: true });
 
 // TODO: add uniqueness and email validations to email field
-// TODO: add encryption to password field
+
+schema.methods.isValidPassword = function isValidPassword(password) {
+  return bcrypt.compareSync(password, this.password);
+};
+
+schema.methods.generateJWT = function generateJWT() {
+  return jwt.sign(
+    {
+      email: this.email
+    },
+    process.env.JWT_SECRET || "secret"
+  );
+};
+
+schema.methods.authToJSON = function authToJSON() {
+  return {
+    avatar: this.avatar,
+    username: this.username,
+    pin: this.pin,
+    online: this.online,
+    token: this.generateJWT()
+  }
+};
 
 export default mongoose.model('User', schema);

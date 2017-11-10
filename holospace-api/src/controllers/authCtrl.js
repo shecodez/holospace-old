@@ -10,11 +10,13 @@ authController.login = (req, res) => {
       return res.status(200).json({
         user: user.authToJSON()
       });
+    } else {
+      return res.status(400).json({
+        errors: { global: "Invalid credentials"}
+      });
     }
   }).catch((err) => {
-    return res.status(400).json({
-      errors: { global: "Invalid credentials"}
-    });
+    return res.status(500).json(err);
   });
 };
 

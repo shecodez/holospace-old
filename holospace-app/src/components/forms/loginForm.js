@@ -4,7 +4,7 @@ import Validator from "validator";
 import PropTypes from "prop-types";
 
 // components
-import InlineError from "../alert/inlineError";
+import InlineError from "../alerts/inlineError";
 
 class LoginForm extends React.Component {
   state = {

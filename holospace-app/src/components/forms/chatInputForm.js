@@ -33,7 +33,7 @@ class ChatInputForm extends Component {
             required
           />
           <label>{this.props.message_label}</label>
-          {/*errors.message_body && <span>errors.message_body</span>*/}
+          {/* errors.message_body && <span>errors.message_body</span> */}
           <button type='submit'>SEND</button>
         </div>
       </form>
@@ -49,6 +49,6 @@ ChatInputForm.defaultProps = {
 ChatInputForm.propTypes = {
   message_label: React.PropTypes.string.isRequired
   onSend: React.PropTypes.func.isRequired
-};*/
+}; */
 
 export default ChatInputForm;

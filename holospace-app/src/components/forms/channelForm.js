@@ -31,7 +31,7 @@ class ChannelForm extends React.Component {
     const errors = {};
     // TODO: don't allow curse words to be server name
     if (!data.name) errors.name = "Cannot be blank";
-    //if (data.name.length > 50) errors.name = "Channel name too long";
+    // if (data.name.length > 50) errors.name = "Channel name too long";
     return errors;
   }
 
@@ -57,7 +57,7 @@ class ChannelForm extends React.Component {
             required
           />
           <label>Name</label>
-          {/*errors.name && <span>errors.name</span>*/}
+          {/* errors.name && <span>errors.name</span> */}
         </div>
         <div className="group" error={!!errors.topic}>
           <input
@@ -69,7 +69,7 @@ class ChannelForm extends React.Component {
             onChange={this.onChange}
           />
           <label>Name</label>
-          {/*errors.topic && <span>errors.topic</span>*/}
+          {/* errors.topic && <span>errors.topic</span> */}
         </div>
       </form>
     );

@@ -15,7 +15,7 @@ class Channel extends Component {
     this.setState({
       selectedChannel: this.props.channel
     }, function() {
-      //console.log(this.state.selectedChannel);
+      // console.log(this.state.selectedChannel);
       this.props.onSelect(this.state.selectedChannel);
     });
   }
@@ -26,7 +26,7 @@ class Channel extends Component {
       <SimpleLineIcon name="arrow-right" />
     const currentChannel = this.props.isCurrentChannel ? " is-current-channel" : "";
     return (
-      <li className={"channel" + currentChannel}>
+      <li className={`channel${  currentChannel}`}>
         <button className="select-channel-btn" onClick={this.setChannel}>
           <span className="prepend">{ prepend }</span>
           {this.props.channel.name}

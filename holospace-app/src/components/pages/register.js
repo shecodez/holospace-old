@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Home = () => (
-  <div>
-    <h1>Home Page</h1>
+const Register = () => (
+  <div className="register-page">
+    <h1>Create an Account</h1>
+
     <Link to="/login">Login</Link>
   </div>
 );
 
-export default Home;
+export default Register;

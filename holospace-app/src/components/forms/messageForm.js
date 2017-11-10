@@ -55,7 +55,7 @@ class MessageForm extends React.Component {
             required
           />
           <label>{this.props.message_label}</label>
-          {/*errors.body && <span>errors.body</span>*/}
+          {/* errors.body && <span>errors.body</span> */}
         </div>
       </form>
     );

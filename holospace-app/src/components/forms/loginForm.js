@@ -1,7 +1,12 @@
-import React from 'react';
-//import Validator from 'validator';
+import React from "react";
+import { Form, Button } from "semantic-ui-react";
+import Validator from "validator";
+import PropTypes from "prop-types";
 
-class Loginform extends React.Component {
+// components
+import InlineError from "../alert/inlineError";
+
+class LoginForm extends React.Component {
   state = {
     data: {
       email: '',
@@ -9,7 +14,7 @@ class Loginform extends React.Component {
     },
     loading: false,
     errors: {}
-  };
+  }
 
   onChange = e =>
     this.setState({
@@ -19,19 +24,17 @@ class Loginform extends React.Component {
   onSubmit = () => {
     const errors = this.validate(this.state.data);
     this.setState({ errors });
+
     if (Object.keys(errors).length === 0) {
       this.setState({ loading: true });
-      this.props.submit(this.state.data)
-        .catch(err =>
-          this.setState({ errors: err.response.data.errors, loading: false })
-        );
+      this.props.submit(this.state.data);
     }
   };
 
-  validate = (data) => {
+  validate = data => {
     const errors = {};
-    //if (!Validator.isWmail(data.email)) errors.email = "Invalid email";
-    if (!data.password) errors.password = "Cannot be blank";
+    if (!Validator.isEmail(data.email)) errors.email = "Invalid email";
+    if (!data.password) errors.password = "Password cannot be blank";
     return errors;
   }
 
@@ -39,14 +42,15 @@ class Loginform extends React.Component {
     const { data, errors, loading } = this.state;
 
     return (
-      <form className="form login-form" onSubmit={this.onSubmit} loading={loading}>
+      <Form className="form login-form" onSubmit={this.onSubmit} loading={loading}>
         { errors.global &&
           <div className="error-message">
             <header>Something went wrong</header>
             <p className="message-body">{errors.global}</p>
           </div>
         }
-        <div className="group" error={!!errors.email}>
+        <Form.Field  error={!!errors.email}>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
@@ -54,13 +58,12 @@ class Loginform extends React.Component {
             placeholder=" "
             value={data.email}
             onChange={this.onChange}
-            required
           />
-          <label>Email</label>
-          {/*errors.email && <span>errors.email</span>*/}
-        </div>
+          {errors.email && <InlineError text={errors.email}/>}
+        </Form.Field>
 
-        <div className="group" error={!!errors.password}>
+        <Form.Field error={!!errors.password}>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
@@ -68,14 +71,17 @@ class Loginform extends React.Component {
             placeholder=" "
             value={data.password}
             onChange={this.onChange}
-            required
           />
-          <label>Password</label>
-          {/*errors.password && <span>errors.password</span>*/}
-        </div>
-      </form>
+          {errors.password && <InlineError text={errors.password}/>}
+        </Form.Field>
+        <Button primary>Login</Button>
+      </Form>
     );
   }
 }
+
+LoginForm.propTypes = {
+  submit: PropTypes.func.isRequired
+};
 
 export default LoginForm;

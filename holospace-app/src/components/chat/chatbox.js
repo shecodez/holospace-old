@@ -28,7 +28,7 @@ class Chatbox extends Component {
 
     return (
       <div className='chatbox'>
-        {/*<ChatInputForm onSend=onSubmit(this) message_label={'Message to #' + this.props.channel} />*/}
+        {/* <ChatInputForm onSend=onSubmit(this) message_label={'Message to #' + this.props.channel} /> */}
         <form className='form' onSubmit={this.onSubmit}>
           <div className='group'>
             <input
@@ -39,7 +39,7 @@ class Chatbox extends Component {
               value={data.message_body}
               onChange={this.onChange}
               required />
-            <label>{'Message #' + this.props.channel.name} </label>
+            <label>{`Message #${  this.props.channel.name}`} </label>
             <button type='submit'>SEND</button>
           </div>
         </form>

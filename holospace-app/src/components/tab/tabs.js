@@ -7,7 +7,7 @@ export default class Tabs extends React.Component {
       selected: 0
     }
   }
-  /*getDefaultProps() {
+  /* getDefaultProps() {
     return {
       selected: 0
     };
@@ -17,7 +17,7 @@ export default class Tabs extends React.Component {
     return {
       selected: this.props.selected
     };
-  }*/
+  } */
 
   handleClick(index, e) {
     e.preventDefault();
@@ -28,7 +28,7 @@ export default class Tabs extends React.Component {
 
   _renderTabTitles() {
     function labels(child, index) {
-      let activeClass = (this.state.selected === index ? 'active' : '');
+      const activeClass = (this.state.selected === index ? 'active' : '');
       return(
         <li key={index} className={activeClass}>
           <button onClick={this.handleClick.bind(this, index)}>

@@ -30,7 +30,7 @@ class ServerForm extends React.Component {
     const errors = {};
     // TODO: don't allow curse words to be server name
     if (!data.name) errors.name = "Cannot be blank";
-    //if (data.name.length > 50) errors.name = "Server name too long";
+    // if (data.name.length > 50) errors.name = "Server name too long";
     return errors;
   }
 
@@ -56,7 +56,7 @@ class ServerForm extends React.Component {
             required
           />
           <label>Name</label>
-          {/*errors.name && <span>errors.name</span>*/}
+          {/* errors.name && <span>errors.name</span> */}
         </div>
       </form>
     );

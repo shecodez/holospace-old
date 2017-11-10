@@ -31,7 +31,7 @@ class AddServer extends Component {
       seed: this.refs.seed.value || '1234', // change this to the unique 4 digit UNID (username#1234)
       icon_url: this.refs.icon.value || 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509126240/tesseract_z3vhkn.webp'
     }}, function() {
-      //console.log(this.state);
+      // console.log(this.state);
       this.props.addServer(this.state.newServer);
       this.toggleModal();
     });
@@ -46,7 +46,7 @@ class AddServer extends Component {
     <div>
       <label>Server Realm</label>
       <select ref="realm">{serverRealmOptions}</select>
-    </div>*/
+    </div> */
 
     return (
       <div>

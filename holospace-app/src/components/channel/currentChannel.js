@@ -3,7 +3,7 @@ import SimpleLineIcon from 'react-simple-line-icons';
 
 class CurrentChannel extends Component {
   render() {
-    var prepend = (this.props.currentChannel.type === 'Text') ? '# ' : '';
+    const prepend = (this.props.currentChannel.type === 'Text') ? '# ' : '';
     return (
 
       <div className="current-channel section">

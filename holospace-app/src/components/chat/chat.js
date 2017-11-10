@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import uuid from 'uuid';
-//components
+// components
 import History from './history';
 import Chatbox from './chatbox';
 
 class Chat extends Component {
-  //avatar = http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509234788/sasha.png
+  // avatar = http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509234788/sasha.png
   constructor() {
     super();
     this.state = {
@@ -80,13 +80,13 @@ class Chat extends Component {
     };
 
     // Emit message to the servers
-    //this.socket.emit('client:message', msgObj);
+    // this.socket.emit('client:message', msgObj);
     this.addMessage(msgObj);
   }
 
   addMessage(message) {
-    //console.log(message);
-    let messages = this.state.history;
+    // console.log(message);
+    const messages = this.state.history;
     messages.push(message);
     this.setState({history:messages});
   }
@@ -105,12 +105,12 @@ class Chat extends Component {
   }
 }
 
-/*Chat.defaultProps = {
+/* Chat.defaultProps = {
   history: []
 };
 
 Chat.propTypes = {
   history: React.PropTypes.array.isRequired
-};*/
+}; */
 
 export default Chat;

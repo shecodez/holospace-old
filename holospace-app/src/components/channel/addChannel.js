@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import uuid from 'uuid';
 
-//components
+// components
 import Modal from '../modal';
 
 class AddChannel extends Component {
@@ -29,7 +29,7 @@ class AddChannel extends Component {
       type: this.props.type,
       topic: this.refs.topic.value
     }}, function() {
-      //console.log(this.state);
+      // console.log(this.state);
       this.props.addChannel(this.state.newChannel);
       this.toggleModal();
     });
@@ -37,12 +37,12 @@ class AddChannel extends Component {
   }
 
   render() {
-    const channelType = this.props.type + ' channel';
+    const channelType = `${this.props.type  } channel`;
     return (
       <div>
         <div className="add-channel">
           <button className="select-channel-btn">
-            { channelType +'s' }
+            { `${channelType }s` }
           </button>
           <a className="link" onClick={this.toggleModal}>
             <span>+</span>
@@ -50,7 +50,7 @@ class AddChannel extends Component {
         </div>
 
         <Modal show={this.state.isOpen}
-          title={'Create new ' + channelType }
+          title={`Create new ${  channelType}` }
           onCancel={this.toggleModal}
           onSubmit={this.handleSubmit.bind(this)}
           >

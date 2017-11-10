@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-//components
+// components
 import Message from './message';
 
 class History extends Component {
@@ -14,7 +14,7 @@ class History extends Component {
   render() {
     const messages = this.props.history.map((message, i) => {
       const msgDate = new Date(message.created_at);
-      const dateStr = msgDate.toLocaleDateString() + ' at ' + msgDate.toLocaleTimeString();
+      const dateStr = `${msgDate.toLocaleDateString()  } at ${  msgDate.toLocaleTimeString()}`;
       return (
         <Message
           key={message.id}

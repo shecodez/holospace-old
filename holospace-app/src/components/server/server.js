@@ -14,7 +14,7 @@ class Server extends Component {
     this.setState({
       selectedServer: this.props.server
     }, function() {
-      //console.log(this.state.selectedServer);
+      // console.log(this.state.selectedServer);
       this.props.onSelect(this.state.selectedServer);
     });
   }
@@ -22,10 +22,10 @@ class Server extends Component {
   render() {
     const currentServer = this.props.isCurrentServer ? " is-current-server" : "";
     return (
-      <li className={"server"+ currentServer} onClick={this.setServer}>
+      <li className={`server${ currentServer}`} onClick={this.setServer}>
         <div className="dot">
-          <div className="circle"></div>
-          <div className="ring"></div>
+          <div className="circle" />
+          <div className="ring" />
         </div>
         <a href="#" data-tooltip={this.props.server.name}>
           <img src={this.props.server.icon_url} alt="server icon"  />

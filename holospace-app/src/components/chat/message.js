@@ -1,5 +1,5 @@
 import React from 'react';
-//import './chat.css';
+// import './chat.css';
 
 const Message = ({username, body, userAvatar, date}) => (
   <div className="message">

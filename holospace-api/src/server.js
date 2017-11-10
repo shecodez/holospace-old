@@ -21,14 +21,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(path.resolve(__dirname, '../dist')));
+app.use(express.static(path.resolve(__dirname, '../holospace-app/dist')));
 
 /**
  * Routes/Routing
 **/
-app.get('/api', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
 require('./routes')(app);
 
 /**

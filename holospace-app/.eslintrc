@@ -2,7 +2,7 @@
 
 {
   "extends": ["airbnb", "prettier", "prettier/react"],
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "react"],
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 2016,

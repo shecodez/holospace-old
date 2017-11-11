@@ -8,7 +8,7 @@ authController.login = (req, res) => {
   db.User.findOne({ email: credentials.email}).then(user => {
     if (user && user.isValidPassword(credentials.password)) {
       return res.status(200).json({
-        user: user.authToJSON()
+        user: user.toAuthJSON()
       });
     } else {
       return res.status(400).json({

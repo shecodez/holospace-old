@@ -14,7 +14,7 @@ router.get('/users', User.getAll);
 
 // POST holospace.com/api/users
 // create new user (register)
-//router.post('/users', User.create);
+router.post('/users', User.register);
 
 // PUT holospace.com/api/users/:params
 // update a user by id

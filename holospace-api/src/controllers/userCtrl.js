@@ -1,4 +1,5 @@
 import db from './../models';
+import parseErrors from '../utils/parseErrors';
 
 const userController = {};
 
@@ -6,31 +7,34 @@ userController.getAll = (req, res) => {
   db.User.find({}).then((users) => {
     return res.status(200).json(users);
   }).catch((err) => {
-    return res.status(500).json(err);
+    return res.status(400).json(err);
   });
 };
 
-userController.create = (req, res) => {
+userController.register = (req, res) => {
   const {
-    avatar,
     username,
     email,
     password
-  } = req.body;
+  } = req.body.user;
 
   // validations
 
   const user = new db.User({
-    avatar,
     username,
-    email,
-    password
+    email
   });
+  user.generatePin();
+  user.hashPassword(password);
 
   user.save().then((newUser) => {
-    return res.status(200).json(newUser);
+    return res.status(200).json({
+      user: newUser.toAuthJSON()
+    });
   }).catch((err) => {
-    return res.status(500).json(err);
+    return res.status(400).json({
+      errors: parseErrors(err.errors)
+    });
   });
 };
 

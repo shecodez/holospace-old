@@ -14,7 +14,7 @@ const App = ({ location }) => (
   <div className="App">
     <Route location={location} path="/" exact component={Home} />
     <GuestRoute location={location} path="/login" exact component={Login} />
-    <Route location={location} path="/register" exact component={Register} />
+    <GuestRoute location={location} path="/register" exact component={Register} />
     <UserRoute location={location} path="/channels/@me" exact component={Main} />
   </div>
 );

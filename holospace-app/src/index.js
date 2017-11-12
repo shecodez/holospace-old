@@ -5,6 +5,7 @@ import 'semantic-ui-css/semantic.min.css';
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
+import decode from "jwt-decode";
 import { composeWithDevTools } from "redux-devtools-extension";
 import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
@@ -17,7 +18,12 @@ const store = createStore(
 );
 
 if (localStorage.holospaceJWT) {
-  const user = { token: localStorage.holospaceJWT };
+  const payload = decode(localStorage.holospaceJWT);
+  const user = {
+    token: localStorage.holospaceJWT,
+    email: payload.email,
+    confirmed: payload.confirmed
+  };
   store.dispatch(userLoggedIn(user));
 }
 

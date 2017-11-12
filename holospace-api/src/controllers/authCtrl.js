@@ -20,4 +20,17 @@ authController.login = (req, res) => {
   });
 };
 
+authController.confirm = (req, res) => {
+  const token = req.body.token;
+
+  db.User.findOneAndUpdate(
+    { confirmationToken: token },
+    { confirmationToken: "", confirmed: true},
+    { new: true }
+  ).then(
+    confirmedUser =>
+      confirmedUser ? res.json({ user: confirmedUser.toAuthJSON() }) : res.status(400).json({})
+  );
+}
+
 export default authController;

@@ -36,6 +36,10 @@ const schema = new mongoose.Schema({
     enum: ['Away', 'Busy', 'Show', 'Hide'],
     default: 'Show'
   },
+  confirmationToken: {
+    type: String,
+    default: ''
+  },
   confirmed: { type: Boolean, default: false },
   isDeleted: { type: Boolean, default: false },
 }, { timestamps: true });
@@ -50,10 +54,19 @@ schema.methods.hashPassword = function hashPassword(password) {
   this.password = bcrypt.hashSync(password, 10);
 }
 
+schema.methods.setConfirmationToken = function setConfirmationToken() {
+  this.confirmationToken = this.generateJWT();
+}
+
+schema.methods.generateConfirmationUrl = function generateConfirmationUrl() {
+  return `${process.env.HOST}/confirmation/${this.confirmationToken}`
+}
+
 schema.methods.generateJWT = function generateJWT() {
   return jwt.sign(
     {
-      email: this.email
+      email: this.email,
+      confirmed: this.confirmed
     },
     process.env.JWT_SECRET || "secret"
   );

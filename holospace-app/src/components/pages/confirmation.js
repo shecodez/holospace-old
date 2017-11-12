@@ -5,21 +5,27 @@ import { Message, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { confirm } from "../../actions/auth";
 
-class EmailConfirmed extends React.Component {
+class Confirmation extends React.Component {
   state = {
     loading: true,
-    success: false
+    success: false,
+    errors: {}
   };
 
   componentDidMount() {
     this.props.confirm(this.props.match.params.token)
       .then(() => this.setState({ loading: false, success: true }))
-      .catch(() => this.setState({ loading: false, success: false }));
+      .catch(err =>
+        this.setState({ errors: err.response.data.errors, loading: false, success: false }));
   }
+
+  /* resend = () => {
+    console.log("Resend confirmation token");
+  } */
 
   render() {
 
-    const { loading, success } = this.state;
+    const { errors, loading, success } = this.state;
 
     return (
       <div>
@@ -46,8 +52,10 @@ class EmailConfirmed extends React.Component {
           <Message negative icon>
             <Icon name="warning sign" />
             <Message.Content>
-              <Message.Header>Oops, this token is invalid.</Message.Header>
-              {/* TODO: add link to set new confirmationToken and send new email */}
+              <Message.Header>{errors.global}</Message.Header>
+              {/* TODO: errors.global === "Invalid token" &&
+                <Button onClick={this.resend}>Resend confirmation token</Button>
+              */}
             </Message.Content>
           </Message>
         )}
@@ -56,7 +64,7 @@ class EmailConfirmed extends React.Component {
   }
 }
 
-EmailConfirmed.propTypes = {
+Confirmation.propTypes = {
   confirm: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
@@ -65,4 +73,4 @@ EmailConfirmed.propTypes = {
   }).isRequired
 };
 
-export default connect(null, { confirm })(EmailConfirmed);
+export default connect(null, { confirm })(Confirmation);

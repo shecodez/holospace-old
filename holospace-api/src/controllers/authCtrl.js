@@ -1,3 +1,5 @@
+import decode from "jwt-decode";
+
 import db from './../models';
 
 const authController = {};
@@ -12,7 +14,7 @@ authController.login = (req, res) => {
       });
     } else {
       return res.status(400).json({
-        errors: { global: "Invalid credentials"}
+        errors: { global: "Invalid credentials" }
       });
     }
   }).catch((err) => {
@@ -21,16 +23,35 @@ authController.login = (req, res) => {
 };
 
 authController.confirm = (req, res) => {
-  const token = req.body.token;
+  const { token } = req.body.token;
 
   db.User.findOneAndUpdate(
     { confirmationToken: token },
-    { confirmationToken: "", confirmed: true},
+    { confirmationToken: "", confirmed: true },
     { new: true }
-  ).then(
-    confirmedUser =>
-      confirmedUser ? res.json({ user: confirmedUser.toAuthJSON() }) : res.status(400).json({})
-  );
+  ).then(confirmedUser => {
+    if (confirmedUser) {
+      return res.status(200).json({
+        user: confirmedUser.toAuthJSON()
+      });
+    } else {
+      try {
+        const payload = decode(req.body.token);
+        const user = db.User.findOne({ email: payload.email})
+          .then(user => {
+            if (user.confirmed) {
+              return res.status(400).json({
+                errors: { global: "User already confirmed" }
+              });
+            }
+          }).catch(err => { res.json({}) });
+      } catch (e) {
+        return res.status(400).json({
+          errors: { global: "Invalid token" }
+        });
+      }
+    }
+  });
 }
 
 export default authController;

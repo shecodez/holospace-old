@@ -34,6 +34,20 @@ class LoginForm extends React.Component {
     }
   };
 
+  onSubmitResetPasswordRequest = () => {
+    const errors = this.validateEmail(this.state.data.email);
+    this.setState({ errors });
+    if (Object.keys(errors).length === 0) {
+      this.props.resetPasswordRequest(this.state.data.email);
+    }
+  };
+
+  validateEmail = email => {
+    const errors = {};
+    if (!Validator.isEmail(email)) errors.email = "Invalid email";
+    return errors;
+  }
+
   validate = data => {
     const errors = {};
     if (!Validator.isEmail(data.email)) errors.email = "Invalid email";
@@ -77,6 +91,14 @@ class LoginForm extends React.Component {
           />
           {errors.password && <InlineError text={errors.password}/>}
         </Form.Field>
+
+        <Button basic
+          type="button"
+          onClick={this.onSubmitResetPasswordRequest}>Forgot Password?
+        </Button>
+
+        <br />
+        <br />
         <Button primary>Login</Button>
       </Form>
     );
@@ -84,7 +106,8 @@ class LoginForm extends React.Component {
 }
 
 LoginForm.propTypes = {
-  submit: PropTypes.func.isRequired
+  submit: PropTypes.func.isRequired,
+  resetPasswordRequest: PropTypes.func.isRequired
 };
 
 export default LoginForm;

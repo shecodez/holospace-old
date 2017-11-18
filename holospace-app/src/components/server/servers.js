@@ -1,40 +1,52 @@
-import React, { Component } from 'react';
+import React from "react";
+import { Button } from "semantic-ui-react";
+import axios from "axios";
 
-import Server from './server';
-import AddServer from './addServer';
+// components
+import Server from "./server";
+import AddServer from "./addServer";
 
-class Servers extends Component {
+class Servers extends React.Component {
 
-  onAddServer(server) {
-    this.props.addNewServer(server);
+  state = {
+    servers: [],
+    server: null
+  };
+
+  componentDidMount() {
+    axios.get("/api/servers").then(res => {
+      this.setState({ servers: res.data });
+    });
   }
 
-  setServer(server) {
-    this.props.setCurrentServer(server);
-  }
+  onServerSelect = server => this.setState({ server });
 
   render() {
+    const { servers } = this.state;
+
     let serverList;
-    if (this.props.servers) {
-      serverList = this.props.servers.map(server => {
-        const isSelected = this.props.currentServerId === server.id;
-        return ( <Server key={server.id} server={server} onSelect={this.setServer.bind(this)} isCurrentServer={isSelected} />);
+    if (servers) {
+      serverList = servers.map(server => {
+        const isSelected = (this.state.server || servers[0])._id === server._id;
+        return (
+          <Server
+            key={server._id}
+            server={server}
+            onServerSelect={this.onServerSelect}
+            isSelected={isSelected}
+          />
+        );
       });
     }
 
     return (
       <div className="servers section">
-        <button className="toggle-dm-btn">
-          <img src='http://res.cloudinary.com/shecodez/image/upload/v1509660797/envelope-filled_tvyutt.png'alt="DM icon" />
-          {/* <img src='http://res.cloudinary.com/shecodez/image/upload/v1509634910/envelope_rw7jal.png' alt="DM icon" /> */}
-        </button>
-        <p className="toggle-dm-label">DM</p>
+        <Button primary circular size='huge' icon="envelope" />
 
-        <hr/>
-
-        Servers
+        <h4>Servers</h4>
         {serverList}
-        <AddServer addServer={this.onAddServer.bind(this)} />
+
+        <AddServer />
       </div>
     );
   }

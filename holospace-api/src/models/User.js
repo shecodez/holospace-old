@@ -4,21 +4,7 @@ import jwt from 'jsonwebtoken';
 import uniqueValidator from 'mongoose-unique-validator';
 
 const schema = new mongoose.Schema({
-  avatar: {
-    type: String,
-    default: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png'
-  },
-  name: String,
-  /*nickname: String,*/
-  username: {
-    type: String,
-    minlength: [3, 'Username too short.'],
-    lowercase: true,
-    index: true,
-    required: true,
-    unique: true
-  },
-  pin: Number,
+
   email: {
     type: String,
     lowercase: true,
@@ -26,17 +12,34 @@ const schema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  avatar: {
+    type: String,
+    default: 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_250/v1509243733/default_pmmlaf.png'
+  },
+  name: String,
+  /* nickname: String, */
+  username: {
+    type: String,
+    minlength: [4, 'Username too short.'],
+    required: true
+  },
+  pin: Number,
   password: {
     type: String,
     minlength: [6, 'Password too short.'],
     required: true
   },
-  online: {
+  online: Boolean,
+  status: {
     type: String,
     enum: ['Away', 'Busy', 'Show', 'Hide'],
     default: 'Show'
   },
   confirmationToken: {
+    type: String,
+    default: ''
+  },
+  passwordResetToken: {
     type: String,
     default: ''
   },
@@ -63,7 +66,7 @@ schema.methods.generateConfirmationUrl = function generateConfirmationUrl() {
 }
 
 schema.methods.generatePasswordResetRequestUrl = function generatePasswordResetRequestUrl() {
-  //return `${process.env.HOST}/reset_password/${this.resetPasswordToken}`
+  //return `${process.env.HOST}/reset_password/${this.passwordResetToken}`
   return `${process.env.HOST}/reset_password/${this.generateToken()}`
 }
 
@@ -71,6 +74,10 @@ schema.methods.generateJWT = function generateJWT() {
   return jwt.sign(
     {
       email: this.email,
+      avatar: this.avatar,
+      username: this.username,
+      pin: this.pin,
+      online: this.online,
       confirmed: this.confirmed
     },
     process.env.JWT_SECRET || "secret"

@@ -71,7 +71,7 @@ authController.confirm = (req, res) => {
 authController.resetPasswordRequest = (req, res) => {
   db.User.findOne({ email: req.body.email }).then(user => {
     if (user) {
-      //user.resetPasswordToken = user.generateJWT("1h"); user.save().then(sendEmail);
+      // user.createPasswordResetToken();
       sendResetPasswordEmail(user);
       return res.status(200).json({});
     }

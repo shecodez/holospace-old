@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Image } from "semantic-ui-react";
 
 class User extends Component {
   truncate(text, n) {
@@ -13,7 +13,7 @@ class User extends Component {
     return (
       <div className="user">
         <div className='info'>
-          <img src={user.avatar} alt="user"/>
+          <Image avatar src={user.avatar} />
           <h4>{this.truncate(user.username, 9)}<br />
           <span>{`#${user.pin}`}</span></h4>
         </div>

@@ -12,14 +12,20 @@ import ResetPassword from "./components/pages/resetPassword";
 import UserRoute from "./components/routes/userRoute";
 import GuestRoute from "./components/routes/guestRoute";
 
+// TODO: change /channels/@me to /profiles/@me
 const App = ({ location }) => (
   <div className="App">
     <Route location={location} path="/" exact component={Home} />
     <Route location={location} path="/confirmation/:token" exact component={Confirmation} />
+
     <GuestRoute location={location} path="/login" exact component={Login} />
     <GuestRoute location={location} path="/register" exact component={Register} />
     <GuestRoute location={location} path="/reset_password/:token" exact component={ResetPassword} />
+
     <UserRoute location={location} path="/channels/@me" exact component={Main} />
+    <UserRoute location={location} path="/channels/:serverId/:channelId" exact component={Main} />
+    <UserRoute location={location} path="/channels/:serverId/vr/:channelId" exact component={Main} />
+    <UserRoute location={location} path="/channels/direct/:channelId" exact component={Main} />
   </div>
 );
 

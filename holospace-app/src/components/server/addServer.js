@@ -1,82 +1,55 @@
-import React, { Component } from 'react';
-
-import uuid from 'uuid';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Button, Modal } from "semantic-ui-react";
+import { createServer } from "../../actions/servers";
 
 // components
-import Modal from '../modal';
+import ServerForm from "../forms/serverForm";
 
-class AddServer extends Component {
-  constructor() {
-    super();
-    this.state = {
-      newServer: {},
-      isOpen: false
-    }
-  }
-
-  static defaultProps = {
-    serverRealms: ['Cliffside', 'Sunny Oasis', 'Rustic Forest']
-  }
+class AddServer extends React.Component {
+  state = {
+    isOpen: false
+  };
+  
+  submit = data => {
+    this.toggleModal();
+    this.props.createServer(data);
+      /* .then((server) => {
+        // this.props.history.push("/channels/:server.id/:default.id")
+        console.log(server);
+      }); */
+  };
 
   toggleModal = () => {
     this.setState({
       isOpen: !this.state.isOpen
     });
-  }
-
-  handleSubmit(e) {
-    this.setState( {newServer:{
-      id: uuid.v4(),
-      name: this.refs.name.value,
-      seed: this.refs.seed.value || '1234', // change this to the unique 4 digit UNID (username#1234)
-      icon_url: this.refs.icon.value || 'http://res.cloudinary.com/shecodez/image/upload/c_scale,w_150/v1509126240/tesseract_z3vhkn.webp'
-    }}, function() {
-      // console.log(this.state);
-      this.props.addServer(this.state.newServer);
-      this.toggleModal();
-    });
-    e.preventDefault();
-  }
+  };
 
   render() {
-    /* USE THIS IN PLACE OF SEED
-    let serverRealmOptions = this.prop.serverRealmOptions.map(realm => {
-      return <option key={realm} value={realm}>{realm}</option>
-    });
-    <div>
-      <label>Server Realm</label>
-      <select ref="realm">{serverRealmOptions}</select>
-    </div> */
+    const { isOpen } = this.state
 
     return (
       <div>
-        <button className="add-server-btn" onClick={this.toggleModal}>
-          +
-        </button>
+        <Button basic circular size='huge' icon="plus" onClick={this.toggleModal} />
 
-        <Modal show={this.state.isOpen}
-          title="Create Server"
-          onCancel={this.toggleModal}
-          onSubmit={this.handleSubmit.bind(this)}
-          >
-          <form className="form add-server-form">
-            <div className="group">
-              <input type="text" ref="name" placeholder=" " required />
-              <label>Name</label>
-            </div>
-            <div className="group">
-              <input type="text" ref="seed" placeholder=" " />
-              <label>Seed</label>
-            </div>
-            <div className="group">
-              <input type="text" ref="icon" placeholder=" " />
-              <label>Icon Url</label>
-            </div>
-          </form>
+        <Modal size={"small"} open={isOpen} onClose={this.toggleModal}>
+          <Modal.Header>Create New Server</Modal.Header>
+          <Modal.Content>
+            <ServerForm submit={this.submit} />
+          </Modal.Content>
         </Modal>
       </div>
     );
   }
 }
 
-export default AddServer;
+AddServer.propTypes = {
+  /* history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired, */
+  createServer: PropTypes.func.isRequired
+};
+
+export default connect(null, { createServer })(AddServer);

@@ -1,17 +1,15 @@
-import * as React from 'react';
-import SimpleLineIcon from 'react-simple-line-icons';
+import React from "react";
+import { Button } from "semantic-ui-react";
 // TODO: import icons for : no sound, mic, and VR
 // [hear no evil], [speak no evil], [see no evil]
 
-export default class StatusButtons extends React.Component {
-  render() {
-    return (
-      <div>
-        <button><SimpleLineIcon name="earphones" /></button>
-        <button><SimpleLineIcon name="microphone" /></button>
-        <button><SimpleLineIcon name="eyeglass" /></button>
-        <button><SimpleLineIcon name="settings" /></button>
-      </div>
-    );
-  }
-}
+const StatusButtons = () => (
+  <Button.Group>
+    <Button icon="headphone" />
+    <Button icon="microphone" />
+    <Button icon="gamepad" />
+    <Button icon="setting" />
+  </Button.Group>
+);
+
+export default StatusButtons;

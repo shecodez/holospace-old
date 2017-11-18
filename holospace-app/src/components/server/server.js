@@ -1,38 +1,37 @@
-import React, { Component } from 'react';
+import React from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { Image } from "semantic-ui-react";
 
-class Server extends Component {
+class Server extends React.Component {
 
-  constructor() {
-    super();
-    this.state = {
-      selectedServer: {}
-    }
-    this.setServer = this.setServer.bind(this);
-  }
-
-  setServer () {
-    this.setState({
-      selectedServer: this.props.server
-    }, function() {
-      // console.log(this.state.selectedServer);
-      this.props.onSelect(this.state.selectedServer);
-    });
-  }
+  setServer = () => { this.props.onServerSelect(this.props.server); };
 
   render() {
-    const currentServer = this.props.isCurrentServer ? " is-current-server" : "";
+    const { server } = this.props;
+    const isSelected = this.props.isSelected ? " is-current-server" : "";
+
     return (
-      <li className={`server${ currentServer}`} onClick={this.setServer}>
+      <li className={`server${ isSelected}`}>
         <div className="dot">
           <div className="circle" />
           <div className="ring" />
         </div>
-        <a href="#" data-tooltip={this.props.server.name}>
-          <img src={this.props.server.icon_url} alt="server icon"  />
-        </a>
+        <Link to="#" data-tooltip={server.name} onClick={this.setServer}>
+          <Image src={server.icon_url} size='tiny' circular />
+        </Link>
       </li>
     );
   }
+}
+
+Server.propTypes = {
+  server: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    icon_url: PropTypes.string.isRequired
+  }).isRequired,
+  onServerSelect: PropTypes.func.isRequired,
+  isSelected: PropTypes.bool.isRequired
 }
 
 export default Server;

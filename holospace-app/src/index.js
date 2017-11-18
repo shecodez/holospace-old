@@ -11,6 +11,7 @@ import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
 import rootReducer from "./rootReducer";
 import { userLoggedIn } from "./actions/auth";
+import setAuthorizationHeader from "./utils/setAuthorizationHeader";
 
 const store = createStore(
   rootReducer,
@@ -22,8 +23,13 @@ if (localStorage.holospaceJWT) {
   const user = {
     token: localStorage.holospaceJWT,
     email: payload.email,
+    avatar: payload.avatar,
+    username: payload.username,
+    pin: payload.pin,
+    online: payload.online,
     confirmed: payload.confirmed
   };
+  setAuthorizationHeader(localStorage.holospaceJWT);
   store.dispatch(userLoggedIn(user));
 }
 

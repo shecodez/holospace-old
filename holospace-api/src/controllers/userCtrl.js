@@ -42,6 +42,4 @@ userController.register = (req, res) => {
   });
 };
 
-
-
 export default userController;

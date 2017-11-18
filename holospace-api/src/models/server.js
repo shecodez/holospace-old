@@ -7,24 +7,32 @@ const schema = new Schema({
     type: String,
     required: [true, 'Name field required']
   },
-  icon_url: {
+  icon: {
     type: String,
-    default: '/imgs/default/server_icon.png'
+    default: ""
   },
-  /*private: {
-    type: Boolean,
-    default: false
-  },*/
-  owner: {
+  default_id: {
+    type: Schema.ObjectId,
+    ref: 'Channel'
+  },
+  owner_id: {
     type: Schema.ObjectId,
     ref: 'User'
+  },
+  inviteCode: {
+    type: String,
+    default: ""
   },
   isDeleted: { type: Boolean, default: false },
 }, { timestamps: true } );
 
+schema.methods.setDefaultId = function setDefaultId(id) {
+  this.default_id = id;
+}
+
 /*const autoPopulateOwner = (next) => {
   this.populate({
-    path: 'owner',
+    path: 'owner_id',
     select: 'username -_id'
   });
   next();

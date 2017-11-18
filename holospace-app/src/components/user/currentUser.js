@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-// TODO: import icons for : no sound, mic, and VR
+// TODO: import icons for : no sound, mic, or VR
 // [hear no evil], [speak no evil], [see no evil]
 
 import User from './user';

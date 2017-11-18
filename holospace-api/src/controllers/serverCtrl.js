@@ -1,5 +1,8 @@
 import db from './../models';
 
+// import mongoose from 'mongoose';
+// const { ObjectId } = mongoose.mongo.ObjectID;
+
 const serverController = {};
 
 serverController.getAll = (req, res) => {
@@ -18,47 +21,71 @@ serverController.getOne = (req, res) => {
   db.Server.findById(req.params.id).populate({
     path: 'owner',
     select: 'username -_id'
-  }).then((servers) => {
-    return res.status(200).json(servers);
+  }).then((server) => {
+    return res.status(200).json(server);
   }).catch((err) => {
     return res.status(500).json(err);
   });
 };
 
 // create new server,
-// create new channel (named general) belonging to server,
 // create new membership between user and server
+// create new channel (named general) belonging to server,
 serverController.create = (req, res) => {
   const {
     name,
-    icon_url,
-    owner
-  } = req.body;
+    icon,
+    owner_id,
+  } = req.body.server;
 
   // Validations
 
   const server = new db.Server({
     name,
-    icon_url,
-    owner
+    icon,
+    owner_id,
   });
 
   server.save().then((newServer) => {
-    //...
-    return res.status(200).json(newServer);
+
+    const membership = new db.Membership({
+      member_id: newServer.owner_id,
+      server_id: newServer._id
+    });
+    membership.save();
+
+    const channel = new db.Channel({
+      name: "General",
+      server_id: newServer._id
+    });
+    channel.save().then(channel => {
+      newServer.setDefaultId(channel._id);
+      newServer.save();
+
+      return res.status(200).json(newServer);
+    });
+
+    // return res.status(200).json(newServer);
   }).catch((err) => {
     return res.status(500).json(err);
   });
 };
 
 serverController.update = (req, res) => {
-  db.Server.findByIdAndUpdate(
-    req.params.id,
+  db.Server.findByIdAndUpdate(req.params.id,
 
     // Validations
+    /*
+    {
+      $set: {
+        "name": req.body.name,
+        "icon": req.body.icon
+      }
+    }
+    */
     req.body,
 
-    {new: true}
+    { new: true }
   ).then((updatedServer) => {
     res.status(200).json(updatedServer);
   }).catch((err) => {
@@ -67,13 +94,25 @@ serverController.update = (req, res) => {
 };
 
 serverController.delete = (req, res) => {
-  db.Server.findByIdAndUpdate(
-    req.params.id,
+  db.Server.findByIdAndUpdate(req.params.id,
+    {
+      isDeleted: true
+    },
+    { new: true }
+  ).then((deletedServer) => {
+    db.Channel.update({ server_id: deletedServer._id },
+      {
+        $set: { isDeleted: true }
+      },
+      { multi: true }
+    ).then().catch(err => console.error(err));
 
-    {isDeleted: true},
-
-    {new: true}
-  ).then((updatedServer) => {
+    db.Membership.update({ server_id: deletedServer._id },
+      {
+        $set: { isDeleted: true }
+      },
+      { multi: true }
+    ).then().catch(err => console.error(err));
     res.status(200).json('Server successfully deleted.');
   }).catch((err) => {
     res.status(500).json(err);

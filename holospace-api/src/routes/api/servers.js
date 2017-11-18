@@ -1,8 +1,9 @@
 import express from 'express';
+import Server from '../../controllers/serverCtrl';
+// import authenticate from '../middlewares/authenticate';
 
 var router = express.Router();
-
-import Server from '../../controllers/serverCtrl';
+// router.use(authenticate);
 
 // GET holospace.com/api/servers
 // get list of servers
@@ -22,6 +23,6 @@ router.put('/servers/:id', Server.update);
 
 // DELETE holospace.com/api/servers/:id
 // 'delete' a server
-router.put('/servers/:id', Server.delete);
+router.delete('/servers/:id', Server.delete);
 
 module.exports = router;

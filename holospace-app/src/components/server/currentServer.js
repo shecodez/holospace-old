@@ -1,15 +1,19 @@
-import React, { Component } from 'react';
+import React from "react";
+import PropTypes from "prop-types";
+import { Button } from "semantic-ui-react";
 
-class CurrentServer extends Component {
-  render() {
-    return (
-      <div className="current-server section">
-        <h3 className="server-name">
-          {this.props.currentServer.name}
-        </h3>
-      </div>
-    );
-  }
+const CurrentServer = ({ server }) => (
+  <div className="current-server">
+    <h3 className="name">{server.name}</h3>
+
+    <Button icon="content" />
+  </div>
+);
+
+CurrentServer.propTypes = {
+  server: PropTypes.shape({
+    name: PropTypes.string.isRequired
+  }).isRequired
 }
 
 export default CurrentServer;

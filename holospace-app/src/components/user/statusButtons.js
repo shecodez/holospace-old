@@ -1,14 +1,34 @@
 import React from "react";
-import { Button } from "semantic-ui-react";
+import { Button, Popup } from "semantic-ui-react";
 // TODO: import icons for : no sound, mic, and VR
 // [hear no evil], [speak no evil], [see no evil]
 
 const StatusButtons = () => (
   <Button.Group>
-    <Button icon="headphone" />
-    <Button icon="microphone" />
-    <Button icon="gamepad" />
-    <Button icon="setting" />
+    <Popup
+      trigger={<Button icon="headphone" />}
+      content='Hear No Evil'
+      inverted
+      position='top center'
+    />
+    <Popup
+      trigger={<Button icon="microphone" />}
+      content='Speak No Evil'
+      inverted
+      position='top center'
+    />
+    <Popup
+      trigger={<Button icon="gamepad" />}
+      content='See No Evil'
+      inverted
+      position='top center'
+    />
+    <Popup
+      trigger={<Button icon="setting" />}
+      content='User Settings'
+      inverted
+      position='top center'
+    />
   </Button.Group>
 );
 

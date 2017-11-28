@@ -18,9 +18,7 @@ const TopNav = ({ user }) => (
 );
 
 TopNav.propTypes = {
-  user: PropTypes.shape({
-    username: PropTypes.string.isRequired
-  }).isRequired
+  user: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {

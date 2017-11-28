@@ -1,10 +1,16 @@
-import React from 'react';
+import React from "react";
+import PropTypes from "prop-types";
+import { Form, Button, Message } from "semantic-ui-react";
+
+// components
+import InlineError from "../alerts/inlineError";
 
 class ChannelForm extends React.Component {
   state = {
     data: {
       name: '',
-      topic: ''
+      topic: '',
+      type: this.props.type
     },
     loading: false,
     errors: {}
@@ -20,7 +26,8 @@ class ChannelForm extends React.Component {
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
       this.setState({ loading: true });
-      this.props.submit(this.state.data)
+      this.props
+        .submit(this.state.data)
         .catch(err =>
           this.setState({ errors: err.response.data.errors, loading: false })
         );
@@ -29,9 +36,8 @@ class ChannelForm extends React.Component {
 
   validate = (data) => {
     const errors = {};
-    // TODO: don't allow curse words to be server name
     if (!data.name) errors.name = "Cannot be blank";
-    // if (data.name.length > 50) errors.name = "Channel name too long";
+    if (data.name.length > 50) errors.name = "Channel name too long";
     return errors;
   }
 
@@ -39,41 +45,48 @@ class ChannelForm extends React.Component {
     const { data, errors, loading } = this.state;
 
     return (
-      <form className="form server-form" onSubmit={this.onSubmit} loading={loading}>
-        { errors.global &&
-          <div className="error-message">
-            <header>Something went wrong</header>
-            <p className="message-body">{errors.global}</p>
-          </div>
-        }
-        <div className="group" error={!!errors.name}>
+      <Form className="channel-form" onSubmit={this.onSubmit} loading={loading}>
+        { errors.global && (
+          <Message negative>
+            <Message.Header>Oops, something went wrong!</Message.Header>
+            <p>{errors.global}</p>
+          </Message>
+        )}
+        <Form.Field  error={!!errors.name}>
+          <label htmlFor="name">Name</label>
           <input
-            type="name"
+            type="text"
             id="name"
             name="name"
             placeholder=" "
             value={data.name}
             onChange={this.onChange}
-            required
           />
-          <label>Name</label>
-          {/* errors.name && <span>errors.name</span> */}
-        </div>
-        <div className="group" error={!!errors.topic}>
+          {errors.name && <InlineError text={errors.name}/>}
+        </Form.Field>
+
+        <Form.Field  error={!!errors.topic}>
+          <label htmlFor="topic">Topic</label>
           <input
-            type="topic"
+            type="text"
             id="topic"
             name="topic"
             placeholder=" "
             value={data.topic}
             onChange={this.onChange}
           />
-          <label>Name</label>
-          {/* errors.topic && <span>errors.topic</span> */}
-        </div>
-      </form>
+          {errors.topic && <InlineError text={errors.topic}/>}
+        </Form.Field>
+
+        <Button primary>Create</Button>
+      </Form>
     );
   }
 }
+
+ChannelForm.propTypes = {
+  submit: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired
+};
 
 export default ChannelForm;

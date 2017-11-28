@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Button } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { allServersSelector } from "../../reducers/servers";
-// import { allChannelsSelector } from "../../reducers/channels";
+// import { allDirectChannelsSelector } from "../../reducers/channels";
 
 import '../../assets/css/style.min.css';
 
@@ -18,8 +18,6 @@ import CurrentUser from '../user/currentUser';
 import CurrentChannel from '../channel/currentChannel';
 import Chat from '../chat/chat';
 
-import Members from '../member/members';
-
 const channel = {
   _id: "5a0f4bcb1c35354aa41d95bf",
   name: "General",
@@ -31,13 +29,13 @@ const server = {
   name: "Résumé | NJN"
 };
 
-const Main = ({ user }) => (
-  <div className="grid grid-4c">
+const DMsg = ({ user }) => (
+  <div className="grid grid-3c">
     { !user.confirmed && <ConfirmEmailReminder /> }
 
     <div className="c1 section">
       <div className="user-btn">
-        <Button primary circular size='huge' icon="envelope" />
+        <Button primary circular size='huge' icon="user circle outline" />
       </div>
       <Servers />
     </div>
@@ -65,14 +63,10 @@ const Main = ({ user }) => (
         <Chat user={user} />
       </div>
     </div>
-
-    <div className="c4 section">
-      <Members />
-    </div>
   </div>
 );
 
-Main.propTypes = {
+DMsg.propTypes = {
   user: PropTypes.shape({
     avatar: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
@@ -91,4 +85,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Main);
+export default connect(mapStateToProps)(DMsg);

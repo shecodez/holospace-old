@@ -29,7 +29,7 @@ class Chatbox extends Component {
     return (
       <div className='chatbox'>
         {/* <ChatInputForm onSend=onSubmit(this) message_label={'Message to #' + this.props.channel} /> */}
-        <form className='form' onSubmit={this.onSubmit}>
+        <form className='custom-form' onSubmit={this.onSubmit}>
           <div className='group'>
             <input
               type='text'

@@ -11,32 +11,19 @@ import '../../assets/css/style.min.css';
 import ConfirmEmailReminder from '../alerts/confirmEmailReminder';
 import Servers from '../server/servers';
 
-import CurrentServer from '../server/currentServer';
-import Channels from '../channel/channels';
+// import CurrentServer from '../server/currentServer';
+// import UserAvatar from '../user/userAvatar';
 import CurrentUser from '../user/currentUser';
 
-import CurrentChannel from '../channel/currentChannel';
-import Chat from '../chat/chat';
+// import CurrentChannel from '../channel/currentChannel';
+// import Chat from '../chat/chat';
 
-import Members from '../member/members';
-
-const channel = {
-  _id: "5a0f4bcb1c35354aa41d95bf",
-  name: "General",
-  type: "Text"
-};
-
-const server = {
-  _id: "5a0f4bcb1c35354aa41d95bd",
-  name: "Résumé | NJN"
-};
-
-const Main = ({ user }) => (
-  <div className="grid grid-4c">
+const Profile = ({ user }) => (
+  <div className="grid grid-3c">
     { !user.confirmed && <ConfirmEmailReminder /> }
 
     <div className="c1 section">
-      <div className="user-btn">
+      <div className="dmsg-btn">
         <Button primary circular size='huge' icon="envelope" />
       </div>
       <Servers />
@@ -44,11 +31,11 @@ const Main = ({ user }) => (
 
     <div className='nested'>
       <div className="c2t section">
-        <CurrentServer server={server} />
+        search form
       </div>
 
       <div className="c2m stretch section">
-        <Channels />
+        user model
       </div>
 
       <div className="c2b section">
@@ -58,21 +45,17 @@ const Main = ({ user }) => (
 
     <div className='nested'>
       <div className="c3t section">
-        <CurrentChannel channel={channel} />
+        Tabs to change between friends and avatar wardrobe
       </div>
 
       <div className="c3m stretch section">
-        <Chat user={user} />
+        Friends mutual servers
       </div>
-    </div>
-
-    <div className="c4 section">
-      <Members />
     </div>
   </div>
 );
 
-Main.propTypes = {
+Profile.propTypes = {
   user: PropTypes.shape({
     avatar: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
@@ -91,4 +74,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Main);
+export default connect(mapStateToProps)(Profile);

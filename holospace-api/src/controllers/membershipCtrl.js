@@ -10,6 +10,30 @@ membershipController.getAll = (req, res) => {
   });
 };
 
+membershipController.getMemberServers = (req, res) => {
+  db.Membership.find({ member_id: req.currentUser._id }).populate({
+    path: 'server',
+    select: 'icon name -_id',
+    match: { 'isDeleted': false }
+  }).then((servers) => {
+    return res.status(200).json(servers);
+  }).catch((err) => {
+    return res.status(500).json(err);
+  });
+};
+
+membershipController.getServerMembers = (req, res) => {
+  db.Membership.find({ server_id: req.params.serverId }).populate({
+    path: 'member_id',
+    select: 'avatar username pin email -_id',
+    match: { 'isDeleted': false }
+  }).then((members) => {
+    return res.status(200).json(members);
+  }).catch((err) => {
+    return res.status(500).json(err);
+  });
+};
+
 membershipController.getOne = (req, res) => {
   db.Membership.findById(req.params.id).then((membership) => {
     return res.status(200).json(membership);

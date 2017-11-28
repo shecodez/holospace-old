@@ -77,7 +77,8 @@ schema.methods.generateJWT = function generateJWT() {
       avatar: this.avatar,
       username: this.username,
       pin: this.pin,
-      online: this.online,
+      online: this.online || false,
+      status: this.status,
       confirmed: this.confirmed
     },
     process.env.JWT_SECRET || "secret"

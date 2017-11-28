@@ -34,9 +34,8 @@ class ServerForm extends React.Component {
 
   validate = (data) => {
     const errors = {};
-    // TODO: don't allow curse words to be server name
     if (!data.name) errors.name = "Cannot be blank";
-    if (data.name.length > 50) errors.name = "Name too long";
+    if (data.name.length > 50) errors.name = "Server name too long";
     return errors;
   }
 

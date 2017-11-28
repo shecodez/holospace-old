@@ -9,22 +9,28 @@ import { login, resetPasswordRequest } from "../../actions/auth";
 import LoginForm from "../forms/loginForm";
 
 class Login extends React.Component {
-  state = { open: false, email: '' }
+  state = {
+    isOpen: false,
+    email: ''
+  };
 
   submit = data =>
     this.props.login(data).then(() => this.props.history.push("/channels/@me"));
 
   submitResetPasswordRequest = email => {
-    this.setState({ email: email });
+    this.setState({ email });
     this.props.resetPasswordRequest(email);
-    this.show();
+    this.toggleModal();
   };
 
-  show = () => this.setState({ open: true });
-  close = () => this.setState({ open: false });
+  toggleModal = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  };
 
   render() {
-    const { open, email } = this.state
+    const { isOpen, email } = this.state
 
     return (
       <div className="login-page">
@@ -40,7 +46,7 @@ class Login extends React.Component {
           <Link to="/register">Register</Link>
         </p>
 
-        <Modal size="mini" open={open} onClose={this.close}
+        <Modal size="mini" open={isOpen} onClose={this.toggleModal}
           header="Password Reset Sent"
           content={`We sent instructions to reset your password to ${email}. Please be sure to check both your inbox and spam folder.`}
           actions={[

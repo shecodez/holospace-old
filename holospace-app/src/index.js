@@ -27,6 +27,7 @@ if (localStorage.holospaceJWT) {
     username: payload.username,
     pin: payload.pin,
     online: payload.online,
+    status: payload.status,
     confirmed: payload.confirmed
   };
   setAuthorizationHeader(localStorage.holospaceJWT);

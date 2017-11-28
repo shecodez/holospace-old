@@ -1,73 +1,62 @@
-import React, { Component } from 'react';
-import uuid from 'uuid';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Button, Modal } from "semantic-ui-react";
+import { createChannel } from "../../actions/channels";
 
 // components
-import Modal from '../modal';
+import ChannelForm from "../forms/channelForm";
 
-class AddChannel extends Component {
-  constructor() {
-    super();
-    this.state = {
-      newChannel: {},
-      isOpen: false
-    }
-  }
-  static defaultProps = {
-    channelTypes: ['Text', 'Voice', 'VR']
-  }
+class AddChannel extends React.Component {
+
+  state = {
+    isOpen: false
+  };
+
+  submit = data => {
+    this.toggleModal();
+    this.props.createChannel(data);
+      /* .then((channel) => {
+        // this.props.history.push("/channels/:channel.server_id/:channel._id")
+        console.log(channel);
+      }); */
+  };
 
   toggleModal = () => {
     this.setState({
       isOpen: !this.state.isOpen
     });
-  }
-
-  handleSubmit(e) {
-    this.setState({ newChannel: {
-      id: uuid.v4(),
-      name: this.refs.name.value,
-      type: this.props.type,
-      topic: this.refs.topic.value
-    }}, function() {
-      // console.log(this.state);
-      this.props.addChannel(this.state.newChannel);
-      this.toggleModal();
-    });
-    e.preventDefault();
-  }
+  };
 
   render() {
-    const channelType = `${this.props.type  } channel`;
+    const { isOpen } = this.state
+
     return (
       <div>
         <div className="add-channel">
-          <button className="select-channel-btn">
-            { `${channelType }s` }
-          </button>
-          <a className="link" onClick={this.toggleModal}>
-            <span>+</span>
-          </a>
+          <span>
+            { `${this.props.type} channels` }
+          </span>
+          <Button icon="plus" onClick={this.toggleModal} />
         </div>
 
-        <Modal show={this.state.isOpen}
-          title={`Create new ${  channelType}` }
-          onCancel={this.toggleModal}
-          onSubmit={this.handleSubmit.bind(this)}
-          >
-          <form className="form add-channel-form">
-            <div className='group'>
-              <input type="text" ref="name" placeholder=" " required />
-              <label>Name</label>
-            </div>
-            <div className='group'>
-              <input type="text" ref="topic" placeholder=" " />
-              <label>Topic</label>
-            </div>
-          </form>
+        <Modal size={"small"} open={isOpen} onClose={this.toggleModal}>
+          <Modal.Header>{`Create new ${this.props.type} channel`}</Modal.Header>
+          <Modal.Content>
+            <ChannelForm submit={this.submit} type={this.props.type} />
+          </Modal.Content>
         </Modal>
       </div>
     );
   }
 }
 
-export default AddChannel;
+AddChannel.propTypes = {
+  /* history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired, */
+  createChannel: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired
+};
+
+export default connect(null, { createChannel })(AddChannel);

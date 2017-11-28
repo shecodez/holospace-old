@@ -1,13 +1,21 @@
 import express from 'express';
 import Membership from '../../controllers/membershipCtrl';
-// import authenticate from '../middlewares/authenticate';
+import authenticate from '../../middlewares/authenticate';
 
 var router = express.Router();
-// router.use(authenticate);
+router.use(authenticate);
 
 // GET holospace.com/api/memberships
 // get list of memberships
 router.get('/memberships', Membership.getAll);
+
+// GET holospace.com/api/memberships/:serverId/members
+// get list of server members
+router.get('/memberships/:serverId/members', Membership.getServerMembers);
+
+// GET holospace.com/api/memberships/:memberId/servers
+// get list of member servers
+router.get('/memberships/servers', Membership.getMemberServers);
 
 // GET holospace.com/api/memberships/:id
 // get one membership by id

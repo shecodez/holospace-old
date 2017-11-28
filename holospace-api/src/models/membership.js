@@ -12,25 +12,12 @@ const schema = new Schema({
     ref: 'Server'
   },
   isDeleted: { type: Boolean, default: false },
-}, { timestamps: true } );
+}, { timestamps: true }/*, { toJSON: { virtuals: true } }*/);
 
-/*const autoPopulateServer = (next) => {
-  this.populate({
-    path: 'server_id',
-    select: 'icon name -_id'
-  });
-  next();
-};
-
-const autoPopulateMember = (next) => {
-  this.populate({
-    path: 'member_id',
-    select: 'avatar username pin -_id'
-  });
-  next();
-};
-
-schema.pre('find', autoPopulateMember);
-schema.pre('find', autoPopulateServer);*/
+/*schema.virtual('member', {
+    ref: 'User',
+    localField: 'member_id',
+    foreignField: '_id'
+}); */
 
 export default mongoose.model('Membership', schema);

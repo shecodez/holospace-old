@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import SimpleLineIcon from 'react-simple-line-icons';
+import React from "react";
+import { Icon } from "semantic-ui-react";
+import axios from "axios";
 
 // Components
 import Channel from './channel';
@@ -7,38 +8,75 @@ import AddChannel from './addChannel';
 import Tabs from '../tab/tabs';
 import Pane from '../tab/pane';
 
-class Channels extends Component {
+class Channels extends React.Component {
 
-  onAddChannel(channel) {
-    channel.server_id = this.props.currentServerId;
-    this.props.addNewChannel(channel);
+  state = {
+    channels: [],
+    channel: null
+  };
+
+  componentDidMount() {
+    axios.get("/api/channels").then(res => {
+      this.setState({ channels: res.data });
+    });
   }
 
-  setChannel(channel) {
-    this.props.setCurrentChannel(channel);
-  }
+  setChannel = channel => this.setState({ channel });
 
   render() {
+    const { channels } = this.state;
+
     const textChannelList = [];
     const voiceChannelList = [];
     const vrChannelList = [];
 
-    if (this.props.channels) {
-      this.props.channels.forEach((channel) => {
-        const isSelected = this.props.currentChannelId === channel.id;
+    if (channels) {
+      channels.forEach((channel) => {
+        const isSelected = (this.state.channel || channels[0])._id === channel._id;
 
         switch(channel.type) {
           case "Text":
-            textChannelList.push(<Channel key={channel.id} channel={channel} onSelect={this.setChannel.bind(this)} isCurrentChannel={isSelected} />);
+            textChannelList.push(
+              <Channel
+                key={channel._id}
+                channel={channel}
+                onChannelSelect={this.setChannel}
+                isSelected={isSelected}
+              />
+            );
             break;
+
           case "Voice":
-            voiceChannelList.push(<Channel key={channel.id} channel={channel} onSelect={this.setChannel.bind(this)} isCurrentChannel={isSelected} />);
+            voiceChannelList.push(
+              <Channel
+                key={channel._id}
+                channel={channel}
+                onChannelSelect={this.setChannel}
+                isSelected={isSelected}
+              />
+            );
             break;
+
           case "VR":
-            vrChannelList.push(<Channel key={channel.id} channel={channel} onSelect={this.setChannel.bind(this)} isCurrentChannel={isSelected} />);
+            vrChannelList.push(
+              <Channel
+                key={channel._id}
+                channel={channel}
+                onChannelSelect={this.setChannel}
+                isSelected={isSelected}
+              />
+            );
             break;
+
           default:
-            textChannelList.push(<Channel key={channel.id} channel={channel} onSelect={this.setChannel.bind(this)} isCurrentChannel={isSelected} />);
+            textChannelList.push(
+              <Channel
+                key={channel._id}
+                channel={channel}
+                onChannelSelect={this.setChannel}
+                isSelected={isSelected}
+              />
+            );
         }
       });
     }
@@ -47,28 +85,28 @@ class Channels extends Component {
       <div className="channels section">
         <Tabs selected={0}>
           <Pane label="ALL">
-            <AddChannel addChannel={this.onAddChannel.bind(this)} type ='Text' />
+            <AddChannel type ='Text' />
             {textChannelList}
 
-            <AddChannel addChannel={this.onAddChannel.bind(this)} type ='Voice' />
+            <AddChannel type ='Voice' />
             {voiceChannelList}
 
-            <AddChannel addChannel={this.onAddChannel.bind(this)} type ='VR' />
+            <AddChannel type ='VR' />
             {vrChannelList}
           </Pane>
 
-          <Pane label={<SimpleLineIcon name="speech" />}>
-            <AddChannel addChannel={this.onAddChannel.bind(this)} type ='Text' />
+          <Pane label={<Icon name="browser" />}>
+            <AddChannel type='Text' />
             {textChannelList}
           </Pane>
 
-          <Pane label={<SimpleLineIcon name="microphone" />}>
-            <AddChannel addChannel={this.onAddChannel.bind(this)} type ='Voice' />
+          <Pane label={<Icon name="microphone" />}>
+            <AddChannel type='Voice' />
             {voiceChannelList}
           </Pane>
 
-          <Pane label={<SimpleLineIcon name="eyeglass" />}>
-            <AddChannel addChannel={this.onAddChannel.bind(this)} type ='VR' />
+          <Pane label={<Icon name="game" />}>
+            <AddChannel type='VR' />
             {vrChannelList}
           </Pane>
         </Tabs>

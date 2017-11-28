@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "semantic-ui-react";
 import axios from "axios";
 
 // components
@@ -19,7 +18,7 @@ class Servers extends React.Component {
     });
   }
 
-  onServerSelect = server => this.setState({ server });
+  setServer = server => this.setState({ server });
 
   render() {
     const { servers } = this.state;
@@ -32,7 +31,7 @@ class Servers extends React.Component {
           <Server
             key={server._id}
             server={server}
-            onServerSelect={this.onServerSelect}
+            onServerSelect={this.setServer}
             isSelected={isSelected}
           />
         );
@@ -40,9 +39,7 @@ class Servers extends React.Component {
     }
 
     return (
-      <div className="servers section">
-        <Button primary circular size='huge' icon="envelope" />
-
+      <div className="servers">
         <h4>Servers</h4>
         {serverList}
 

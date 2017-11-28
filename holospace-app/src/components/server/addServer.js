@@ -11,12 +11,12 @@ class AddServer extends React.Component {
   state = {
     isOpen: false
   };
-  
+
   submit = data => {
     this.toggleModal();
     this.props.createServer(data);
       /* .then((server) => {
-        // this.props.history.push("/channels/:server.id/:default.id")
+        // this.props.history.push("/channels/:server._id/:server.default_id")
         console.log(server);
       }); */
   };
@@ -28,11 +28,11 @@ class AddServer extends React.Component {
   };
 
   render() {
-    const { isOpen } = this.state
+    const { isOpen } = this.state;
 
     return (
-      <div>
-        <Button basic circular size='huge' icon="plus" onClick={this.toggleModal} />
+      <div className="add-server">
+        <Button inverted basic circular size='huge' icon="plus" onClick={this.toggleModal} />
 
         <Modal size={"small"} open={isOpen} onClose={this.toggleModal}>
           <Modal.Header>Create New Server</Modal.Header>

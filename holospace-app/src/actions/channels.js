@@ -1,4 +1,4 @@
 import api from '../api';
 
-export const createServer = data => () =>
+export const createChannel = data => () =>
   api.channel.create(data);

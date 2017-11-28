@@ -1,42 +1,37 @@
-import React, { Component } from 'react';
-import SimpleLineIcon from 'react-simple-line-icons';
+import React from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { Icon, Button } from "semantic-ui-react";
 
-class Channel extends Component {
+class Channel extends React.Component {
 
-  constructor() {
-    super();
-    this.state = {
-      selectedChannel: {}
-    }
-    this.setChannel = this.setChannel.bind(this);
-  }
-
-  setChannel () {
-    this.setState({
-      selectedChannel: this.props.channel
-    }, function() {
-      // console.log(this.state.selectedChannel);
-      this.props.onSelect(this.state.selectedChannel);
-    });
-  }
+  setChannel = () => { this.props.onChannelSelect(this.props.channel); }
 
   render() {
-    const prepend = (this.props.channel.type === 'Text') ?
-      "# " :
-      <SimpleLineIcon name="arrow-right" />
-    const currentChannel = this.props.isCurrentChannel ? " is-current-channel" : "";
+    const { channel } = this.props;
+    const isSelected = this.props.isSelected ? " is-current-channel" : "";
+
+    const prepend = (channel.type === 'Text') ? "# " : <Icon name="angle right" />
+
     return (
-      <li className={`channel${  currentChannel}`}>
-        <button className="select-channel-btn" onClick={this.setChannel}>
-          <span className="prepend">{ prepend }</span>
-          {this.props.channel.name}
-        </button>
-        <a href="#">
-          <SimpleLineIcon name="settings" />
-        </a>
+      <li className={`channel ${ isSelected }`}>
+        <Link to="#" className="select-channel-link" onClick={this.setChannel}>
+          <span className="prepend">{ prepend }</span> {channel.name}
+        </Link>
+
+        <Button icon="setting" />
       </li>
     );
   }
+}
+
+Channel.propTypes = {
+  channel: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired
+  }).isRequired,
+  onChannelSelect: PropTypes.func.isRequired,
+  isSelected: PropTypes.bool.isRequired
 }
 
 export default Channel;

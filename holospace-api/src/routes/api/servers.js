@@ -1,9 +1,9 @@
 import express from 'express';
 import Server from '../../controllers/serverCtrl';
-// import authenticate from '../middlewares/authenticate';
+import authenticate from '../../middlewares/authenticate';
 
 var router = express.Router();
-// router.use(authenticate);
+router.use(authenticate);
 
 // GET holospace.com/api/servers
 // get list of servers

@@ -1,7 +1,5 @@
 import db from './../models';
-
-// import mongoose from 'mongoose';
-// const { ObjectId } = mongoose.mongo.ObjectID;
+import parseErrors from '../utils/parseErrors';
 
 const serverController = {};
 
@@ -34,16 +32,16 @@ serverController.getOne = (req, res) => {
 serverController.create = (req, res) => {
   const {
     name,
-    icon,
-    owner_id,
+    icon
   } = req.body.server;
+  const owner_id = req.currentUser._id;
 
   // Validations
 
   const server = new db.Server({
     name,
     icon,
-    owner_id,
+    owner_id
   });
 
   server.save().then((newServer) => {
@@ -55,7 +53,7 @@ serverController.create = (req, res) => {
     membership.save();
 
     const channel = new db.Channel({
-      name: "General",
+      name: "general",
       server_id: newServer._id
     });
     channel.save().then(channel => {
@@ -67,7 +65,9 @@ serverController.create = (req, res) => {
 
     // return res.status(200).json(newServer);
   }).catch((err) => {
-    return res.status(500).json(err);
+    return res.status(400).json({
+      errors: parseErrors(err.errors)
+    });
   });
 };
 

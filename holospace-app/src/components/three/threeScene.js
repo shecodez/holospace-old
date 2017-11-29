@@ -4,36 +4,38 @@ import * as THREE from "three";
 
 class ThreeScene extends React.Component {
 
-
+  getChildContext() {
+    return {
+      scene: this.scene,
+      renderer: this.renderer
+    }
+  };
 
   componentDidMount() {
-    init();
-  }
+    this.updateTHREE(this.props);
 
-  init = () => {
-    const { width, height } = this.props;
+    this.refs.anchor.appendChild(this.renderer.domElement);
+  };
 
-    const camera = new THREE.PerspectiveCamera( 70, width/height, 0.01, 10 );
-	  camera.position.z = 1;
+  componentDidUpdate() {
+    this.updateTHREE(this.props);
+  };
+  scene = new THREE.Scene();
 
-    const scene = new THREE.Scene();
+  updateTHREE(props) {
+    const { width, height } = props;
 
-    // geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-  	// material = new THREE.MeshNormalMaterial();
-
-  	// mesh = new THREE.Mesh( geometry, material );
-  	// scene.add( mesh );
-
-    const renderer = new THREE.WebGLRenderer( { antialias: true } );
-    renderer.setSize( width, height );
-    this.refs.anchor.appendChild( renderer.domElement );
-};
+    this.renderer.setSize(width, height);
+  };
+  renderer = new THREE.WebGLRenderer({ antialias: true });
 
   render() {
-    const { width, height, style } = this.props;
-
+    const { width, height, style, children } = this.props;
+    
     return (
-      <div ref="anchor" style={ [{width, height}, style] } />
+      <div ref="anchor" style={ [{width, height}, style] }>
+        { children }
+      </div>
     );
   }
 }
@@ -41,7 +43,12 @@ class ThreeScene extends React.Component {
 ThreeScene.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  style: PropTypes.string
-}
+  children: PropTypes.node.isRequired
+};
+
+ThreeScene.childContextTypes = {
+  scene: PropTypes.object,
+  renderer: PropTypes.object
+};
 
 export default ThreeScene;

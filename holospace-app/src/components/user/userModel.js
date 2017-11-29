@@ -4,42 +4,35 @@ import * as THREE from "three";
 
 class UserModel extends React.Component {
 
-  componentDidMount() {
-    init();
+  componentWillMount() {
+    this.geometry = new THREE.BoxGeometry(1, 1, 1);
+    this.material = new THREE.MeshNormalMaterial();
+    this.model = new THREE.Mesh(this.geometry, this.material);
+
+    this.context.scene.add(this.model);
+  };
+
+  componentDidUpdate() {
+    const { rotation } = this.props;
+
+    this.model.rotation.x = rotation.x;
+    this.model.rotation.y = rotation.y;
   }
-
-  init = () => {
-    const { width, height } = this.props;
-
-    const camera = new THREE.PerspectiveCamera( 70, width/height, 0.01, 10 );
-	  camera.position.z = 1;
-
-    const scene = new THREE.Scene();
-
-    // geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-  	// material = new THREE.MeshNormalMaterial();
-
-  	// mesh = new THREE.Mesh( geometry, material );
-  	// scene.add( mesh );
-
-    const renderer = new THREE.WebGLRenderer( { antialias: true } );
-    renderer.setSize( width, height );
-    this.refs.anchor.appendChild( renderer.domElement );
-};
 
   render() {
-    const { width, height, style } = this.props;
-
-    return (
-      <div ref="anchor" style={ [{width, height}, style] } />
-    );
+    return null;
   }
-}
+};
 
 UserModel.propTypes = {
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  style: PropTypes.string
+  rotation: PropTypes.shape({
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired
+  }).isRequired
+}
+
+UserModel.contextTypes = {
+  scene: PropTypes.object
 }
 
 export default UserModel;

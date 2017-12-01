@@ -257,6 +257,27 @@ ___ _____ _________ ___
 }
 
 /**
+* Profile Nav style
+*/
+.profile-nav {
+  padding: 0 1em;
+  height: 28px;
+  display: flex;
+  justify-content: space-between;
+  line-height: 28px;
+
+  .ui.icon.button,
+  .ui.icon.buttons .button {
+    padding: 0.55em 0.55em 0.55em;
+    color: #eee;
+    background-color: transparent;
+    &:hover {
+      background-color: #111;
+    }
+  }
+}
+
+/**
 * Form Styles
 */
 .custom-form {
@@ -332,7 +353,6 @@ ___ _____ _________ ___
     content: ' (optional)';
   }
 }
-
 
 /**
 * Chat Styles
@@ -562,6 +582,118 @@ ___ _____ _________ ___
     text-align: left !important;
   }
 }
+/**
+* User Model customization Styles
+*/
+.user-model-customization {
+  margin: 1em;
+  height: calc(100% - 2em);
+
+  .tabs { height: 100%; }
+  .tab-labels { margin-top: 0; }
+  .tab-content {
+    // 100% - label height - margin
+    height: calc(100% - 27px - 1em);
+  }
+  .pane {
+    height: 100%;
+  }
+
+  .accordion {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    &.active {
+      flex: 1;
+    }
+    .title:not(:first-of-type) {
+      margin-top: 4px;
+    }
+    .title {
+      color: #f1f1f1 !important;
+      font-size: 16px !important;
+      background-color: rgba(0, 0, 0, 0.3);
+      font-size: bold;
+      text-transform: capitalize;
+      &.active,
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      .icon {
+        color: $primary;
+      }
+    }
+
+    .content {
+      padding: 8px !important;
+      background-color: rgba(0, 0, 0, 0.3);
+      &.active {
+        flex: 1;
+      }
+    }
+  }
+}
+
+/**
+* User Model Styles
+*/
+.profile {
+  .c2m, .c3m {
+    padding: 0 !important;
+  }
+}
+
+/*
+______ ___________ ___
+|_c2t_|____c3t____|  |
+|     |           |  |
+| c2m |   c3m     |c4|
+|_____|           |  |
+|_c2b_|___________|__|
+
+*/
+.grid-3c-vr {
+  background: url("http://www.dataselect.com/wp-content/uploads/2016/07/vTime-The-Boardroom.jpg") no-repeat center center fixed;
+  background-size: cover;
+
+  //.c2t,
+  .c2m {
+    background-color: rgba(155,155,155,0.2);
+  }
+
+  //.c3t,
+  .c3m {
+    background-color: transparent;
+  }
+
+  .chatbox {
+    background-color: inherit;
+
+    .custom-form {
+      label {
+        font-size: inherit;
+      }
+      .group {
+        margin-bottom: 1em;
+      }
+    }
+  }
+
+  .members {
+    text-align: center;
+    h3 {
+      display: none;
+    }
+    i.chevron {
+      transform: scaleX(-1);
+      filter: FlipH;
+    }
+    .content {
+      display: none;
+    }
+  }
+}
 
 /**
  * Card Styles
@@ -622,65 +754,6 @@ ___ _____ _________ ___
   }
 }
 
-/**
-* User Model Styles
-*/
-.profile.grid.grid-3c {
-  .c2m {
-    padding: 0 !important;
-  }
-}
-
-/*
-______ ___________ ___
-|_c2t_|____c3t____|  |
-|     |           |  |
-| c2m |   c3m     |c4|
-|_____|           |  |
-|_c2b_|___________|__|
-
-*/
-.grid-3c-vr {
-  background: url("http://www.dataselect.com/wp-content/uploads/2016/07/vTime-The-Boardroom.jpg") no-repeat center center fixed;
-  background-size: cover;
-
-  //.c2t,
-  .c2m {
-    background-color: rgba(155,155,155,0.2);
-  }
-
-  //.c3t,
-  .c3m {
-    background-color: transparent;
-  }
-
-  .chatbox {
-    background-color: inherit;
-
-    .custom-form {
-      label {
-        font-size: inherit;
-      }
-      .group {
-        margin-bottom: 1em;
-      }
-    }
-  }
-
-  .members {
-    text-align: center;
-    h3 {
-      display: none;
-    }
-    i.chevron {
-      transform: scaleX(-1);
-      filter: FlipH;
-    }
-    .content {
-      display: none;
-    }
-  }
-}
 /* Misc */
 .scroll-y {
   flex: 1 1 auto;

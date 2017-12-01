@@ -9,6 +9,12 @@ class PerspectiveCamera extends React.Component {
     this.updateTHREE(props);
   };
 
+  getChildContext() {
+    return {
+      camera: this.camera
+    }
+  };
+
   componentDidMount() {
     this.draw();
   };
@@ -26,6 +32,7 @@ class PerspectiveCamera extends React.Component {
     this.camera.position.y = position.y;
     this.camera.position.z = position.z;
   };
+  // camera = new THREE.PerspectiveCamera(75, 720, 0.1, 1000);
 
   draw() {
     this.context.renderer.render(this.context.scene, this.camera);
@@ -53,5 +60,9 @@ PerspectiveCamera.contextTypes = {
   scene: PropTypes.object,
   renderer: PropTypes.object
 }
+
+PerspectiveCamera.childContextTypes = {
+  camera: PropTypes.object
+};
 
 export default PerspectiveCamera;

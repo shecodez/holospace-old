@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const Pane = ({ children }) => (
-  <div>{ children }</div>
+  <div className="pane">{ children }</div>
 );
 
 Pane.propTypes = {

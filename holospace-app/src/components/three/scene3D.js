@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import * as THREE from "three";
 
-class ThreeScene extends React.Component {
+class Scene3D extends React.Component {
 
   getChildContext() {
     return {
@@ -14,7 +14,7 @@ class ThreeScene extends React.Component {
   componentDidMount() {
     this.updateTHREE(this.props);
 
-    this.refs.anchor.appendChild(this.renderer.domElement);
+    this.anchor.appendChild(this.renderer.domElement);
   };
 
   componentDidUpdate() {
@@ -31,24 +31,25 @@ class ThreeScene extends React.Component {
 
   render() {
     const { width, height, style, children } = this.props;
-    
+
     return (
-      <div ref="anchor" style={ [{width, height}, style] }>
+      <div ref={(element) => { this.anchor = element; }} style={ [{width, height}, style] }>
         { children }
       </div>
     );
   }
 }
 
-ThreeScene.propTypes = {
+Scene3D.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  style: PropTypes.shape().isRequired
 };
 
-ThreeScene.childContextTypes = {
+Scene3D.childContextTypes = {
   scene: PropTypes.object,
   renderer: PropTypes.object
 };
 
-export default ThreeScene;
+export default Scene3D;

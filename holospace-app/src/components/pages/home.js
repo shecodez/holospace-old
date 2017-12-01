@@ -5,12 +5,12 @@ import { connect } from "react-redux";
 import * as actions from  "../../actions/auth";
 
 // components
-import TopNav from "../navigation/topNav";
+import HeaderNav from "../navigation/headerNav";
 
 const Home = ({ isAuthenticated, logout }) => (
   <div>
     <header>
-      <TopNav />
+      <HeaderNav />
     </header>
 
     <h1>Home Page</h1>

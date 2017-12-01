@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
-const TopNav = ({ user }) => (
+const HeaderNav = ({ user }) => (
   <Menu secondary pointing>
     <Menu.Item as={Link} to="/">HoloSpace</Menu.Item>
 
@@ -17,7 +17,7 @@ const TopNav = ({ user }) => (
   </Menu>
 );
 
-TopNav.propTypes = {
+HeaderNav.propTypes = {
   user: PropTypes.bool.isRequired
 };
 
@@ -27,4 +27,4 @@ function mapStateToProps(state) {
   }
 };
 
-export default connect(mapStateToProps)(TopNav);
+export default connect(mapStateToProps)(HeaderNav);

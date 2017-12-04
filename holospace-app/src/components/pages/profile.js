@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import * as THREE from "three";
 import { Button } from "semantic-ui-react";
 import { connect } from "react-redux";
 
@@ -11,7 +12,6 @@ import ConfirmEmailReminder from '../alerts/confirmEmailReminder';
 import Servers from '../server/servers';
 
 import Scene3D from '../three/scene3D';
-import PerspectiveCamera from '../three/perspectiveCamera';
 // import OrbitControls from '../three/controls/orbit';
 import UserModel from '../user/userModel';
 import CurrentUser from '../user/currentUser';
@@ -22,22 +22,38 @@ import UserModelCustomization from '../user/userModelCustomization';
 class Profile extends React.Component {
   state = {
     user: this.props.user,
-    rotation: { x: 0, y: 0 },
-    scene3D: { width: 0, height: 0 }
+    scene3D: { width: 0, height: 0 },
+    cameraPosition: new THREE.Vector3(0, 0, 5),
+    lookAt: new THREE.Vector3(0, 0, 0),
+    userPosition: new THREE.Vector3(0, 0, 0),
+    userRotation: new THREE.Euler(0, 0, 0, 'XYZ')
   };
 
   componentDidMount() {
-    this.update3DSceneDimensions();
-    window.addEventListener('resize', this.update3DSceneDimensions);
+    this.mounted = true;
 
-    this.animate();
+    // Expose the global THREE object for use in debugging console
+    window.THREE = THREE;
+
+    /* loadModel( require( '../../assets/user_model.json' ) ).then( geometry =>
+        this.setState({ geometry })
+    ); */
+
+    this.onWindowResize();
+    window.addEventListener("resize", this.onWindowResize);
+
+    // this.requestGameLoop();
   };
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.update3DSceneDimensions);
+    this.mounted = false;
+
+    window.removeEventListener("resize", this.onWindowResize);
+
+    // this.cancelGameLoop();
   }
 
-  update3DSceneDimensions = () => {
+  onWindowResize = () => {
     this.setState({
       scene3D: {
         width: this.divRef.clientWidth,
@@ -57,7 +73,9 @@ class Profile extends React.Component {
   }
 
   render() {
-    const { user, rotation, scene3D } = this.state;
+    const { user, scene3D } = this.state;
+
+    const { cameraPosition, lookAt, userPosition, userRotation } = this.state;
 
     return (
       <div className="profile grid grid-3c">
@@ -83,18 +101,10 @@ class Profile extends React.Component {
             <Scene3D
               width={scene3D.width}
               height={scene3D.height}
-              style={{ margin: '0 auto' }}>
-
-              <PerspectiveCamera
-                fov={75}
-                aspect={ scene3D.width / scene3D.height }
-                near={0.1}
-                far={1000}
-                position={{ x:0, y:0, z:5 }}>
-
-                <UserModel rotation={ rotation } />
-
-              </PerspectiveCamera>
+              cameraPosition={cameraPosition}
+              lookAt={lookAt}
+            >
+              <UserModel position={userPosition} rotation={userRotation}/>
             </Scene3D>
           </div>
 

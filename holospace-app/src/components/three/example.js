@@ -1,10 +1,10 @@
 import React from 'react';
 import React3 from 'react-three-renderer';
 import * as THREE from 'three';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 
 // https://github.com/toxicFork/react-three-renderer
-class Sample extends React.Component {
+class Example extends React.Component {
   constructor(props, context) {
     super(props, context);
 
@@ -37,7 +37,7 @@ class Sample extends React.Component {
     const height = window.innerHeight; // canvas height
 
     return (
-      <React3
+      <React3 ref={(element) => { this.anchor = element; }}
         mainCamera="camera" // this points to the perspectiveCamera which has the name set to "camera" below
         width={width}
         height={height}
@@ -64,4 +64,5 @@ class Sample extends React.Component {
   }
 }
 
-ReactDOM.render(<Sample />, document.body);
+// ReactDOM.render(<Example />, document.body);
+export default Example;

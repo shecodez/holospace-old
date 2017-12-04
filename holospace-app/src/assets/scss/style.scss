@@ -25,6 +25,7 @@ html {
 }
 
 body {
+  background-size: cover;
   font-family: "Josefin Sans", sans-serif;
   margin: 0;
   padding: 0;
@@ -662,8 +663,13 @@ ______ ___________ ___
     background-color: rgba(155,155,155,0.2);
   }
 
+  .c3t {
+    filter: none;
+  }
+  
   //.c3t,
   .c3m {
+    padding: 0 !important;
     background-color: transparent;
   }
 

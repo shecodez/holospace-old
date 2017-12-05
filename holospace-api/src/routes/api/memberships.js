@@ -13,7 +13,7 @@ router.get('/memberships', Membership.getAll);
 // get list of server members
 router.get('/memberships/:serverId/members', Membership.getServerMembers);
 
-// GET holospace.com/api/memberships/:memberId/servers
+// GET holospace.com/api/memberships/:memberId/servers (:id comes from currentUser)
 // get list of member servers
 router.get('/memberships/servers', Membership.getMemberServers);
 

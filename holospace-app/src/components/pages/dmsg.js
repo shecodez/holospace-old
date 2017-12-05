@@ -2,8 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { allServersSelector } from "../../reducers/servers";
-// import { allDirectChannelsSelector } from "../../reducers/channels";
 
 import '../../assets/css/style.min.css';
 
@@ -80,8 +78,7 @@ DMsg.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    user: state.user,
-    servers: allServersSelector(state)
+    user: state.user
   }
 }
 

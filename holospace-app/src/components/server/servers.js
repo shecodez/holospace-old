@@ -1,32 +1,31 @@
 import React from "react";
-import axios from "axios";
-
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { fetchMemberServers } from "../../actions/memberships";
 // components
 import Server from "./server";
 import AddServer from "./addServer";
 
 class Servers extends React.Component {
-
   state = {
-    servers: [],
     server: null
   };
 
   componentDidMount() {
-    axios.get("/api/servers").then(res => {
-      this.setState({ servers: res.data });
-    });
+    this.props.fetchMemberServers();
   }
 
   setServer = server => this.setState({ server });
 
   render() {
-    const { servers } = this.state;
+    const { servers } = this.props;
 
     let serverList;
     if (servers) {
       serverList = servers.map(server => {
-        const isSelected = (this.state.server || servers[0])._id === server._id;
+        let isSelected = false;
+        if (this.state.server)
+          isSelected = this.state.server._id === server._id;
         return (
           <Server
             key={server._id}
@@ -49,4 +48,15 @@ class Servers extends React.Component {
   }
 }
 
-export default Servers;
+Servers.propTypes = {
+  servers: PropTypes.array.isRequired,
+  fetchMemberServers: PropTypes.func.isRequired
+};
+
+function mapStateToProps(state) {
+  return {
+    servers: state.servers
+  };
+}
+
+export default connect(mapStateToProps, { fetchMemberServers })(Servers);

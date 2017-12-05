@@ -1,4 +1,5 @@
 import db from './../models';
+import parseErrors from '../utils/parseErrors';
 
 const membershipController = {};
 
@@ -11,22 +12,42 @@ membershipController.getAll = (req, res) => {
 };
 
 membershipController.getMemberServers = (req, res) => {
-  db.Membership.find({ member_id: req.currentUser._id }).populate({
-    path: 'server',
-    select: 'icon name -_id',
-    match: { 'isDeleted': false }
-  }).then((servers) => {
-    return res.status(200).json(servers);
-  }).catch((err) => {
-    return res.status(500).json(err);
-  });
+  let servers = [];
+  let promise = db.Membership.find({
+      member_id: req.currentUser._id
+    })
+    .where('isDeleted').equals(false)
+    .populate({
+      path: 'server_id',
+      select: 'icon name',
+      match: {
+        'isDeleted': false
+      }
+    }).exec((err, memberships) => {
+      if (err)
+        return console.log(err);
+      memberships = memberships.filter(function(membership) {
+        servers.push(membership.server_id);
+      });
+    });
+    promise.then((memberships) => {
+      return res.status(200).json({ servers });
+    }).catch(err => {
+      return res.status(400).json({
+        errors: parseErrors(err.errors)
+      });
+    });
 };
 
 membershipController.getServerMembers = (req, res) => {
-  db.Membership.find({ server_id: req.params.serverId }).populate({
+  db.Membership.find({
+    server_id: req.params.serverId
+  }).populate({
     path: 'member_id',
     select: 'avatar username pin email -_id',
-    match: { 'isDeleted': false }
+    match: {
+      'isDeleted': false
+    }
   }).then((members) => {
     return res.status(200).json(members);
   }).catch((err) => {
@@ -67,9 +88,13 @@ membershipController.delete = (req, res) => {
   db.Membership.findByIdAndUpdate(
     req.params.id,
 
-    {isDeleted: true},
+    {
+      isDeleted: true
+    },
 
-    {new: true}
+    {
+      new: true
+    }
   ).then((updatedMembership) => {
     res.status(200).json('Membership successfully deleted.');
   }).catch((err) => {

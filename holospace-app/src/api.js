@@ -14,5 +14,11 @@ export default {
       axios.post("/api/auth/validate_token", { token }),
     resetPassword: (data) =>
       axios.post("/api/auth/reset_password", { data })
+  },
+  membership: {
+    fetchMemberServers: () =>
+      axios.get("/api/memberships/servers"),
+    fetchServerMembers: (serverId) =>
+      axios.get(`/api/memberships/${serverId}/members`)
   }
 };

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Form, Button, Message } from "semantic-ui-react";
+import React from "react";
+import { Form, Button, Message, Image as Img } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
 // components
@@ -8,49 +8,77 @@ import InlineError from "../alerts/inlineError";
 class ServerForm extends React.Component {
   state = {
     data: {
-      name: ''
+      name: "",
+      icon: ""
     },
     loading: false,
     errors: {}
   };
 
-  onChange = e =>
-    this.setState({
-      data: { ...this.state.data, [e.target.name]: e.target.value }
-    });
+  onChange = e => {
+    if (this.state.errors[e.target.name]) {
+      const errors = Object.assign({}, this.state.errors);
+      delete errors[e.target.name];
+      this.setState({
+        data: { ...this.state.data, [e.target.name]: e.target.value },
+        errors
+      });
+    } else {
+      this.setState({
+        data: { ...this.state.data, [e.target.name]: e.target.value }
+      });
+    }
+  }
 
-  onSubmit = () => {
+  onSubmit = (e) => {
+    e.preventDefault();
     const errors = this.validate(this.state.data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
       this.setState({ loading: true });
       this.props
-        .submit(this.state.data)
-        .catch(err =>
+        .submit(this.state.data);
+        /* .catch(err =>
           this.setState({ errors: err.response.data.errors, loading: false })
-        );
+        ); */
     }
   };
 
-  validate = (data) => {
+  validate = data => {
     const errors = {};
     if (!data.name) errors.name = "Cannot be blank";
     if (data.name.length > 50) errors.name = "Server name too long";
+    if (data.icon !== "")
+      if (!this.imageExist(data.icon)) errors.icon = "Invalid image URL";
     return errors;
-  }
+  };
+
+  imageExist = (url) => {
+    const img = new Image();
+    img.src = url;
+
+    if (!img.complete) {
+      return false;
+    }
+    else if (img.height === 0) {
+      return false;
+    }
+
+    return true;
+  };
 
   render() {
     const { data, errors, loading } = this.state;
 
     return (
       <Form className="server-form" onSubmit={this.onSubmit} loading={loading}>
-        { errors.global && (
+        {errors.global && (
           <Message negative>
             <Message.Header>Oops, something went wrong!</Message.Header>
             <p>{errors.global}</p>
           </Message>
         )}
-        <Form.Field  error={!!errors.name}>
+        <Form.Field error={!!errors.name}>
           <label htmlFor="name">Name</label>
           <input
             type="text"
@@ -60,7 +88,26 @@ class ServerForm extends React.Component {
             value={data.name}
             onChange={this.onChange}
           />
-          {errors.name && <InlineError text={errors.name}/>}
+          {errors.name && <InlineError text={errors.name} />}
+        </Form.Field>
+
+        <Form.Field error={!!errors.icon}>
+          <label htmlFor="icon">Icon URL</label>
+          <input
+            type="text"
+            id="icon"
+            name="icon"
+            placeholder=" "
+            value={data.icon}
+            onChange={this.onChange}
+          />
+          {errors.icon && <InlineError text={errors.icon} />}
+        </Form.Field>
+
+        <Form.Field>
+          {data.icon !== "" && (
+            <Img src={data.icon} size="small" bordered />
+          )}
         </Form.Field>
 
         <Button primary>Create</Button>

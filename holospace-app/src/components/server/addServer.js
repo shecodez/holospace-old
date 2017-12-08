@@ -15,10 +15,6 @@ class AddServer extends React.Component {
   submit = data => {
     this.toggleModal();
     this.props.createServer(data);
-      /* .then((server) => {
-        // this.props.history.push("/channels/:server._id/:server.default_id")
-        console.log(server);
-      }); */
   };
 
   toggleModal = () => {

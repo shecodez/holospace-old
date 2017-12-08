@@ -50,7 +50,7 @@ class MessageForm extends React.Component {
           </Message>
         )}
         <div className="group">
-          <input control='input'
+          <input
             type="text"
             id="body"
             name="body"

@@ -1,5 +1,5 @@
 import api from '../api';
-import { SET_MEMBER_SERVERS } from '../types';
+import { SET_MEMBER_SERVERS, SET_SERVER_MEMBERS } from '../types';
 
 export function setMemberServers(memberServers) {
   return {
@@ -8,13 +8,22 @@ export function setMemberServers(memberServers) {
   }
 }
 
-/* export const joinServer = data => () =>
-  api.membership.create(data); */
+export function setServerMembers(serverMembers) {
+  return {
+    type: SET_SERVER_MEMBERS,
+    serverMembers
+  }
+}
 
 export const fetchMemberServers = () => (dispatch) =>
   api.membership.fetchMemberServers().then(data => {
     dispatch(setMemberServers(data.data.servers));
   });
 
-export const fetchServerMembers = serverId => () =>
-  api.membership.fetchServerMembers(serverId);
+export const fetchServerMembers = serverId => (dispatch) =>
+  api.membership.fetchServerMembers(serverId).then(data =>{
+    dispatch(setServerMembers(data.data.members));
+  });
+
+  /* export const joinServer = data => () =>
+    api.membership.create(data); */

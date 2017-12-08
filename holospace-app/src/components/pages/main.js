@@ -76,10 +76,6 @@ Main.propTypes = {
     username: PropTypes.string.isRequired,
     confirmed: PropTypes.bool.isRequired
   }).isRequired
-  /* servers: PropTypes.arrayOf(PropTypes.shape({
-    icon_url: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired
-  }).isRequired).isRequired */
 };
 
 function mapStateToProps(state) {

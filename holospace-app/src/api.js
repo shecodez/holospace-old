@@ -15,6 +15,10 @@ export default {
     resetPassword: (data) =>
       axios.post("/api/auth/reset_password", { data })
   },
+  server: {
+    create: (server) =>
+      axios.post("/api/servers", { server }).then(res => res.data.server)
+  },
   membership: {
     fetchMemberServers: () =>
       axios.get("/api/memberships/servers"),

@@ -40,4 +40,13 @@ schema.methods.setDefaultId = function setDefaultId(id) {
 
 schema.pre('find', autoPopulateOwner);*/
 
+schema.methods.toAuthJSON = function toAuthJSON() {
+  return {
+    _id: this._id,
+    name: this.name,
+    icon: this.icon,
+    default_id: this.default_id
+  }
+};
+
 export default mongoose.model('Server', schema);

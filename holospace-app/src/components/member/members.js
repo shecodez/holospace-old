@@ -1,7 +1,8 @@
 import React from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { Button, List, Popup } from "semantic-ui-react";
-import axios from "axios";
+import { connect } from "react-redux";
+import { fetchServerMembers } from "../../actions/memberships";
 
 // components
 import User from '../user/user';
@@ -10,44 +11,49 @@ import UserCard from '../user/userCard';
 class Members extends React.Component {
 
   state = {
-    memberships: [],
     serverId: "5a0f4bcb1c35354aa41d95bd"
   };
 
   componentDidMount() {
-    axios.get(`/api/memberships/${this.state.serverId}/members`).then(res => {
-      this.setState({ memberships: res.data });
-    });
+    this.props.fetchServerMembers(this.state.serverId);
   }
 
   render() {
-    const { memberships } = this.state;
+    const { members } = this.props;
 
     const online = []; // 'away' & 'busy' goes here too?
     const offline = [];
 
-    if (memberships) {
-      memberships.forEach((membership) => {
-        switch(membership.member_id.online) {
+    if (members) {
+      members.forEach((member) => {
+        switch(member.online) {
           case true:
             // if (membership.member_id.status ==="Hide") offline.push()
             online.push(
-              <List.Item key={membership.member_id.email}>
-                <User user={membership.member_id} />
+              <List.Item key={member.email}>
+                <Popup
+                  trigger={<Button><User user={member} /></Button>}
+                  content={<UserCard user={member} joined={member.joined} />}
+                  on='click'
+                  offset={50}
+                  position='left center'
+
+                  wide='very'
+                />
               </List.Item>
             );
             break;
 
           default:
             offline.push(
-              <List.Item key={membership.member_id.email}>
+              <List.Item key={member.email}>
                 <Popup
-                  trigger={<Button><User user={membership.member_id} /></Button>}
-                  content={<UserCard user={membership.member_id} joined={membership.createdAt} />}
+                  trigger={<Button><User user={member} /></Button>}
+                  content={<UserCard user={member} joined={member.joined} />}
                   on='click'
                   offset={50}
                   position='left center'
-                  
+
                   wide='very'
                 />
               </List.Item>
@@ -61,7 +67,7 @@ class Members extends React.Component {
         <div className="header">
           <div>
             <Button icon="chevron right" />
-            <h3>Members {`(${memberships.length})`}</h3>
+            <h3>Members {`(${members.length})`}</h3>
           </div>
           <Button icon="plus" />
         </div>
@@ -81,8 +87,15 @@ class Members extends React.Component {
   }
 }
 
-/* Members.propTypes = {
-  serverId: PropTypes.string.isRequired
-} */
+Members.propTypes = {
+  members: PropTypes.array.isRequired,
+  fetchServerMembers: PropTypes.func.isRequired
+}
 
-export default Members;
+function mapStateToProps(state) {
+  return {
+    members: state.memberships
+  };
+}
+
+export default connect(mapStateToProps, { fetchServerMembers })(Members);

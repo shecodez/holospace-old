@@ -17,7 +17,7 @@ class Server extends React.Component {
           <div className="circle" />
           <div className="ring" />
         </div>
-        <Link to="#" onClick={this.setServer}>
+        <Link to={`/channels/${server._id}/${server.default_id}`} onClick={this.setServer}>
           <Popup
             trigger={
               <Image src={server.icon} circular />

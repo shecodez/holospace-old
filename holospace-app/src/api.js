@@ -19,7 +19,11 @@ export default {
     create: (server) =>
       axios.post("/api/servers", { server }).then(res => res.data.server),
     getOne: (serverId) =>
-      axios.get(`/api/servers/${serverId}`).then(res => res.data.server)
+      axios.get(`/api/servers/${serverId}`).then(res => res.data.server),
+    update: (server) =>
+      axios.put(`/api/servers/${server._id}`, { server }).then(res => res.data.server),
+    delete: (server) =>
+      axios.delete(`/api/servers/${server._id}`).then(res => res.data.server)
   },
   channel: {
     getOne: (channelId) =>

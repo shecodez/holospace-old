@@ -1,4 +1,4 @@
-import { SET_MEMBER_SERVERS, SERVER_CREATED, SERVER_FETCHED } from "../types";
+import { SET_MEMBER_SERVERS, SERVER_CREATED, SERVER_FETCHED, SERVER_UPDATED } from "../types";
 
 export default function servers(state = [], action = {}) {
   switch (action.type) {
@@ -18,6 +18,12 @@ export default function servers(state = [], action = {}) {
       }
       return [...state, action.server];
     }
+
+    case SERVER_UPDATED:
+      return state.map(item => {
+        if (item._id === action.server._id) return action.server;
+        return item;
+      });
 
     default:
       return state;

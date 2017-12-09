@@ -93,12 +93,12 @@ serverController.update = (req, res) => {
       }
     }
     */
-    req.body,
+    req.body.server,
 
     { new: true }
   )
     .then(updatedServer => {
-      res.status(200).json(updatedServer);
+      res.status(200).json({ server: updatedServer});
     })
     .catch(err => {
       res.status(500).json(err);

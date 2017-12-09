@@ -19,14 +19,14 @@ class Members extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.match.params.serverId !== this.state.serverId)
+      this.props.fetchServerMembers(nextProps.match.params.serverId);
+
     this.setState({ serverId: nextProps.match.params.serverId });
   }
 
-  componentDidUpdate() {
-    this.props.fetchServerMembers(this.state.serverId);
-  }
-
   render() {
+
     const { members } = this.props;
 
     const online = []; // 'away' & 'busy' goes here too?

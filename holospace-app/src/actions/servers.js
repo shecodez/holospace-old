@@ -34,5 +34,5 @@ export const fetchServer = byId => (dispatch) =>
 
 export const updateServer = data => (dispatch) =>
   api.server.update(data).then(server => {
-    dispatch(serverCreated(server));
+    dispatch(serverUpdated(server));
   });

@@ -24,12 +24,7 @@ const channel = {
   type: "Text"
 };
 
-const server = {
-  _id: "5a0f4bcb1c35354aa41d95bd",
-  name: "Résumé | NJN"
-};
-
-const Main = ({ user }) => (
+const Main = ({ user, match }) => (
   <div className="grid grid-4c">
     { !user.confirmed && <ConfirmEmailReminder /> }
 
@@ -37,12 +32,12 @@ const Main = ({ user }) => (
       <div className="user-btn">
         <Button primary circular size='huge' icon="envelope" />
       </div>
-      <Servers />
+      <Servers match={match} />
     </div>
 
     <div className='nested'>
       <div className="c2t section">
-        <CurrentServer server={server} />
+        <CurrentServer match={match} />
       </div>
 
       <div className="c2m stretch section">
@@ -65,7 +60,7 @@ const Main = ({ user }) => (
     </div>
 
     <div className="c4 section">
-      <Members />
+      <Members match={match} />
     </div>
   </div>
 );
@@ -75,6 +70,12 @@ Main.propTypes = {
     avatar: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     confirmed: PropTypes.bool.isRequired
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      serverId: PropTypes.string.isRequired,
+      channelId: PropTypes.string.isRequired
+    })
   }).isRequired
 };
 

@@ -8,8 +8,9 @@ import InlineError from "../alerts/inlineError";
 class ServerForm extends React.Component {
   state = {
     data: {
-      name: "",
-      icon: ""
+      _id:  this.props.server ? this.props.server._id : null,
+      name: this.props.server ? this.props.server.name : "",
+      icon: this.props.server ? this.props.server.icon : ""
     },
     loading: false,
     errors: {}
@@ -69,6 +70,7 @@ class ServerForm extends React.Component {
 
   render() {
     const { data, errors, loading } = this.state;
+    const buttonText = (data._id) ? "Update" : "Create";
 
     return (
       <Form className="server-form" onSubmit={this.onSubmit} loading={loading}>
@@ -110,14 +112,23 @@ class ServerForm extends React.Component {
           )}
         </Form.Field>
 
-        <Button primary>Create</Button>
+        <Button primary>{buttonText}</Button>
       </Form>
     );
   }
 }
 
+ServerForm.defaultProps = {
+  server: null
+};
+
 ServerForm.propTypes = {
-  submit: PropTypes.func.isRequired
+  submit: PropTypes.func.isRequired,
+  server: PropTypes.shape({
+    _id: PropTypes.string,
+    name: PropTypes.string,
+    icon: PropTypes.string
+  })
 };
 
 export default ServerForm;

@@ -25,7 +25,7 @@ serverController.getOne = (req, res) => {
       select: "username -_id"
     })
     .then(server => {
-      return res.status(200).json(server);
+      return res.status(200).json({ server });
     })
     .catch(err => {
       return res.status(500).json(err);

@@ -11,10 +11,18 @@ import UserCard from '../user/userCard';
 class Members extends React.Component {
 
   state = {
-    serverId: "5a0f4bcb1c35354aa41d95bd"
+    serverId: this.props.match.params.serverId
   };
 
   componentDidMount() {
+    this.props.fetchServerMembers(this.state.serverId);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ serverId: nextProps.match.params.serverId });
+  }
+
+  componentDidUpdate() {
     this.props.fetchServerMembers(this.state.serverId);
   }
 
@@ -88,8 +96,15 @@ class Members extends React.Component {
 }
 
 Members.propTypes = {
-  members: PropTypes.array.isRequired,
-  fetchServerMembers: PropTypes.func.isRequired
+  members: PropTypes.arrayOf(PropTypes.shape({
+    member: PropTypes.object
+  })).isRequired,
+  fetchServerMembers: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      serverId: PropTypes.string.isRequired
+    })
+  }).isRequired
 }
 
 function mapStateToProps(state) {

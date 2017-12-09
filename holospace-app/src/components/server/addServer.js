@@ -33,7 +33,7 @@ class AddServer extends React.Component {
         <Modal size={"small"} open={isOpen} onClose={this.toggleModal}>
           <Modal.Header>Create New Server</Modal.Header>
           <Modal.Content>
-            <ServerForm submit={this.submit} />
+            <ServerForm server={this.props.server} submit={this.submit} />
           </Modal.Content>
         </Modal>
       </div>
@@ -41,11 +41,17 @@ class AddServer extends React.Component {
   }
 }
 
+AddServer.defaultProps = {
+  server: null
+}
+
 AddServer.propTypes = {
-  /* history: PropTypes.shape({
-    push: PropTypes.func.isRequired
-  }).isRequired, */
-  createServer: PropTypes.func.isRequired
+  createServer: PropTypes.func.isRequired,
+  server: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    icon: PropTypes.string.isRequired
+  })
 };
 
 export default connect(null, { createServer })(AddServer);

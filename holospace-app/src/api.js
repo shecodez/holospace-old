@@ -17,7 +17,13 @@ export default {
   },
   server: {
     create: (server) =>
-      axios.post("/api/servers", { server }).then(res => res.data.server)
+      axios.post("/api/servers", { server }).then(res => res.data.server),
+    getOne: (serverId) =>
+      axios.get(`/api/servers/${serverId}`).then(res => res.data.server)
+  },
+  channel: {
+    getOne: (channelId) =>
+      axios.get(`/api/channels/${channelId}`).then(res => res.data.channel)
   },
   membership: {
     fetchMemberServers: () =>

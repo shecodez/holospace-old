@@ -5,7 +5,7 @@ import { Image, Popup } from "semantic-ui-react";
 
 class Server extends React.Component {
 
-  setServer = () => { this.props.onServerSelect(this.props.server); };
+  setServer = () => { /* this.props.onServerSelect(this.props.server); */ };
 
   render() {
     const { server } = this.props;
@@ -17,7 +17,7 @@ class Server extends React.Component {
           <div className="circle" />
           <div className="ring" />
         </div>
-        <Link to={`/channels/${server._id}/${server.default_id}`} onClick={this.setServer}>
+        <Link to={`/channels/${server._id}/${server.default_id}`} /* onClick={this.setServer} */>
           <Popup
             trigger={
               <Image src={server.icon} circular />
@@ -36,7 +36,7 @@ Server.propTypes = {
     name: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired
   }).isRequired,
-  onServerSelect: PropTypes.func.isRequired,
+  // onServerSelect: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired
 }
 

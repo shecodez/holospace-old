@@ -68,7 +68,6 @@ membershipController.getServerMembers = (req, res) => {
           "avatar": membership.member_id.avatar,
           "joined": membership.createdAt
         };
-        console.log(member);
         members.push(member);
       });
     });

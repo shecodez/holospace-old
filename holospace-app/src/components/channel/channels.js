@@ -1,6 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Icon } from "semantic-ui-react";
-import axios from "axios";
+import { connect } from "react-redux";
+import { fetchServerChannels } from "../../actions/channels";
 
 // Components
 import Channel from './channel';
@@ -11,20 +13,25 @@ import Pane from '../tab/pane';
 class Channels extends React.Component {
 
   state = {
-    channels: [],
-    channel: null
+    serverId: this.props.match.params.serverId
   };
 
   componentDidMount() {
-    axios.get("/api/channels").then(res => {
-      this.setState({ channels: res.data });
-    });
+    this.props.fetchServerChannels(this.state.serverId);
   }
 
-  setChannel = channel => this.setState({ channel });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.match.params.serverId !== this.state.serverId)
+      this.props.fetchServerChannels(nextProps.match.params.serverId);
+
+    this.setState({ serverId: nextProps.match.params.serverId });
+  }
+
+  // setChannel = channel => this.setState({ channel });
 
   render() {
-    const { channels } = this.state;
+    // const { channels } = this.state;
+    const { channels, match } = this.props;
 
     const textChannelList = [];
     const voiceChannelList = [];
@@ -32,24 +39,15 @@ class Channels extends React.Component {
 
     if (channels) {
       channels.forEach((channel) => {
-        const isSelected = (this.state.channel || channels[0])._id === channel._id;
+        const isSelected = match.params.channelId === channel._id;
 
         switch(channel.type) {
-          case "Text":
-            textChannelList.push(
-              <Channel
-                key={channel._id}
-                channel={channel}
-                onChannelSelect={this.setChannel}
-                isSelected={isSelected}
-              />
-            );
-            break;
 
           case "Voice":
             voiceChannelList.push(
               <Channel
                 key={channel._id}
+                serverId={match.params.serverId}
                 channel={channel}
                 onChannelSelect={this.setChannel}
                 isSelected={isSelected}
@@ -61,6 +59,7 @@ class Channels extends React.Component {
             vrChannelList.push(
               <Channel
                 key={channel._id}
+                serverId={match.params.serverId}
                 channel={channel}
                 onChannelSelect={this.setChannel}
                 isSelected={isSelected}
@@ -72,6 +71,7 @@ class Channels extends React.Component {
             textChannelList.push(
               <Channel
                 key={channel._id}
+                serverId={match.params.serverId}
                 channel={channel}
                 onChannelSelect={this.setChannel}
                 isSelected={isSelected}
@@ -85,28 +85,28 @@ class Channels extends React.Component {
       <div className="channels section">
         <Tabs selected={0}>
           <Pane label="ALL">
-            <AddChannel type ='Text' />
+            <AddChannel match={match} type ='Text' />
             {textChannelList}
 
-            <AddChannel type ='Voice' />
+            <AddChannel match={match} type ='Voice' />
             {voiceChannelList}
 
-            <AddChannel type ='VR' />
+            <AddChannel match={match} type ='VR' />
             {vrChannelList}
           </Pane>
 
           <Pane label={<Icon name="browser" />}>
-            <AddChannel type='Text' />
+            <AddChannel match={match} type='Text' />
             {textChannelList}
           </Pane>
 
           <Pane label={<Icon name="microphone" />}>
-            <AddChannel type='Voice' />
+            <AddChannel match={match} type='Voice' />
             {voiceChannelList}
           </Pane>
 
           <Pane label={<Icon name="game" />}>
-            <AddChannel type='VR' />
+            <AddChannel match={match} type='VR' />
             {vrChannelList}
           </Pane>
         </Tabs>
@@ -115,4 +115,22 @@ class Channels extends React.Component {
   }
 }
 
-export default Channels;
+Channels.propTypes = {
+  channels: PropTypes.arrayOf(PropTypes.shape({
+    channel: PropTypes.object
+  })).isRequired,
+  fetchServerChannels: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      serverId: PropTypes.string.isRequired
+    })
+  }).isRequired
+};
+
+function mapStateToProps(state) {
+  return {
+    channels: state.channels
+  }
+}
+
+export default connect(mapStateToProps, { fetchServerChannels })(Channels);

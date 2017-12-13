@@ -59,7 +59,7 @@ Servers.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    servers: state.servers,
+    servers: state.servers
   };
 }
 

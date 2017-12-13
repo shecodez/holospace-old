@@ -2,11 +2,11 @@ import { SET_MEMBER_SERVERS, SERVER_CREATED, SERVER_FETCHED, SERVER_UPDATED } fr
 
 export default function servers(state = [], action = {}) {
   switch (action.type) {
-    case SERVER_CREATED:
-      return [...state, action.server];
-
     case SET_MEMBER_SERVERS:
       return action.memberServers;
+
+    case SERVER_CREATED:
+      return [...state, action.server];
 
     case SERVER_FETCHED: {
       const index = state.findIndex(item => item._id === action.server._id);

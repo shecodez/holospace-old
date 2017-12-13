@@ -8,18 +8,23 @@ import { createChannel } from "../../actions/channels";
 import ChannelForm from "../forms/channelForm";
 
 class AddChannel extends React.Component {
-
   state = {
     isOpen: false
   };
 
   submit = data => {
     this.toggleModal();
-    this.props.createChannel(data);
-      /* .then((channel) => {
-        // this.props.history.push("/channels/:channel.server_id/:channel._id")
-        console.log(channel);
-      }); */
+    this.props.createChannel(this.addServerIdToChannel(data));
+  };
+
+  addServerIdToChannel = (data) => {
+    const channel = {
+      name: data.name,
+      topic: data.topic,
+      type: data.type,
+      server_id: this.props.match.params.serverId
+    };
+    return channel;
   };
 
   toggleModal = () => {
@@ -37,7 +42,7 @@ class AddChannel extends React.Component {
           <span>
             { `${this.props.type} channels` }
           </span>
-          <Button icon="plus" onClick={this.toggleModal} />
+          <Button compact icon="plus" onClick={this.toggleModal} />
         </div>
 
         <Modal size={"small"} open={isOpen} onClose={this.toggleModal}>
@@ -52,11 +57,13 @@ class AddChannel extends React.Component {
 }
 
 AddChannel.propTypes = {
-  /* history: PropTypes.shape({
-    push: PropTypes.func.isRequired
-  }).isRequired, */
   createChannel: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired
+  type: PropTypes.string.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      serverId: PropTypes.string.isRequired
+    })
+  }).isRequired
 };
 
 export default connect(null, { createChannel })(AddChannel);

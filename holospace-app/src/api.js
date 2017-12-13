@@ -22,14 +22,36 @@ export default {
       axios.get(`/api/servers/${serverId}`).then(res => res.data.server),
     update: (server) =>
       axios.put(`/api/servers/${server._id}`, { server }).then(res => res.data.server),
-    delete: (server) =>
-      axios.delete(`/api/servers/${server._id}`).then(res => res.data.server)
+    delete: (serverId) =>
+      axios.delete(`/api/servers/${serverId}`).then(res => res.data.server)
   },
   channel: {
+    create: (channel) =>
+      axios.post("/api/channels", { channel }).then(res => res.data.channel),
     getOne: (channelId) =>
-      axios.get(`/api/channels/${channelId}`).then(res => res.data.channel)
+      axios.get(`/api/channels/${channelId}`).then(res => res.data.channel),
+    update: (channel) =>
+      axios.put(`/api/channels/${channel._id}`, { channel }).then(res => res.data.channel),
+    delete: (channelId) =>
+      axios.delete(`/api/channels/${channelId}`).then(res => res.data.channel),
+    // TODO:  `/api/servers/${serverId}/channels`
+    fetchServerChannels: (serverId) =>
+      axios.get(`/api/channels/server/${serverId}`).then(res => res.data.channels)
+  },
+  message: {
+    create: (message) =>
+      axios.post("/api/messages", { message }).then(res => res.data.message),
+    update: (message) =>
+      axios.put( `/api/messages/${message._id}`, { message }).then(res => res.data.message),
+    delete: (messageId) =>
+      axios.delete(`/api/messages/${messageId}`).then(res => res.data.message),
+    // TODO: `/api/channels/${channelId}/messages`
+    fetchChannelMessages: (channelId) =>
+      axios.get(`/api/messages/channel/${channelId}`).then(res => res.data.messages)
   },
   membership: {
+    create: (membership) =>
+      axios.post("/api/memberships", { membership }).then(res => res.data.membership),
     fetchMemberServers: () =>
       axios.get("/api/memberships/servers"),
     fetchServerMembers: (serverId) =>

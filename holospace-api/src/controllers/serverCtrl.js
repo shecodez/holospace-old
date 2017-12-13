@@ -21,7 +21,7 @@ serverController.getAll = (req, res) => {
 serverController.getOne = (req, res) => {
   db.Server.findById(req.params.id)
     .populate({
-      path: "owner",
+      path: "owner_id",
       select: "username -_id"
     })
     .then(server => {
@@ -98,7 +98,7 @@ serverController.update = (req, res) => {
     { new: true }
   )
     .then(updatedServer => {
-      res.status(200).json({ server: updatedServer});
+      res.status(200).json({ server: updatedServer });
     })
     .catch(err => {
       res.status(500).json(err);
@@ -106,6 +106,7 @@ serverController.update = (req, res) => {
 };
 
 serverController.delete = (req, res) => {
+  // if req.currentUser._id === server.owner_id
   db.Server.findByIdAndUpdate(
     req.params.id,
     {

@@ -1,5 +1,5 @@
 import React from 'react';
-// import axios from "axios";
+import PropTypes from "prop-types";
 
 // components
 import History from './history';
@@ -14,22 +14,7 @@ class Chat extends React.Component {
       type: "Text"
     }
   };
-  /*
-  // Connect to the server
-  api_url = '~/servers/:id/channels/:id';
-  this.socket = io(api_url).connect();
 
-  // Listen for messages from the server
-  this.socket.on('server:message', message => {
-    this.addMessage(message);
-  });
-  */
-
-  /* componentDidMount() {
-    axios.get("/api/messages/:channel_id").then(res => {
-      this.setState({ history: res.data });
-    });
-  } */
   componentWillMount() {
     this.setState({
       history: [
@@ -76,46 +61,25 @@ class Chat extends React.Component {
     });
   }
 
-  sendHandler = (message) => {
-    const msgObj = {
-      body: message,
-      user: this.props.user,
-      channel_id: this.props.currentChannel.id,
-      created_at: new Date().valueOf()
-    };
-
-    // Emit message to the servers
-    // this.socket.emit('client:message', msgObj);
-    this.addMessage(msgObj);
-  }
-
-  addMessage(message) {
-    // console.log(message);
-    const messages = this.state.history;
-    messages.push(message);
-    this.setState({history:messages});
-  }
-
-  filteredMessages() {
-    return this.state.history.filter(({channel_id}) => channel_id === this.props.currentChannel.id);
-  }
 
   render() {
+    const { match } = this.props;
+
     return (
       <div className="chat">
-        <History history={this.state.history/*this.filteredMessages()*/} />
-        <Chatbox onSend={this.sendHandler} channel={this.state.channel} />
+        <History match={match} />
+        <Chatbox match={match} />
       </div>
     );
   }
 }
 
-/* Chat.defaultProps = {
-  history: []
-};
-
 Chat.propTypes = {
-  history: React.PropTypes.array.isRequired
-}; */
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      channelId: PropTypes.string.isRequired
+    })
+  }).isRequired
+};
 
 export default Chat;

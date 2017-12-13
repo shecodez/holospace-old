@@ -42,19 +42,27 @@ const main = () => (
   </div>
 );
 
-const message = (username) => (
-  <MessageForm message_label={`Message @${username}`}/>
-);
+class UserCard extends React.Component {
 
-const UserCard = ({ user, joined }) => (
-  <Card fluid className="user-card">
-    <Card.Content header={ header(user, joined) } />
-    <Card.Content description={ main() } />
-    <Card.Content extra>
-      { message(user.username) }
-    </Card.Content>
-  </Card>
-);
+  submit = data => {
+    console.log(data);
+    // this.props.createDirectMessage(data);
+  }
+
+  render() {
+    const { user, joined } = this.props;
+    return (
+      <Card fluid className="user-card">
+        <Card.Content header={ header(user, joined) } />
+        <Card.Content description={ main() } />
+        <Card.Content extra>
+          <MessageForm submit={this.submit} message_label={`Message @${user.username}`} />    
+        </Card.Content>
+      </Card>
+    );
+  }
+}
+
 
 UserCard.propTypes = {
   user: PropTypes.shape({

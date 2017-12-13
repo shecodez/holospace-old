@@ -18,12 +18,6 @@ import Chat from '../chat/chat';
 
 import Members from '../member/members';
 
-const channel = {
-  _id: "5a0f4bcb1c35354aa41d95bf",
-  name: "General",
-  type: "Text"
-};
-
 const Main = ({ user, match }) => (
   <div className="grid grid-4c">
     { !user.confirmed && <ConfirmEmailReminder /> }
@@ -41,7 +35,7 @@ const Main = ({ user, match }) => (
       </div>
 
       <div className="c2m stretch section">
-        <Channels />
+        <Channels match={match} />
       </div>
 
       <div className="c2b section">
@@ -51,11 +45,11 @@ const Main = ({ user, match }) => (
 
     <div className='nested'>
       <div className="c3t section">
-        <CurrentChannel channel={channel} />
+        <CurrentChannel match={match} />
       </div>
 
       <div className="c3m stretch section">
-        <Chat user={user} />
+        <Chat user={user} match={match} />
       </div>
     </div>
 

@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Comment } from "semantic-ui-react";
 import moment from "moment";
+
 /* formatDate = (dateStr) => {
   const msgDate = new Date(dateStr);
   return dateStr `${msgDate.toLocaleDateString()  } at ${  msgDate.toLocaleTimeString()}`;
@@ -9,11 +10,11 @@ import moment from "moment";
 
 const Message = ({message}) => (
   <Comment>
-    <Comment.Avatar src={message.user.avatar} />
+    <Comment.Avatar src={message.author_id.avatar} />
     <Comment.Content>
-      <Comment.Author as='a'>{message.user.username}</Comment.Author>
+      <Comment.Author as='a'>{message.author_id.username}</Comment.Author>
       <Comment.Metadata>
-        <div>{moment(message.created_at).calendar()}</div>
+        <div>{moment(message.createdAt).calendar()}</div>
       </Comment.Metadata>
       <Comment.Text>{message.body}</Comment.Text>
     </Comment.Content>
@@ -22,12 +23,12 @@ const Message = ({message}) => (
 
 Message.propTypes = {
   message: PropTypes.shape({
-    user: PropTypes.shape({
+    author_id: PropTypes.shape({
       avatar: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired
     }).isRequired,
     body: PropTypes.string.isRequired,
-    created_at: PropTypes.number.isRequired
+    createdAt: PropTypes.string.isRequired
   }).isRequired
 };
 

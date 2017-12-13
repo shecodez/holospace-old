@@ -29,17 +29,6 @@ import UserModel from "../user/userModel";
 
 import Members from "../member/members";
 
-const channel = {
-  _id: "5a0f4bcb1c35354aa41d95bf",
-  name: "General",
-  type: "Text"
-};
-
-const server = {
-  _id: "5a0f4bcb1c35354aa41d95bd",
-  name: "Résumé | NJN"
-};
-
 class VR extends React.Component {
   state = {
     user: this.props.user,
@@ -119,6 +108,7 @@ class VR extends React.Component {
   };
 
   render() {
+    const { match } = this.props;
     const { user, scene3D } = this.state;
 
     const {
@@ -136,11 +126,11 @@ class VR extends React.Component {
 
         <div className="nested">
           <div className="c2t section">
-            <CurrentServer server={server} />
+            <CurrentServer match={match} />
           </div>
 
           <div className="c2m stretch section">
-            <Chat user={user} />
+            <Chat user={user} match={match} />
           </div>
 
           <div className="c2b section">
@@ -150,7 +140,7 @@ class VR extends React.Component {
 
         <div className="nested">
           <div className="c3t section">
-            <CurrentChannel channel={channel} />
+            <CurrentChannel match={match} />
           </div>
 
           <div
@@ -184,7 +174,7 @@ class VR extends React.Component {
         </div>
 
         <div className="c4 section">
-          <Members />
+          <Members match={match} />
         </div>
       </div>
     );
@@ -196,6 +186,12 @@ VR.propTypes = {
     avatar: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     confirmed: PropTypes.bool.isRequired
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      serverId: PropTypes.string.isRequired,
+      channelId: PropTypes.string.isRequired
+    })
   }).isRequired
 };
 

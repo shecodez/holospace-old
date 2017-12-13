@@ -8,28 +8,40 @@ import InlineError from "../alerts/inlineError";
 class MessageForm extends React.Component {
   state = {
     data: {
-      body: ''
+      body: this.props.message ? this.props.message.body : ''
     },
     loading: false,
     errors: {}
   };
 
-  onChange = e =>
-    this.setState({
-      data: { ...this.state.data, [e.target.name]: e.target.value }
-    });
+  onChange = e => {
+    if (this.state.errors[e.target.name]) {
+      const errors = Object.assign({}, this.state.errors);
+      delete errors[e.target.name];
+      this.setState({
+        data: { ...this.state.data, [e.target.name]: e.target.value },
+        errors
+      });
+    } else {
+      this.setState({
+        data: { ...this.state.data, [e.target.name]: e.target.value }
+      });
+    }
+  }
 
-  onSubmit = () => {
+  onSubmit = (e) => {
+    e.preventDefault();
     const errors = this.validate(this.state.data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
       this.setState({ loading: true });
-      /* this.props
-        .submit(this.state.data)
-        .catch(err =>
+      this.props
+        .submit(this.state.data);
+        /* .catch(err =>
           this.setState({ errors: err.response.data.errors, loading: false })
         ); */
     }
+    this.setState({ data: { body: '' }});
   };
 
   validate = (data) => {
@@ -60,6 +72,7 @@ class MessageForm extends React.Component {
             required
           />
           <label htmlFor="body">{this.props.message_label}</label>
+          <button className="emoji-btn">EMO</button>
           {errors.topic && <InlineError text={errors.topic}/>}
         </div>
       </form>
@@ -67,9 +80,16 @@ class MessageForm extends React.Component {
   }
 }
 
+MessageForm.defaultProps = {
+  message: null
+};
+
 MessageForm.propTypes = {
-  // submit: PropTypes.func.isRequired,
-  message_label: PropTypes.string.isRequired
+  submit: PropTypes.func.isRequired,
+  message_label: PropTypes.string.isRequired,
+  message: PropTypes.shape({
+    body: PropTypes.string
+  })
 };
 
 export default MessageForm;

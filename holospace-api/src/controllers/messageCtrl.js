@@ -1,44 +1,77 @@
-import db from './../models';
+import db from "./../models";
+import parseErrors from "../utils/parseErrors";
 
 const messageController = {};
 
 messageController.getAll = (req, res) => {
-  db.Message.find({}).then((messages) => {
-    return res.status(200).json(messages);
-  }).catch((err) => {
-    return res.status(500).json(err);
-  });
+  db.Message.find({})
+    .where("isDeleted").equals(false)
+    .populate({
+      path: "author_id",
+      select: "avatar username pin -_id"
+    })
+    .then(messages => {
+      return res.status(200).json(messages);
+    })
+    .catch(err => {
+      return res.status(500).json(err);
+    });
 };
 
 messageController.getOne = (req, res) => {
-  db.Message.findById(req.params.id).then((message) => {
-    return res.status(200).json(message);
-  }).catch((err) => {
-    return res.status(500).json(err);
-  });
+  db.Message.findById(req.params.id)
+    .then(message => {
+      return res.status(200).json(message);
+    })
+    .catch(err => {
+      return res.status(500).json(err);
+    });
+};
+
+messageController.getChannelMessages = (req, res) => {
+  db.Message.find({
+    channel_id: req.params.channelId
+  })
+    .where("isDeleted").equals(false)
+    .populate({
+      path: "author_id",
+      select: "avatar username pin -_id"
+    })
+    .then(messages => {
+      return res.status(200).json({ messages });
+    })
+    .catch(err => {
+      return res.status(400).json({
+        errors: parseErrors(err.errors)
+      });
+    });
 };
 
 messageController.create = (req, res) => {
-  const {
-    body,
-    author_id,
-    server_id
-  } = req.body;
+  const { body, channel_id } = req.body.message;
+  const author_id = req.currentUser._id;
 
   // Validations
 
   const message = new db.Message({
     body,
     author_id,
-    server_id
+    channel_id
   });
 
-  message.save().then((newMessage) => {
-    //...
-    return res.status(200).json(newMessage);
-  }).catch((err) => {
-    return res.status(500).json(err);
-  });
+  message
+    .save()
+    .then(newMessage => {
+      newMessage.populate({
+        path: "author_id",
+        select: "avatar username pin -_id"
+      }, (err, populatedMessage) => {
+        return res.status(200).json({ message: populatedMessage });
+      })
+    })
+    .catch(err => {
+      return res.status(500).json(err);
+    });
 };
 
 messageController.update = (req, res) => {
@@ -46,29 +79,32 @@ messageController.update = (req, res) => {
     req.params.id,
 
     // Validations
-    req.body,
+    req.body.message,
 
-    {new: true}
-  ).then((updatedMessage) => {
-    res.status(200).json(updatedMessage);
-  }).catch((err) => {
-    res.status(500).json(err);
-  });
+    { new: true }
+  )
+    .then(updatedMessage => {
+      res.status(200).json({ message: updatedMessage });
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 };
 
 messageController.delete = (req, res) => {
   db.Message.findByIdAndUpdate(
     req.params.id,
 
-    {isDeleted: true},
+    { isDeleted: true },
 
-    {new: true}
-  ).then((updatedMessage) => {
-    res.status(200).json('Message successfully deleted.');
-  }).catch((err) => {
-    res.status(500).json(err);
-  });
+    { new: true }
+  )
+    .then(updatedMessage => {
+      res.status(200).json("Message successfully deleted.");
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 };
-
 
 export default messageController;

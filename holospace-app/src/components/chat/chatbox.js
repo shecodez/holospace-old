@@ -1,51 +1,66 @@
-import React, { Component } from 'react';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { createMessage } from "../../actions/messages";
+import { fetchChannel } from "../../actions/channels";
 
-class Chatbox extends Component {
-  constructor() {
-    super();
-    this.state = {
-      data: {
-        message_body: ''
-      }
+// components
+import MessageForm from "../forms/messageForm";
+
+class Chatbox extends React.Component {
+
+  componentDidMount() {
+    if (this.props.match.params.channelId) {
+      this.props.fetchChannel(this.props.match.params.channelId);
     }
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
   }
 
-  onChange = e =>
-    this.setState({
-      data: { ...this.state.data, [e.target.name]: e.target.value }
-    });
+  submit = data => {
+    // console.log(this.addChannelIdToMessage(data));
+    this.props.createMessage(this.addChannelIdToMessage(data));
+  }
 
-  onSubmit(e) {
-    e.preventDefault();
-    this.props.onSend(this.state.data.message_body);
-    this.setState({ data: { message_body: '' }});
+  addChannelIdToMessage = (data) => {
+    const message = {
+      body: data.body,
+      channel_id: this.props.channel._id
+    }
+    return message;
   }
 
   render() {
-    const { data } = this.state;
+    const { channel } = this.props;
 
     return (
       <div className='chatbox'>
-        {/* <ChatInputForm onSend=onSubmit(this) message_label={'Message to #' + this.props.channel} /> */}
-        <form className='custom-form' onSubmit={this.onSubmit}>
-          <div className='group'>
-            <input
-              type='text'
-              id='message_body'
-              name='message_body'
-              placeholder=' '
-              value={data.message_body}
-              onChange={this.onChange}
-              required />
-            <label>{`Message #${  this.props.channel.name}`} </label>
-            <button type='submit'>SEND</button>
-          </div>
-        </form>
+        { channel && <MessageForm submit={this.submit} message_label={`Message #${channel.name}`} />}
       </div>
     );
   }
 }
 
-export default Chatbox;
+Chatbox.defaultProps = {
+  channel: null
+};
+
+Chatbox.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      channelId: PropTypes.string.isRequired
+    })
+  }).isRequired,
+  channel: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired
+  }),
+  fetchChannel: PropTypes.func.isRequired,
+  createMessage: PropTypes.func.isRequired
+};
+
+function mapStateToProps(state, props) {
+  return {
+    channel: state.channels.find(item => item._id === props.match.params.channelId)
+  };
+}
+
+export default connect(mapStateToProps, { fetchChannel, createMessage })(Chatbox);

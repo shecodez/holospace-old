@@ -21,7 +21,7 @@ export const fetchMemberServers = () => (dispatch) =>
   });
 
 export const fetchServerMembers = serverId => (dispatch) =>
-  api.membership.fetchServerMembers(serverId).then(data =>{
+  api.membership.fetchServerMembers(serverId).then(data => {
     dispatch(setServerMembers(data.data.members));
   });
 

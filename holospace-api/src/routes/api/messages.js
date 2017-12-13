@@ -13,6 +13,10 @@ router.get('/messages', Message.getAll);
 // get one message by id
 router.get('/messages/:id', Message.getOne);
 
+// GET holospace.com/api/messages/channel/:channelId
+// get list of channel messages
+router.get('/messages/channel/:channelId', Message.getChannelMessages);
+
 // POST holospace.com/api/messages/:params
 // create new message
 router.post('/messages', Message.create);

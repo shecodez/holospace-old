@@ -13,6 +13,10 @@ router.get('/channels', Channel.getAll);
 // get one channel by id
 router.get('/channels/:id', Channel.getOne);
 
+// GET holospace.com/api/channels/:serverId
+// get list of server channels
+router.get('/channels/server/:serverId', Channel.getServerChannels);
+
 // POST holospace.com/api/channels/:params
 // create new channel
 router.post('/channels', Channel.create);

@@ -8,29 +8,41 @@ import InlineError from "../alerts/inlineError";
 class ChannelForm extends React.Component {
   state = {
     data: {
-      name: '',
-      topic: '',
-      type: this.props.type
+      _id: this.props.channel ?  this.props.channel._id : null,
+      name: this.props.channel ?  this.props.channel.name : '',
+      topic: this.props.channel ?  this.props.channel.topic : '',
+      type: this.props.channel ?  this.props.channel.type : this.props.type
     },
     loading: false,
     errors: {}
   };
 
-  onChange = e =>
-    this.setState({
-      data: { ...this.state.data, [e.target.name]: e.target.value }
-    });
+  onChange = e => {
+    if (this.state.errors[e.target.name]) {
+      const errors = Object.assign({}, this.state.errors);
+      delete errors[e.target.name];
+      this.setState({
+        data: { ...this.state.data, [e.target.name]: e.target.value },
+        errors
+      });
+    } else {
+      this.setState({
+        data: { ...this.state.data, [e.target.name]: e.target.value }
+      });
+    }
+  }
 
-  onSubmit = () => {
+  onSubmit = (e) => {
+    e.preventDefault();
     const errors = this.validate(this.state.data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
       this.setState({ loading: true });
       this.props
         .submit(this.state.data)
-        .catch(err =>
+        /* .catch(err =>
           this.setState({ errors: err.response.data.errors, loading: false })
-        );
+        ); */
     }
   };
 
@@ -43,6 +55,7 @@ class ChannelForm extends React.Component {
 
   render() {
     const { data, errors, loading } = this.state;
+    const buttonText = (data._id) ? "Update" : "Create";
 
     return (
       <Form className="channel-form" onSubmit={this.onSubmit} loading={loading}>
@@ -78,15 +91,25 @@ class ChannelForm extends React.Component {
           {errors.topic && <InlineError text={errors.topic}/>}
         </Form.Field>
 
-        <Button primary>Create</Button>
+        <Button primary>{buttonText}</Button>
       </Form>
     );
   }
 }
 
+ChannelForm.defaultProps = {
+  channel: null
+}
+
 ChannelForm.propTypes = {
   submit: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired
+  type: PropTypes.string.isRequired,
+  channel: PropTypes.shape({
+    _id: PropTypes.string,
+    name: PropTypes.string,
+    topic: PropTypes.string,
+    type: PropTypes.string
+  })
 };
 
 export default ChannelForm;

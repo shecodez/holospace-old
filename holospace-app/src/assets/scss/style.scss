@@ -299,10 +299,11 @@ ___ _____ _________ ___
   padding: 1.5rem 1rem 0 1rem;
   text-align: left;
 
-  .emoji-btn {
+  .emoji-btn,
+  .search-form-btns {
     position: absolute;
     right: 0;
-    top: 10px;
+    top: 12px;
     border: none;
     outline: none;
     background-color: transparent;
@@ -319,6 +320,10 @@ ___ _____ _________ ___
   .group {
     position:relative;
     margin-bottom:45px;
+  }
+
+  input {
+    padding-right: 50px !important;
   }
 
   input,
@@ -386,6 +391,28 @@ ___ _____ _________ ___
   }
 }
 
+.custom-form.search-form {
+  .group {
+    display: flex;
+  }
+  input {
+    padding: 0 !important;
+    font-size: 3.5em !important;
+  }
+  button {
+		background: none !important;
+    padding: 0 5px !important;
+    &:hover {
+      i { color: $primary; }
+    }
+    i {
+      color: #fff;
+      font-size: 2.5em;
+      height: 0 !important;
+    }
+  }
+}
+
 /**
 * Chat Styles
 */
@@ -404,15 +431,32 @@ ___ _____ _________ ___
     overflow-y: auto;
     .comments { max-width: 100%; }
     .comment {
-      margin: 0 1rem;
-      //border-bottom: 1px solid rgba(155,155,155,0.2);
-      padding: 7px 0;
+      margin: .8rem 1rem;
+      border-radius: 7px;
+      background-color: rgba(155,155,155,0.2);
+      padding: 7px 10px;
+      position: relative;
+      &:hover {
+        .actions {
+          visibility: visible;
+        }
+      }
       .author,
       .text {
         color: #ddd;
+        .edited {
+          font-size: 10px;
+          color: #999;
+        }
       }
       .metadata{
         color: #666;
+      }
+      .actions {
+        position: absolute;
+        right: 10px;
+        bottom: 7px;
+        visibility: hidden;
       }
     }
   }
@@ -469,6 +513,10 @@ ___ _____ _________ ___
   padding: 5px 0;
   position: relative;
 
+  img {
+    border-radius: 100%;
+  }
+
   .dot {
     position: absolute;
     display: block;
@@ -505,6 +553,9 @@ ___ _____ _________ ___
       .circle {
         background-color: $primary;
       }
+    }
+    img {
+      border-radius: 25%;
     }
   }
   /*.highlight {
@@ -702,6 +753,15 @@ ______ ___________ ___
   .c3m {
     padding: 0 !important;
     background-color: transparent;
+  }
+
+  .chat {
+    .avatar {
+      display: none !important;
+    }
+    .content {
+      margin: 0 !important;
+    }
   }
 
   .chatbox {

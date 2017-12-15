@@ -21,6 +21,7 @@ class CurrentServer extends React.Component {
   submit = data => {
     this.toggleModal();
     this.props.updateServer(data);
+    // this.props.updateServer(data).then(this.toggleModal());
   };
 
   toggleModal = () => {

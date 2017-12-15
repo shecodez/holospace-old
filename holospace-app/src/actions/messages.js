@@ -1,5 +1,5 @@
 import api from '../api';
-import { MESSAGE_CREATED, SET_CHANNEL_MESSAGES } from '../types';
+import { MESSAGE_CREATED, MESSAGE_UPDATED, SET_CHANNEL_MESSAGES } from '../types';
 
 export function messageCreated(message) {
   return {
@@ -15,6 +15,13 @@ export function setChannelMessages(channelMessages) {
   }
 }
 
+export function messageUpdated(message) {
+  return {
+    type: MESSAGE_UPDATED,
+    message
+  }
+}
+
 export const createMessage = data => (dispatch) =>
   api.message.create(data).then(message => {
     dispatch(messageCreated(message));
@@ -23,4 +30,9 @@ export const createMessage = data => (dispatch) =>
 export const fetchChannelMessages = channelId => (dispatch) =>
   api.message.fetchChannelMessages(channelId).then(data => {
     dispatch(setChannelMessages(data));
+  });
+
+export const updateMessage = data => (dispatch) =>
+  api.message.update(data).then(message => {
+    dispatch(messageUpdated(message));
   });

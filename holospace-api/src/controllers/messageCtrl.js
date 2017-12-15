@@ -84,7 +84,12 @@ messageController.update = (req, res) => {
     { new: true }
   )
     .then(updatedMessage => {
-      res.status(200).json({ message: updatedMessage });
+      updatedMessage.populate({
+        path: "author_id",
+        select: "avatar username pin -_id"
+      }, (err, populatedMessage) => {
+        return res.status(200).json({ message: populatedMessage });
+      })
     })
     .catch(err => {
       res.status(500).json(err);

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button } from "semantic-ui-react";
+import { Button, Popup } from "semantic-ui-react";
 import { connect } from "react-redux";
 
 import '../../assets/css/style.min.css';
@@ -33,7 +33,14 @@ const DMsg = ({ user }) => (
 
     <div className="c1 section">
       <div className="user-btn">
-        <Button primary circular size='huge' icon="user circle outline" />
+        <Popup
+          trigger={
+            <Button primary circular size='huge' icon="user circle outline" />
+          }
+          inverted
+          content={"User profile"}
+          position='right center'
+        />
       </div>
       <Servers />
     </div>

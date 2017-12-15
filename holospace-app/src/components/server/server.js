@@ -20,7 +20,7 @@ class Server extends React.Component {
         <Link to={`/channels/${server._id}/${server.default_id}`} /* onClick={this.setServer} */>
           <Popup
             trigger={
-              <Image src={server.icon} circular />
+              <Image src={server.icon} />
             }
             content={server.name}
             position='right center'

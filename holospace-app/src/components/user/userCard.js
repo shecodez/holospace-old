@@ -56,7 +56,7 @@ class UserCard extends React.Component {
         <Card.Content header={ header(user, joined) } />
         <Card.Content description={ main() } />
         <Card.Content extra>
-          <MessageForm submit={this.submit} message_label={`Message @${user.username}`} />    
+          <MessageForm submit={this.submit} message_label={`Message @${user.username}`} />
         </Card.Content>
       </Card>
     );

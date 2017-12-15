@@ -1,16 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button, List, Popup } from "semantic-ui-react";
+import { Button, List, Popup, Modal } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { fetchServerMembers } from "../../actions/memberships";
 
 // components
 import User from '../user/user';
 import UserCard from '../user/userCard';
+import MembershipForm from '../forms/membershipForm';
 
 class Members extends React.Component {
 
   state = {
+    isOpen: false,
     serverId: this.props.match.params.serverId
   };
 
@@ -25,8 +27,20 @@ class Members extends React.Component {
     this.setState({ serverId: nextProps.match.params.serverId });
   }
 
-  render() {
+  submit = data => {
+    this.toggleModal();
+    console.log(data);
+    // this.props.createMembership(data);
+  };
 
+  toggleModal = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  };
+
+  render() {
+    const { isOpen } = this.state;
     const { members } = this.props;
 
     const online = []; // 'away' & 'busy' goes here too?
@@ -77,7 +91,7 @@ class Members extends React.Component {
             <Button icon="chevron right" />
             <h3>Members {`(${members.length})`}</h3>
           </div>
-          <Button icon="plus" />
+          <Button icon="plus" onClick={this.toggleModal} />
         </div>
         <div className="scroll-y">
           <h4 className="toggle-online-members-btn">Online{`(${online.length})`}</h4>
@@ -90,6 +104,15 @@ class Members extends React.Component {
             {offline}
           </List>
         </div>
+
+        <Modal size={"small"} open={isOpen} onClose={this.toggleModal}>
+          <Modal.Header>Join A Server</Modal.Header>
+          <Modal.Content>
+            <p>Enter an invite code to become a member of an existing server.</p>
+
+            <MembershipForm submit={this.submit} />
+          </Modal.Content>
+        </Modal>
       </div>
     );
   }

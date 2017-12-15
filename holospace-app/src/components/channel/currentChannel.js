@@ -1,10 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Button, Modal } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { Button } from "semantic-ui-react";
 import { fetchChannel } from "../../actions/channels";
 
+// components
+import SearchForm from "../forms/searchForm";
+
 class CurrentChannel extends React.Component {
+  state = {
+    isOpen: false
+  };
 
   componentDidMount() {
     if (this.props.match.params.channelId) {
@@ -12,7 +18,20 @@ class CurrentChannel extends React.Component {
     }
   }
 
+  submit = data => {
+    this.toggleModal();
+    console.log(data);
+    // this.props.search(data).then(this.toggleModal());
+  };
+
+  toggleModal = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  };
+
   render() {
+    const { isOpen } = this.state;
     const { channel } = this.props;
 
     return (
@@ -28,9 +47,15 @@ class CurrentChannel extends React.Component {
 
         <Button.Group>
           <Button icon="bell outline" />
-          <Button icon="search" />
+          <Button icon="search" onClick={this.toggleModal} />
           <Button icon="calendar plus" />
         </Button.Group>
+
+        <Modal size={"small"} open={isOpen} onClose={this.toggleModal} basic>
+          <Modal.Content>
+            <SearchForm submit={this.submit} />
+          </Modal.Content>
+        </Modal>
       </div>
     );
   }

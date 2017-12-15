@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import { Message } from "semantic-ui-react";
+import { Button, Message } from "semantic-ui-react";
 
 // components
 import InlineError from "../alerts/inlineError";
 
-class MessageForm extends React.Component {
+class SearchForm extends React.Component {
   state = {
     data: {
-      _id: this.props.message ? this.props.message._id : null,
-      body: this.props.message ? this.props.message.body : ''
+      query: ''
     },
     loading: false,
     errors: {}
@@ -42,12 +41,12 @@ class MessageForm extends React.Component {
           this.setState({ errors: err.response.data.errors, loading: false })
         ); */
     }
-    this.setState({ data: { body: '' }});
+    this.setState({ data: { query: '' }});
   };
 
   validate = (data) => {
     const errors = {};
-    if (!data.body) errors.body = "Cannot be blank";
+    if (!data.query) errors.query = "Cannot be blank";
     return errors;
   }
 
@@ -55,7 +54,7 @@ class MessageForm extends React.Component {
     const { data, errors } = this.state;
 
     return (
-      <form className="custom-form" onSubmit={this.onSubmit}>
+      <form className="custom-form search-form" onSubmit={this.onSubmit}>
         { errors.global && (
           <Message negative>
             <Message.Header>Oops, something went wrong!</Message.Header>
@@ -64,16 +63,19 @@ class MessageForm extends React.Component {
         )}
         <div className="group">
           <input
-            type="text"
-            id="body"
-            name="body"
-            placeholder=" "
-            value={data.body}
+            type="search"
+            id="query"
+            name="query"
+            placeholder="Search..."
+            value={data.query}
             onChange={this.onChange}
             required
           />
-          <label htmlFor="body">{this.props.message_label}</label>
-          <button className="emoji-btn">EMO</button>
+          <label htmlFor="query" />
+          <Button.Group>
+            <Button icon="microphone" />
+            <Button icon="search" type='submit' />
+          </Button.Group>
           {errors.topic && <InlineError text={errors.topic}/>}
         </div>
       </form>
@@ -81,17 +83,9 @@ class MessageForm extends React.Component {
   }
 }
 
-MessageForm.defaultProps = {
-  message: null
-};
 
-MessageForm.propTypes = {
+SearchForm.propTypes = {
   submit: PropTypes.func.isRequired,
-  message_label: PropTypes.string.isRequired,
-  message: PropTypes.shape({
-    _id: PropTypes.string,
-    body: PropTypes.string
-  })
 };
 
-export default MessageForm;
+export default SearchForm;

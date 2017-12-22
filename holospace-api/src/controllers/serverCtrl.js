@@ -7,8 +7,8 @@ serverController.getAll = (req, res) => {
   db.Server.find({})
     .where("isDeleted").equals(false)
     .populate({
-      path: "owner",
-      select: "username -_id"
+      path: "owner_id",
+      select: "username pin -_id"
     })
     .then(servers => {
       return res.status(200).json(servers);
@@ -22,7 +22,7 @@ serverController.getOne = (req, res) => {
   db.Server.findById(req.params.id)
     .populate({
       path: "owner_id",
-      select: "username -_id"
+      select: "username pin -_id"
     })
     .then(server => {
       return res.status(200).json({ server });
@@ -64,7 +64,7 @@ serverController.create = (req, res) => {
 
         newServer.save().then(server => {
           return res.status(200).json({
-            server: server.toAuthJSON()
+            server: server
           });
         });
       });

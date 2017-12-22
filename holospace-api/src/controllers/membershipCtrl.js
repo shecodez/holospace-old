@@ -21,9 +21,12 @@ membershipController.getMemberServers = (req, res) => {
     .where("isDeleted").equals(false)
     .populate({
       path: "server_id",
-      select: "icon name default_id",
       match: {
         isDeleted: false
+      },
+      populate: {
+        path: "owner_id",
+        select: "username pin -_id"
       }
     })
     .exec((err, memberships) => {
@@ -57,7 +60,11 @@ membershipController.getServerMembers = (req, res) => {
       }
     })
     .exec((err, memberships) => {
-      if (err) return console.log(err);
+      if (err) {
+        res.send({ error: err });
+        return next(err);
+      }
+      
       memberships = memberships.filter(function(membership) {
         const member = {
           "pin": membership.member_id.pin,

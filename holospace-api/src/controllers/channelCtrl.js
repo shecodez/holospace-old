@@ -61,6 +61,7 @@ channelController.create = (req, res) => {
   channel
     .save()
     .then(newChannel => {
+      // if newChannel.direct db.subscriptions.create(req.currentUser._id, newChannel._id)
       return res.status(200).json({ channel: newChannel });
     })
     .catch(err => {

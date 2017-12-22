@@ -68,8 +68,7 @@ CurrentChannel.defaultProps = {
 CurrentChannel.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      serverId: PropTypes.string.isRequired,
-      channelId: PropTypes.string.isRequired
+      channelId: PropTypes.string
     })
   }).isRequired,
   channel: PropTypes.shape({

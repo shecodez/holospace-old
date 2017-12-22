@@ -6,29 +6,28 @@ import moment from "moment";
 // components
 import MessageForm from "../forms/messageForm";
 
-const header = (user, joined) => (
+const header = (member, joined) => (
   <div>
     <div className="user" style={{ display: "inline-block" }}>
       <div className="deets">
-        <Image avatar src={ user.avatar } />
+        <Image avatar src={ member.avatar } />
         <div className="online-status" />
       </div>
     </div>
-    {user.username}#{user.pin}<br />
+    {member.username}#{member.pin}<br />
     Member since: { moment(joined).format('MMM YYYY') }
   </div>
 );
 
-const main = () => (
+const main = (role) => (
   <div className="horizontal-group">
     <div className="g-row">
       <Icon name='shield' /> Role
       <Label.Group size='mini' className="user-roles">
         <Label basic color='violet'>
-          Admin
-          <Icon name='delete' />
+          {role} <Icon name='delete' />
         </Label>
-        <Label as='a'>
+        <Label as='button'>
           <Icon name='plus' style={{ margin: '0' }} />
         </Label>
       </Label.Group>
@@ -50,13 +49,20 @@ class UserCard extends React.Component {
   }
 
   render() {
-    const { user, joined } = this.props;
+    const { member, joined, owner } = this.props;
+
+    let serverOwner = false;
+    if (owner.username === member.username && owner.pin === member.pin)
+      serverOwner = true;
+
+    const role = serverOwner ? 'owner' : 'member';
+
     return (
       <Card fluid className="user-card">
-        <Card.Content header={ header(user, joined) } />
-        <Card.Content description={ main() } />
+        <Card.Content header={ header(member, joined) } />
+        <Card.Content description={ main(role) } />
         <Card.Content extra>
-          <MessageForm submit={this.submit} message_label={`Message @${user.username}`} />
+          {!serverOwner && <MessageForm submit={this.submit} message_label={`Message @${member.username}`} />}
         </Card.Content>
       </Card>
     );
@@ -65,10 +71,14 @@ class UserCard extends React.Component {
 
 
 UserCard.propTypes = {
-  user: PropTypes.shape({
+  member: PropTypes.shape({
     username: PropTypes.string.isRequired
   }).isRequired,
-  joined: PropTypes.string.isRequired
+  joined: PropTypes.string.isRequired,
+  owner: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    pin: PropTypes.number.isRequired
+  }).isRequired
 };
 
 export default UserCard;

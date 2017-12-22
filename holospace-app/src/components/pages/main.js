@@ -19,9 +19,7 @@ import Chat from '../chat/chat';
 import Members from '../member/members';
 
 const Main = ({ user, match }) => (
-  <div className="grid grid-4c">
-    { !user.confirmed && <ConfirmEmailReminder /> }
-
+  <div className="site-grid-r2">
     <div className="c1 section">
       <div className="user-btn">
         <Popup
@@ -36,32 +34,38 @@ const Main = ({ user, match }) => (
       <Servers match={match} />
     </div>
 
-    <div className='nested'>
-      <div className="c2t section">
-        <CurrentServer match={match} />
-      </div>
+    <div className="two-r">
+      { !user.confirmed && <ConfirmEmailReminder /> }
 
-      <div className="c2m stretch section">
-        <Channels match={match} />
-      </div>
+      <div className="grid grid-4c">
+        <div className='nested'>
+          <div className="c2t section">
+            <CurrentServer match={match} />
+          </div>
 
-      <div className="c2b section">
-        <CurrentUser user={user} />
-      </div>
-    </div>
+          <div className="c2m stretch section">
+            <Channels match={match} />
+          </div>
 
-    <div className='nested'>
-      <div className="c3t section">
-        <CurrentChannel match={match} />
-      </div>
+          <div className="c2b section">
+            <CurrentUser user={user} />
+          </div>
+        </div>
 
-      <div className="c3m stretch section">
-        <Chat user={user} match={match} />
-      </div>
-    </div>
+        <div className='nested'>
+          <div className="c3t section">
+            <CurrentChannel match={match} />
+          </div>
 
-    <div className="c4 section">
-      <Members match={match} />
+          <div className="c3m stretch section">
+            <Chat user={user} match={match} />
+          </div>
+        </div>
+
+        <div className="c4 section">
+          <Members match={match} />
+        </div>
+      </div>
     </div>
   </div>
 );

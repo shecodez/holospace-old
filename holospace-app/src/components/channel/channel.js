@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+// import io from "socket.io-client";
 import { Link } from "react-router-dom";
-import { Icon, Button, Modal } from "semantic-ui-react";
+import { Button, Modal } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { updateChannel } from "../../actions/channels";
 
@@ -14,7 +15,21 @@ class Channel extends React.Component {
     isOpen: false
   };
 
-  setChannel = () => { /* this.props.onChannelSelect(this.props.channel); */ };
+  componentDidMount() {
+    const { user } = this.props;
+
+    if (this.props.match.params.channelId === this.props.channel._id) {
+      this.props.socket.emit('channel:join', {
+        channel: this.props.channel._id,
+        avatar: user.avatar,
+        username: `${user.username}#${user.pin}`
+      });
+    }
+  }
+
+  setChannel = () => {
+    this.props.onChannelSelect(this.props.channel);
+  };
 
   submit = data => {
     this.toggleModal();
@@ -34,15 +49,19 @@ class Channel extends React.Component {
     const isSelected = this.props.isSelected ? " is-current-channel" : "";
 
     const prepend =
-      channel.type === "Text" ? "# " : <Icon name="angle right" />;
+      channel.type === "Text" ? "# " : "";
 
-    const url =
-      channel.type === "VR"
+    let url = ''
+    if (channel.direct) {
+      url = `direct/channels/${channel._id}`;
+    } else {
+      url = channel.type === "VR"
         ? `/channels/${serverId}/vr/${channel._id}`
         : `/channels/${serverId}/${channel._id}`;
+    }
 
     return (
-      <li className={`channel ${isSelected}`}>
+      <div className={`channel ${isSelected}`}>
         <Link
           to={url}
           className="select-channel-link"
@@ -56,10 +75,11 @@ class Channel extends React.Component {
         <Modal size={"small"} open={isOpen} onClose={this.toggleModal}>
           <Modal.Header>Update Channel</Modal.Header>
           <Modal.Content>
+            {/* TODO: if channel.direct send form channel subscribers */}
             <ChannelForm channel={channel} submit={this.submit} type={channel.type} />
           </Modal.Content>
         </Modal>
-      </li>
+      </div>
     );
   }
 }
@@ -71,10 +91,26 @@ Channel.propTypes = {
     type: PropTypes.string.isRequired,
     topic: PropTypes.string
   }).isRequired,
-  // onChannelSelect: PropTypes.func.isRequired,
+  onChannelSelect: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
   serverId: PropTypes.string.isRequired,
-  updateChannel: PropTypes.func.isRequired
+  updateChannel: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      channelId: PropTypes.string
+    })
+  }).isRequired,
+  user: PropTypes.shape({
+    avatar: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    pin: PropTypes.number.isRequired
+  }).isRequired,
 };
 
-export default connect(null, { updateChannel })(Channel);
+function mapStateToProps(state) {
+  return {
+    user: state.user
+  };
+}
+
+export default connect(mapStateToProps, { updateChannel })(Channel);

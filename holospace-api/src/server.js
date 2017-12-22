@@ -2,6 +2,7 @@
  * Module Dependencies
 **/
 import express from 'express';
+import socket from './socket';
 import fs from 'fs';
 import path from 'path';
 import mongoose from 'mongoose';
@@ -21,7 +22,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(path.resolve(__dirname, '../holospace-app/dist')));
+app.use(express.static(path.resolve(__dirname, '../holospace-app/build')));
 
 /**
  * Routes/Routing
@@ -29,10 +30,14 @@ app.use(express.static(path.resolve(__dirname, '../holospace-app/dist')));
 require('./routes')(app);
 
 /**
- * Start Server, & Connect to DB
+ * Start Server, Connect to DB, & add socket.io
  **/
 const port = process.env.PORT || 8080;
-const server = app.listen(port, () => {
+
+const server = require('http').createServer(app);
+const io = require('socket.io').listen(server);
+
+server.listen(port, () => {
   mongoose.Promise = bluebird;
   mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 
@@ -44,6 +49,8 @@ const server = app.listen(port, () => {
     console.log('Express server listening on %d, in %s mode', port, app.get('env'));
   });
 });
+
+socket(io);
 
 /**
  * Error Handling

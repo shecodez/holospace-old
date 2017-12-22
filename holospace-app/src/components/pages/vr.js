@@ -31,7 +31,6 @@ import Members from "../member/members";
 
 class VR extends React.Component {
   state = {
-    user: this.props.user,
     scene3D: { width: 0, height: 0 },
     cameraPosition: new THREE.Vector3(0, 0, 5),
     lookAt: new THREE.Vector3(0, 0, 0),
@@ -108,8 +107,8 @@ class VR extends React.Component {
   };
 
   render() {
-    const { match } = this.props;
-    const { user, scene3D } = this.state;
+    const { user, match } = this.props;
+    const { scene3D } = this.state;
 
     const {
       cameraPosition,
@@ -121,62 +120,67 @@ class VR extends React.Component {
     } = this.state;
 
     return (
-      <div className="grid grid-3c-vr">
-        {!user.confirmed && <ConfirmEmailReminder />}
+      <div className="site-grid-r1">
+        <div className="one-r">
+          {!user.confirmed && <ConfirmEmailReminder />}
 
-        <div className="nested">
-          <div className="c2t section">
-            <CurrentServer match={match} />
-          </div>
+          <div className="grid grid-3c-vr">
+            <div className="nested">
+              <div className="c2t section">
+                <CurrentServer match={match} />
+              </div>
 
-          <div className="c2m stretch section">
-            <Chat user={user} match={match} />
-          </div>
+              <div className="c2m stretch section">
+                <Chat user={user} match={match} />
+              </div>
 
-          <div className="c2b section">
-            <CurrentUser user={user} />
-          </div>
-        </div>
+              <div className="c2b section">
+                <CurrentUser user={user} />
+              </div>
+            </div>
 
-        <div className="nested">
-          <div className="c3t section">
-            <CurrentChannel match={match} />
-          </div>
+            <div className="nested">
+              <div className="c3t section">
+                <CurrentChannel match={match} />
+              </div>
 
-          <div
-            className="c3m stretch section"
-            ref={element => {
-              this.divRef = element;
-            }}
-          >
-            <Scene3D
-              width={scene3D.width}
-              height={scene3D.height}
-              cameraPosition={cameraPosition}
-              lookAt={lookAt}
-            >
-              <World
-                position={new THREE.Vector3(0, 0, 0)}
-                rotation={worldRotation}
+              <div
+                className="c3m stretch section"
+                ref={element => {
+                  this.divRef = element;
+                }}
               >
-                <Skybox
-                  position={new THREE.Vector3(0, 0, 0)}
-                  rotation={skyRotation}
-                />
-                <UserModel
-                  key={THREE.Math.generateUUID()}
-                  position={userPosition}
-                  rotation={userRotation}
-                />
-              </World>
-            </Scene3D>
-          </div>
-        </div>
+                <Scene3D
+                  width={scene3D.width}
+                  height={scene3D.height}
+                  cameraPosition={cameraPosition}
+                  lookAt={lookAt}
+                >
+                  <World
+                    position={new THREE.Vector3(0, 0, 0)}
+                    rotation={worldRotation}
+                  >
+                    <Skybox
+                      position={new THREE.Vector3(0, 0, 0)}
+                      rotation={skyRotation}
+                    />
+                    <UserModel
+                      key={THREE.Math.generateUUID()}
+                      position={userPosition}
+                      rotation={userRotation}
+                    />
+                  </World>
+                </Scene3D>
+              </div>
+            </div>
 
-        <div className="c4 section">
-          <Members match={match} />
+            <div className="c4 section">
+              <Members match={match} />
+            </div>
+          </div>
         </div>
       </div>
+
     );
   }
 }

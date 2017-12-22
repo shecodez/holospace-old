@@ -52,7 +52,7 @@ Servers.propTypes = {
   fetchMemberServers: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      serverId: PropTypes.string.isRequired
+      serverId: PropTypes.string
     })
   }).isRequired
 };

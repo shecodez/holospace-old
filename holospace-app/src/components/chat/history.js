@@ -7,26 +7,19 @@ import { fetchChannelMessages } from "../../actions/messages";
 // components
 import Message from "./message";
 
-/* TODO: make message blocks
-for (i=0; i < messages.length; i++) {
-  let msgBlock = message[i].body
-  if (messages.length > 1) {
-    if (message[i].author === message[i-1].author)
-      msgBlock.push(message[i].body+"\n");
-  } else {
-    <Message key={message[i]._id} message={msgBlock} />
-    msgBlock = "";
-  }
-} */
+// TODO: make message blocks
 
 class History extends React.Component {
 
   state = {
-    channelId: this.props.match.params.channelId
+    channelId: this.props.match.params.channelId || null,
+    loading: false
   };
 
   componentDidMount() {
-    this.props.fetchChannelMessages(this.props.match.params.channelId);
+    if (this.props.match.params.channelId) {
+      this.props.fetchChannelMessages(this.props.match.params.channelId);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -34,35 +27,46 @@ class History extends React.Component {
       this.props.fetchChannelMessages(nextProps.match.params.channelId);
 
     this.setState({ channelId: nextProps.match.params.channelId });
+
+    // Smart scrolling - when the user scrolls up we don't want auto scroll to bottom
+    /* const container = this.messageContainer;
+    if (container.scrollHeight - (container.scrollTop + container.offsetHeight) >= 50) {
+      this.scrolled = true;
+    } else {
+      this.scrolled = false;
+    } */
   }
 
   componentDidUpdate() {
+    if (this.scrolled) {
+      return;
+    }
     // There is a new message in the state, scroll to bottom of list
-    const objDiv = document.getElementById('message-list');
-    if (objDiv)
-      objDiv.scrollTop = objDiv.scrollHeight;
+    const container = this.messageContainer;
+    container.scrollTop = container.scrollHeight;
   }
 
   render() {
     const { messages } = this.props;
+
     const history = messages.map(message => (
       <Message key={message._id} message={message} />
     ));
 
     return (
-      <div className="chat-history">
-        {messages.length === 0 ? (
-          <p>No messages in this channel yet</p>
-        ) : (
-          <Comment.Group size="large">
-            <Header as="h3" inverted dividing>
-              In the very beginning...
-            </Header>
-            <div id='message-list'>
+      <div className="chat-history"
+        ref={(element) => { this.messageContainer = element; }}>
+
+        {messages.length === 0
+          ? <p>
+              No messages
+            </p>
+          : <Comment.Group size="large">
+              <Header as="h3" inverted dividing>
+                In the very beginning...
+              </Header>
               {history}
-            </div>
-          </Comment.Group>
-        )}
+            </Comment.Group>}
       </div>
     );
   }
@@ -76,7 +80,7 @@ History.propTypes = {
   ).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      channelId: PropTypes.string.isRequired
+      channelId: PropTypes.string
     })
   }).isRequired,
   fetchChannelMessages: PropTypes.func.isRequired
@@ -89,3 +93,11 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, { fetchChannelMessages })(History);
+
+/*
+{ loading &&
+  <Dimmer active>
+    <Loader content='Loading' />
+  </Dimmer>
+}
+ */

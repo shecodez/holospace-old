@@ -41,45 +41,36 @@ class Members extends React.Component {
 
   render() {
     const { isOpen } = this.state;
-    const { members } = this.props;
+    const { members, server } = this.props;
 
     const online = []; // 'away' & 'busy' goes here too?
     const offline = [];
 
-    if (members) {
+    if (members && server) {
       members.forEach((member) => {
+        const memberPopup =
+          <List.Item key={member.email}>
+            <Popup
+              trigger={<Button><User user={member} /></Button>}
+              content={<UserCard member={member} joined={member.joined} owner={server.owner_id} />}
+              on='click'
+              offset={50}
+              position='left center'
+
+              wide='very'
+            />
+          </List.Item>;
+
         switch(member.online) {
           case true:
-            // if (membership.member_id.status ==="Hide") offline.push()
-            online.push(
-              <List.Item key={member.email}>
-                <Popup
-                  trigger={<Button><User user={member} /></Button>}
-                  content={<UserCard user={member} joined={member.joined} />}
-                  on='click'
-                  offset={50}
-                  position='left center'
-
-                  wide='very'
-                />
-              </List.Item>
-            );
+            /* if (member.status === "Hide")
+              offline.push(memberPopup);
+            else */
+              online.push(memberPopup);
             break;
 
           default:
-            offline.push(
-              <List.Item key={member.email}>
-                <Popup
-                  trigger={<Button><User user={member} /></Button>}
-                  content={<UserCard user={member} joined={member.joined} />}
-                  on='click'
-                  offset={50}
-                  position='left center'
-
-                  wide='very'
-                />
-              </List.Item>
-            );
+            offline.push(memberPopup);
         }
       });
     }
@@ -118,6 +109,10 @@ class Members extends React.Component {
   }
 }
 
+Members.defaultProps = {
+  server: null
+}
+
 Members.propTypes = {
   members: PropTypes.arrayOf(PropTypes.shape({
     member: PropTypes.object
@@ -127,11 +122,18 @@ Members.propTypes = {
     params: PropTypes.shape({
       serverId: PropTypes.string.isRequired
     })
-  }).isRequired
+  }).isRequired,
+  server: PropTypes.shape({
+    owner_id: PropTypes.shape({
+      username: PropTypes.string,
+      pin: PropTypes.number
+    })
+  })
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
+    server: state.servers.find(server => server._id === props.match.params.serverId),
     members: state.memberships
   };
 }

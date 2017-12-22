@@ -48,6 +48,12 @@ class ServerForm extends React.Component {
   validate = data => {
     const errors = {};
     if (!data.name) errors.name = "Cannot be blank";
+      /* when name text field is invalid, 
+      it needs to be 'focused' so the user
+      can start typing again without
+      having to click the text field.
+      this.refs.name.getDOMNode().focus(); */
+
     if (data.name.length > 50) errors.name = "Server name too long";
     if (data.icon !== "")
       if (!this.imageExist(data.icon)) errors.icon = "Invalid image URL";

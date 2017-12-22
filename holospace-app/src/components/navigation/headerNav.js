@@ -10,7 +10,7 @@ const HeaderNav = ({ user }) => (
 
     <Menu.Menu position="right">
       <Menu.Item>
-        { user && <Link to="/channels/@me">Open App</Link> }
+        { user && <Link to="/@me">Open App</Link> }
         { !user && <Link to="/login">Login</Link> }
       </Menu.Item>
     </Menu.Menu>

@@ -33,7 +33,17 @@ class Chatbox extends React.Component {
 
     return (
       <div className='chatbox'>
-        { channel && <MessageForm submit={this.submit} message_label={`Message #${channel.name}`} />}
+        { channel &&
+          <MessageForm
+            submit={this.submit}
+            message_label={
+              channel.direct ?
+                `Direct Message #${channel.name}`
+              :
+                `Message #${channel.name}`
+            }
+          />
+        }
       </div>
     );
   }
@@ -46,7 +56,7 @@ Chatbox.defaultProps = {
 Chatbox.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      channelId: PropTypes.string.isRequired
+      channelId: PropTypes.string
     })
   }).isRequired,
   channel: PropTypes.shape({

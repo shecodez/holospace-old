@@ -15,7 +15,7 @@ class Login extends React.Component {
   };
 
   submit = data =>
-    this.props.login(data).then(() => this.props.history.push("/channels/@me"));
+    this.props.login(data).then(() => this.props.history.push("/@me"));
 
   submitResetPasswordRequest = email => {
     this.setState({ email });

@@ -4,6 +4,7 @@ import Subscription from './subscription';
 import Membership from './membership';
 import Channel from './channel';
 import Message from './message';
+import Conversation from './conversation';
 
 export default {
   User,
@@ -11,7 +12,8 @@ export default {
   Subscription,
   Membership,
   Channel,
-  Message
+  Message,
+  Conversation
   //Announcement,
   //Event,
   //Notification,

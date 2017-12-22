@@ -21,7 +21,6 @@ import UserModelCustomization from '../user/userModelCustomization';
 
 class Profile extends React.Component {
   state = {
-    user: this.props.user,
     scene3D: { width: 0, height: 0 },
     cameraPosition: new THREE.Vector3(0, 0, 5),
     lookAt: new THREE.Vector3(0, 0, 0),
@@ -73,14 +72,13 @@ class Profile extends React.Component {
   }
 
   render() {
-    const { user, scene3D } = this.state;
+    const { user, match } = this.props;
+    const { scene3D } = this.state;
 
     const { cameraPosition, lookAt, userPosition, userRotation } = this.state;
 
     return (
-      <div className="profile grid grid-3c">
-        { !user.confirmed && <ConfirmEmailReminder /> }
-
+      <div className="site-grid-r2">
         <div className="c1 section">
           <div className="dmsg-btn">
             <Popup
@@ -92,41 +90,46 @@ class Profile extends React.Component {
               position='right center'
             />
           </div>
-          <Servers />
+          <Servers match={match} />
         </div>
 
-        <div className='nested'>
-          <div className="c2t section">
-            <div style={{ textAlign: 'center', height: '28px', lineHeight: '28px' }}>
-              Preview
+        <div className="two-r">
+          {!user.confirmed && <ConfirmEmailReminder />}
+          <div className="profile grid grid-3c">
+            <div className='nested'>
+              <div className="c2t section">
+                <div style={{ textAlign: 'center', height: '28px', lineHeight: '28px' }}>
+                  Preview
+                </div>
+              </div>
+
+              <div className="c2m stretch section"
+                ref={(element) => { this.divRef = element; }}>
+
+                <Scene3D
+                  width={scene3D.width}
+                  height={scene3D.height}
+                  cameraPosition={cameraPosition}
+                  lookAt={lookAt}
+                >
+                  <UserModel position={userPosition} rotation={userRotation}/>
+                </Scene3D>
+              </div>
+
+              <div className="c2b section">
+                <CurrentUser user={user} />
+              </div>
             </div>
-          </div>
 
-          <div className="c2m stretch section"
-            ref={(element) => { this.divRef = element; }}>
+            <div className='nested'>
+              <div className="c3t section">
+                <ProfileNav />
+              </div>
 
-            <Scene3D
-              width={scene3D.width}
-              height={scene3D.height}
-              cameraPosition={cameraPosition}
-              lookAt={lookAt}
-            >
-              <UserModel position={userPosition} rotation={userRotation}/>
-            </Scene3D>
-          </div>
-
-          <div className="c2b section">
-            <CurrentUser user={user} />
-          </div>
-        </div>
-
-        <div className='nested'>
-          <div className="c3t section">
-            <ProfileNav />
-          </div>
-
-          <div className="c3m stretch section">
-            <UserModelCustomization />
+              <div className="c3m stretch section">
+                <UserModelCustomization />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -139,6 +142,9 @@ Profile.propTypes = {
     avatar: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     confirmed: PropTypes.bool.isRequired
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({})
   }).isRequired
 };
 

@@ -72,6 +72,13 @@ CurrentServer.propTypes = {
 };
 
 function mapStateToProps(state, props) {
+  /* if (state.servers.length > 0) {
+    const server = state.servers.filter(server => {
+      return server._id === props.match.params.serverId})[0]
+    return { server }
+  }
+  return { server: null } */
+
   return {
     server:
       state.servers.find(item => item._id === props.match.params.serverId) ||

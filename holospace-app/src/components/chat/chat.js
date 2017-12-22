@@ -5,34 +5,35 @@ import PropTypes from "prop-types";
 import History from './history';
 import Chatbox from './chatbox';
 
+
 class Chat extends React.Component {
-  state = {
-    history: [],
-    channel: {
-      _id: "5a0f4bcb1c35354aa41d95bf",
-      name: "General",
-      type: "Text"
-    }
+  state: {
+    users: []
   };
 
   render() {
-    const { match } = this.props;
+    const { match, direct } = this.props;
 
     return (
       <div className="chat">
-        <History match={match} />
-        <Chatbox match={match} />
+        <History match={match} direct={direct} />
+        <Chatbox match={match} direct={direct} />
       </div>
     );
   }
 }
 
+Chat.defaultProps = {
+  direct: false
+};
+
 Chat.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      channelId: PropTypes.string.isRequired
+      channelId: PropTypes.string
     })
-  }).isRequired
+  }).isRequired,
+  direct: PropTypes.bool
 };
 
 export default Chat;

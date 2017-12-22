@@ -22,7 +22,8 @@ class AddChannel extends React.Component {
       name: data.name,
       topic: data.topic,
       type: data.type,
-      server_id: this.props.match.params.serverId
+      server_id: this.props.match.params.serverId || null,
+      direct: this.props.direct
     };
     return channel;
   };
@@ -34,19 +35,30 @@ class AddChannel extends React.Component {
   };
 
   render() {
+    const { direct } = this.props
     const { isOpen } = this.state
 
     return (
       <div>
         <div className="add-channel">
           <span>
-            { `${this.props.type} channels` }
+            { direct ?
+              'Direct Channels'
+            :
+              `${this.props.type} channels`
+            }
           </span>
           <Button compact icon="plus" onClick={this.toggleModal} />
         </div>
 
         <Modal size={"small"} open={isOpen} onClose={this.toggleModal}>
-          <Modal.Header>{`Create new ${this.props.type} channel`}</Modal.Header>
+          <Modal.Header>
+            { direct ?
+              'Create new Direct Messages channel'
+            :
+              `Create new ${this.props.type} channel`
+            }
+          </Modal.Header>
           <Modal.Content>
             <ChannelForm submit={this.submit} type={this.props.type} />
           </Modal.Content>
@@ -56,14 +68,19 @@ class AddChannel extends React.Component {
   }
 }
 
+AddChannel.defaultProps = {
+  direct: false
+};
+
 AddChannel.propTypes = {
   createChannel: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      serverId: PropTypes.string.isRequired
+      serverId: PropTypes.string
     })
-  }).isRequired
+  }).isRequired,
+  direct: PropTypes.bool
 };
 
 export default connect(null, { createChannel })(AddChannel);

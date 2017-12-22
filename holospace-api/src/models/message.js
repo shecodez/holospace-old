@@ -12,17 +12,14 @@ const schema = new Schema({
     type: Schema.ObjectId,
     ref: 'Channel'
   },
+  conversation_id: {
+    type: Schema.ObjectId,
+    ref: 'Conversation'
+  },
   isDeleted: { type: Boolean, default: false },
-}, { timestamps: true } );
-
-/*const autoPopulateAuthor = (next) => {
-  this.populate({
-    path: 'author_id',
-    select: 'avatar username pin -_id'
-  });
-  next();
-};
-
-schema.pre('find', autoPopulateAuthor);*/
+},
+{
+  timestamps: true
+});
 
 export default mongoose.model('Message', schema);

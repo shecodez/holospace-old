@@ -38,7 +38,7 @@ schema.methods.setDefaultId = function setDefaultId(id) {
   next();
 };
 
-schema.pre('find', autoPopulateOwner);*/
+schema.pre('find', autoPopulateOwner);
 
 schema.methods.toAuthJSON = function toAuthJSON() {
   return {
@@ -47,6 +47,6 @@ schema.methods.toAuthJSON = function toAuthJSON() {
     icon: this.icon,
     default_id: this.default_id
   }
-};
+};*/
 
 export default mongoose.model('Server', schema);

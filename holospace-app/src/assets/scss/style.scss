@@ -31,9 +31,40 @@ body {
   padding: 0;
 }
 
+.site-grid-r2 {
+  display: grid;
+  grid-template-columns: 1fr 15fr;
+  height: 100vh;
+  overflow: hidden;
+  .section {
+    padding: 1em 0;
+    color: white;
+    overflow: hidden;
+  }
+}
+
+.site-grid-r1 {
+  display: grid;
+  grid-template-columns: 16fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.banner {
+  margin-bottom: 0 !important;
+  border-radius: 0 !important;
+}
+
+.one-r,
+.two-r {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 .grid {
   display: grid;
-  height: 100vh;
+  flex: 1;
 
   .section {
     padding: 1em 0;
@@ -60,7 +91,7 @@ ___ _____ ____________
 
 */
 .grid-3c {
-  grid-template-columns: 1fr 3fr 12fr;
+  grid-template-columns: 3fr 12fr;
 }
 
 /*
@@ -86,7 +117,7 @@ ___ _____ _________ ___
 
 */
 .grid-4c {
-  grid-template-columns: 1fr 3fr 9fr 3fr;
+  grid-template-columns: 3fr 9fr 3fr;
 }
 
 .c1 {
@@ -185,7 +216,48 @@ ___ _____ _________ ___
       outline: transparent;
       border: none;
       color: white;
-      margin-right: .75em;
+      margin-right: 1rem;
+
+    }
+  }
+
+  .direct-channels {
+    form {
+      padding: 0 1rem;
+      margin-bottom: 7px;
+    }
+  }
+
+  .accordion {
+    //position: relative;
+    .select-channel-link {
+      margin-left: 1.25rem;
+    }
+
+    .title {
+      padding: 0 !important;
+      position: relative;
+      height: 35.6px;
+      display: flex !important;
+      align-items: center !important;
+
+      .dropdown.icon {
+        position: absolute;
+        left: 1rem;
+      }
+    }
+    .content {
+      margin-left: 4px;
+      padding-left: 2.25rem !important;
+      color: #999;
+    }
+  }
+  .channel-users-list {
+    .content {
+      padding-left: 0 !important;
+    }
+    .header {
+      font-size: .95rem !important;
     }
   }
 }
@@ -195,6 +267,7 @@ ___ _____ _________ ___
   display: flex;
   justify-content: space-between;
   margin-left: 4px;
+  flex: 1;
   .prepend i {
     margin: 0;
     max-width: 10px;
@@ -737,8 +810,9 @@ ______ ___________ ___
 
 */
 .grid-3c-vr {
-  background: url("http://www.dataselect.com/wp-content/uploads/2016/07/vTime-The-Boardroom.jpg") no-repeat center center fixed;
-  background-size: cover;
+  //background: url("http://www.dataselect.com/wp-content/uploads/2016/07/vTime-The-Boardroom.jpg") no-repeat center center fixed;
+  //background-size: cover;
+  background-color: #000;
 
   //.c2t,
   .c2m {
@@ -753,6 +827,13 @@ ______ ___________ ___
   .c3m {
     padding: 0 !important;
     background-color: transparent;
+    canvas {
+      display: block;
+      //position: absolute;
+      //top: 0; bottom: 0; left: 0; right: 0;
+      //z-index: 0;
+    }
+
   }
 
   .chat {
@@ -848,6 +929,34 @@ ______ ___________ ___
 
   .scroll-y {
     margin-top: 1.33em;
+  }
+}
+
+/**
+ * 404 Error Styles
+ */
+.error-page {
+  //background: url('https://i.imgur.com/C5X6bis.gif');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: 50% 50%;
+  height: 100vh;
+  width: 100vw;
+
+  .content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+	  align-items: center;
+
+    h1 {
+      font-size:  12rem;
+    }
+    h2 {
+      font-size: 2em;
+    }
+    a { text-transform: uppercase; }
   }
 }
 
